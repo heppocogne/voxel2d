@@ -1,0 +1,7 @@
+.import/*
+project_export/*
+.VSCodeCounter/*
+.mono/
+.~lock.*
+*.translation
+.vscode/*
