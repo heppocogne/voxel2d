@@ -1,4 +1,7 @@
-[gd_scene format=2]
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://gameplay/world/OverWorldGenerator.cs" type="Script" id=1]
+[ext_resource path="res://gameplay/Character.cs" type="Script" id=2]
 
 [node name="GameScreen" type="Control"]
 anchor_right = 1.0
@@ -14,3 +17,9 @@ handle_input_locally = false
 render_target_update_mode = 3
 
 [node name="Node2DRoot" type="Node2D" parent="ViewportContainer/Viewport"]
+
+[node name="Character" type="Node2D" parent="ViewportContainer/Viewport/Node2DRoot"]
+script = ExtResource( 2 )
+
+[node name="OverWorldGenerator" type="Node" parent="ViewportContainer/Viewport"]
+script = ExtResource( 1 )

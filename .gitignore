@@ -5,3 +5,4 @@ project_export/*
 .~lock.*
 *.translation
 .vscode/*
+.vs/*

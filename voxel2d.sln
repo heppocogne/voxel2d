@@ -1,6 +1,6 @@
 ﻿Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "voxel2d", "voxel2d.csproj", "{E8E991EB-83D5-4158-A112-692730E5BCD7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "voxel2d", "voxel2d.csproj", "{789079BC-E2CA-44C8-938A-27B46C9CCFAD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -9,11 +9,11 @@ Global
 	ExportRelease|Any CPU = ExportRelease|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{E8E991EB-83D5-4158-A112-692730E5BCD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E8E991EB-83D5-4158-A112-692730E5BCD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E8E991EB-83D5-4158-A112-692730E5BCD7}.ExportDebug|Any CPU.ActiveCfg = ExportDebug|Any CPU
-		{E8E991EB-83D5-4158-A112-692730E5BCD7}.ExportDebug|Any CPU.Build.0 = ExportDebug|Any CPU
-		{E8E991EB-83D5-4158-A112-692730E5BCD7}.ExportRelease|Any CPU.ActiveCfg = ExportRelease|Any CPU
-		{E8E991EB-83D5-4158-A112-692730E5BCD7}.ExportRelease|Any CPU.Build.0 = ExportRelease|Any CPU
+		{789079BC-E2CA-44C8-938A-27B46C9CCFAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{789079BC-E2CA-44C8-938A-27B46C9CCFAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{789079BC-E2CA-44C8-938A-27B46C9CCFAD}.ExportDebug|Any CPU.ActiveCfg = ExportDebug|Any CPU
+		{789079BC-E2CA-44C8-938A-27B46C9CCFAD}.ExportDebug|Any CPU.Build.0 = ExportDebug|Any CPU
+		{789079BC-E2CA-44C8-938A-27B46C9CCFAD}.ExportRelease|Any CPU.ActiveCfg = ExportRelease|Any CPU
+		{789079BC-E2CA-44C8-938A-27B46C9CCFAD}.ExportRelease|Any CPU.Build.0 = ExportRelease|Any CPU
 	EndGlobalSection
 EndGlobal
