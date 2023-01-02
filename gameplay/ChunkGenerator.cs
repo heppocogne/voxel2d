@@ -91,8 +91,8 @@ public class ChunkGenerator : Node
         int averageHeight = 64;
         int dirtTop = -10;
         int dirtBottom = 10;
-        int mountinTop = -64;
-
+        int mountainTop = -64;
+        int mountainMiddle = -32;
 
         var map = GD.Load<PackedScene>("res://gameplay/world/chunk/chunk.tscn").Instance() as Chunk;
         map.TileSet = tileset;
@@ -102,10 +102,16 @@ public class ChunkGenerator : Node
         float[] rawHeights = new float[Chunk.ChunkSize + 4];
         for (int x = 0; x < Chunk.ChunkSize + 4; x++)
         {
-            if (0.125 < mountainNoise.GetNoise1d(chunk * Chunk.ChunkSize + x))
-                rawHeights[x] = (heightNoise.GetNoise1d(chunk * Chunk.ChunkSize + x) + 1) / 2 * (dirtBottom - mountinTop) + averageHeight;
+            float mn = mountainNoise.GetNoise1d(chunk * Chunk.ChunkSize + x);
+            float n = heightNoise.GetNoise1d(chunk * Chunk.ChunkSize + x);
+            if (0.125 < mn)
+                rawHeights[x] = (n + 1) / 2 * (dirtBottom - mountainTop) + averageHeight;
+            else if (0.08 < mn)
+                rawHeights[x] = (n + 1) / 2 * (dirtBottom - mountainMiddle) + averageHeight;
             else
-                rawHeights[x] = (heightNoise.GetNoise1d(chunk * Chunk.ChunkSize + x) + 1) / 2 * (dirtBottom - dirtTop) + averageHeight;
+                rawHeights[x] = (n + 1) / 2 * (dirtBottom - dirtTop) + averageHeight;
+
+            GD.Print(rawHeights[x]);
         }
 
         for (int x = 0; x < Chunk.ChunkSize; x++)
