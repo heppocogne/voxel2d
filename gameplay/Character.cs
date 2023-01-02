@@ -3,7 +3,8 @@ using System;
 
 public class Character : Node2D
 {
-    WorldGenerator generator;
+    public int ChunkPosition = 0;
+    ChunkManager manager;
     public override void _Ready()
     {
 
@@ -21,15 +22,14 @@ public class Character : Node2D
         else if (Input.IsActionPressed("ui_down"))
             Position += new Vector2(0, speed) * delta;
 
-        if (generator == null)
+        if (manager == null)
         {
-            if (GetTree().Root.HasNode("GameScreen/ViewportContainer/Viewport/WorldGenerator"))
-                generator = GetTree().Root.GetNode<WorldGenerator>("GameScreen/ViewportContainer/Viewport/WorldGenerator");
+            if (GetTree().Root.HasNode("GameScreen/ViewportContainer/Viewport/ChunkManager"))
+                manager = GetTree().Root.GetNode<ChunkManager>("GameScreen/ViewportContainer/Viewport/ChunkManager");
             else
                 return;
         }
 
-        int c = (int)(Position.x / Chunk.ChunkSize);
-        generator.Generate(c - 1, c + 1);
+        ChunkPosition = (int)(Position.x / (Chunk.ChunkSize * 16));
     }
 }

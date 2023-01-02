@@ -1,7 +1,9 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://gameplay/WorldGenerator.cs" type="Script" id=1]
+[ext_resource path="res://gameplay/ChunkGenerator.cs" type="Script" id=1]
 [ext_resource path="res://gameplay/Character.cs" type="Script" id=2]
+[ext_resource path="res://gameplay/ChunkManager.cs" type="Script" id=3]
+[ext_resource path="res://gameplay/world/overworld_tileset.tres" type="TileSet" id=4]
 
 [node name="GameScreen" type="Control"]
 anchor_right = 1.0
@@ -25,5 +27,11 @@ script = ExtResource( 2 )
 offset = Vector2( 512, 300 )
 current = true
 
-[node name="WorldGenerator" type="Node" parent="ViewportContainer/Viewport"]
+[node name="ChunkManager" type="Node" parent="ViewportContainer/Viewport"]
+script = ExtResource( 3 )
+Tileset = ExtResource( 4 )
+WorldName = "__test"
+PlayerNodePath = NodePath("../Node2DRoot/Character")
+
+[node name="ChunkGenerator" type="Node" parent="ViewportContainer/Viewport/ChunkManager"]
 script = ExtResource( 1 )
