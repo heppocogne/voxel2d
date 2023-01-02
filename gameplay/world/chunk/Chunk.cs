@@ -22,13 +22,24 @@ public class Chunk : Node2D
         Godot.Collections.Dictionary dic = new Godot.Collections.Dictionary();
         foreach (TileMap layer in layers)
         {
-            Godot.Collections.Dictionary<Vector2, int> cellsDic = new Godot.Collections.Dictionary<Vector2, int>();
-            foreach (var value in layer.GetUsedCells())
+            /*
+             * "Layer0":{
+             *      0:[...],
+             *      1:[...],
+             *      ...
+             *  },...
+             */
+            Godot.Collections.Dictionary<int, Vector2[]> idsDic = new Godot.Collections.Dictionary<int, Vector2[]>();
+            foreach (int id in layer.TileSet.GetTilesIds())
             {
-                Vector2 cell = (Vector2)value;
-                cellsDic[cell] = layer.GetCellv(cell);
+                var cells = layer.GetUsedCellsById(id);
+                Vector2[] vecs = new Vector2[cells.Count];
+                for (int i = 0; i < cells.Count; i++)
+                    vecs[i] = (Vector2)cells[i];
+
+                idsDic[id] = vecs;
             }
-            dic[layer.Name] = cellsDic;
+            dic[layer.Name] = idsDic;
         }
 
         return dic;
@@ -40,11 +51,11 @@ public class Chunk : Node2D
         {
             Godot.Collections.Dictionary layerDic = (Godot.Collections.Dictionary)dic[layerName];
             TileMap layer = GetNode<TileMap>(layerName);
-            foreach (var k in layerDic.Keys)
+            foreach (int id in layerDic.Keys)
             {
-                Vector2 vec = (Vector2)k;
-                int cell = (int)layerDic[k];
-                layer.SetCellv(vec, cell);
+                Vector2[] vecs = (Vector2[])layerDic[id];
+                foreach (Vector2 vec in vecs)
+                    layer.SetCellv(vec, id);
             }
         }
     }
