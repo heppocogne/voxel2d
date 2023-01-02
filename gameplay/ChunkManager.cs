@@ -18,7 +18,7 @@ public class ChunkManager : Node
     public NodePath PlayerNodePath;
 
     //RandomNumberGenerator rng = new RandomNumberGenerator();
-    Character player;
+    Player player;
     Node2D worldRoot;
 
     System.Collections.Generic.List<int> generatedChunks = new System.Collections.Generic.List<int>();
@@ -29,7 +29,7 @@ public class ChunkManager : Node
         //rng.Randomize();
         generator = GetNode<ChunkGenerator>("ChunkGenerator");
         generator.BaseSeed = GD.Randi();
-        player = GetNode<Character>(PlayerNodePath);
+        player = GetNode<Player>(PlayerNodePath);
 
         String dirPath = GetChunkFilePath(0).Replace("0.chunk", "");
         Directory dir = new Directory();
@@ -97,8 +97,8 @@ public class ChunkManager : Node
     {
         if (worldRoot == null)
         {
-            if (GetTree().Root.HasNode("GameScreen/ViewportContainer/Viewport/Node2DRoot"))
-                worldRoot = GetTree().Root.GetNode<Node2D>("GameScreen/ViewportContainer/Viewport/Node2DRoot");
+            if (GetTree().Root.HasNode("GameScreen/ViewportContainer/Viewport/World"))
+                worldRoot = GetTree().Root.GetNode<Node2D>("GameScreen/ViewportContainer/Viewport/World");
             else
                 return null;
         }
@@ -124,5 +124,15 @@ public class ChunkManager : Node
             GD.PushError("Failed to save chunk " + GD.Str(chunk) + "; file=" + GetChunkFilePath(chunk) + "; error=" + (int)err);
             return null;
         }
+    }
+
+    public Chunk GetChunk(int chunk)
+    {
+        if (!generatedChunks.Contains(chunk))
+            return generator.Generate(chunk, Tileset);
+        else if (!loadedChunks.ContainsKey(chunk))
+            return LoadChunk(chunk);
+        else
+            return loadedChunks[chunk];
     }
 }

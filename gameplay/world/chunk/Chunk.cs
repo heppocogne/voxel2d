@@ -5,7 +5,9 @@ using System.Collections.Generic;
 
 public class Chunk : Node2D
 {
+    static public readonly Vector2 CellSize = new Vector2(16, 16);
     static public readonly int ChunkSize = 32;
+
     List<TileMap> layers = new List<TileMap>();
 
 

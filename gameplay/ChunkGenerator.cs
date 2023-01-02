@@ -58,8 +58,8 @@ public class ChunkGenerator : Node
     {
         if (worldRoot == null)
         {
-            if (GetTree().Root.HasNode("GameScreen/ViewportContainer/Viewport/Node2DRoot"))
-                worldRoot = GetTree().Root.GetNode<Node2D>("GameScreen/ViewportContainer/Viewport/Node2DRoot");
+            if (GetTree().Root.HasNode("GameScreen/ViewportContainer/Viewport/World"))
+                worldRoot = GetTree().Root.GetNode<Node2D>("GameScreen/ViewportContainer/Viewport/World");
             else
                 return null;
         }
