@@ -84,6 +84,7 @@ atlas = ExtResource( 2 )
 region = Rect2( 0, 9, 16, 16 )
 
 [resource]
+flags = 4
 frames = 16
 frame_0/texture = SubResource( 1 )
 frame_1/texture = SubResource( 2 )

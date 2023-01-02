@@ -6,7 +6,7 @@ public class ChunkGenerator : Node
 {
     [Export]
     public float GaussianSigma = 1.0f;
-    public int BaseSeed = 0;
+    public uint BaseSeed = 0;
 
     Node2D worldRoot;
     double[] filter = new double[3];
@@ -20,7 +20,7 @@ public class ChunkGenerator : Node
         filter[2] = Gauss(2, GaussianSigma);
         filterSum = filter[0] + 2 * (filter[1] + filter[2]);
 
-        GD.Print("[", filter[0], ",", filter[1], ",", filter[2], "]");
+        //GD.Print("[", filter[0], ",", filter[1], ",", filter[2], "]");
     }
 
     static int FindTileID(TileSet tileset, String name)
@@ -54,11 +54,6 @@ public class ChunkGenerator : Node
         SNOWY_PLANE,
     }
 
-    static int UintToInt(uint v)
-    {
-        return (int)((long)v - 1 << 31);
-    }
-
     public Chunk Generate(int chunk, TileSet tileset)
     {
         if (worldRoot == null)
@@ -69,24 +64,26 @@ public class ChunkGenerator : Node
                 return null;
         }
         var heightNoise = new OpenSimplexNoise();
-        heightNoise.Seed = BaseSeed;
+        int s = (int)BaseSeed;
+        GD.Print(s);
+        heightNoise.Seed = s;
         heightNoise.Period = 96;
 
         var dirtNoise = new OpenSimplexNoise();
 
-        dirtNoise.Seed = BaseSeed + 10;
+        dirtNoise.Seed = s + 10;
         dirtNoise.Period = 16;
 
         var bedrockNoise = new OpenSimplexNoise();
-        bedrockNoise.Seed = BaseSeed + 20;
+        bedrockNoise.Seed = s + 20;
         bedrockNoise.Period = 8;
 
         var biomeNoise = new OpenSimplexNoise();
-        biomeNoise.Seed = BaseSeed + 30;
+        biomeNoise.Seed = s + 30;
         biomeNoise.Period = 640;
 
         var mountainNoise = new OpenSimplexNoise();
-        mountainNoise.Seed = BaseSeed + 40;
+        mountainNoise.Seed = s + 40;
         mountainNoise.Period = 64;
 
         plantsRng.Seed = (ulong)(BaseSeed + chunk + 1 << 31);
@@ -147,6 +144,8 @@ public class ChunkGenerator : Node
             int sand = FindTileID(tileset, "sand");
             int grass = FindTileID(tileset, "grass");
             int tallGrass = FindTileID(tileset, "tall_grass");
+            int cactus = FindTileID(tileset, "cactus");
+            int deadBush = FindTileID(tileset, "dead_bush");
 
             System.Collections.Generic.List<int> tiles = new System.Collections.Generic.List<int>();
             switch (biome)
@@ -162,11 +161,25 @@ public class ChunkGenerator : Node
                         tiles.Add(dirt);
                     break;
                 case Biomes.SNOWY_PLANE:
+                    r = plantsRng.Randf();
+                    if (0.75 < r)
+                        tiles.Add(grass);
                     tiles.Add(grassSnow);
                     for (int i = 0; i < dirtHeight - 1; i++)
                         tiles.Add(dirt);
                     break;
                 case Biomes.DESERT:
+                    r = plantsRng.Randf();
+                    if (r < 0.1)
+                    {
+                        int c = plantsRng.RandiRange(1, 3);
+                        for (int i = 0; i < c; i++)
+                            tiles.Add(cactus);
+                    }
+                    else if (r < 0.25)
+                    {
+                        tiles.Add(deadBush);
+                    }
                     for (int i = 0; i < dirtHeight; i++)
                         tiles.Add(sand);
                     break;

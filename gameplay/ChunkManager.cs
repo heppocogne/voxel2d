@@ -2,6 +2,7 @@ using Godot;
 using Godot.Collections;
 using System;
 using System.Linq;
+using System.Runtime.Remoting.Channels;
 
 public class ChunkManager : Node
 {
@@ -16,6 +17,7 @@ public class ChunkManager : Node
     [Export]
     public NodePath PlayerNodePath;
 
+    //RandomNumberGenerator rng = new RandomNumberGenerator();
     Character player;
     Node2D worldRoot;
 
@@ -24,8 +26,9 @@ public class ChunkManager : Node
     ChunkGenerator generator;
     public override void _Ready()
     {
+        //rng.Randomize();
         generator = GetNode<ChunkGenerator>("ChunkGenerator");
-        generator.BaseSeed = (int)((long)GD.Randi() - 1 << 31);
+        generator.BaseSeed = GD.Randi();
         player = GetNode<Character>(PlayerNodePath);
 
         String dirPath = GetChunkFilePath(0).Replace("0.chunk", "");
@@ -47,7 +50,7 @@ public class ChunkManager : Node
         {
             if (VisibleChunkDistance < Math.Abs(player.ChunkPosition - kv.Key))
             {
-                GD.Print("unload ", kv.Key);
+                //GD.Print("unload ", kv.Key);
                 UnloadChunk(kv.Key);
             }
         }
@@ -57,14 +60,14 @@ public class ChunkManager : Node
     {
         if (!generatedChunks.Contains(chunk))
         {
-            GD.Print("generate ", chunk);
+            //GD.Print("generate ", chunk);
             var map = generator.Generate(chunk, Tileset);
             generatedChunks.Add(chunk);
             loadedChunks.Add(chunk, map);
         }
         else if (!loadedChunks.ContainsKey(chunk))
         {
-            GD.Print("load ", chunk);
+            //GD.Print("load ", chunk);
             LoadChunk(chunk);
         }
     }
