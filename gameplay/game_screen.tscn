@@ -35,3 +35,4 @@ PlayerNodePath = NodePath("../Node2DRoot/Character")
 
 [node name="ChunkGenerator" type="Node" parent="ViewportContainer/Viewport/ChunkManager"]
 script = ExtResource( 1 )
+GaussianSigma = 3.0

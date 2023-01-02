@@ -84,10 +84,14 @@ public class ChunkGenerator : Node
         biomeNoise.Seed = BaseSeed + 30;
         biomeNoise.Period = 640;
 
+        var mountainNoise = new OpenSimplexNoise();
+        mountainNoise.Seed = BaseSeed + 40;
+        mountainNoise.Period = 64;
+
         int averageHeight = 64;
-        //int averageOceanHeight = 32;
-        int dirtTop = -20;
-        int dirtBottom = 20;
+        int dirtTop = -10;
+        int dirtBottom = 10;
+        int mountinTop = -64;
 
 
         var map = GD.Load<PackedScene>("res://gameplay/world/chunk/chunk.tscn").Instance() as Chunk;
@@ -98,7 +102,10 @@ public class ChunkGenerator : Node
         float[] rawHeights = new float[Chunk.ChunkSize + 4];
         for (int x = 0; x < Chunk.ChunkSize + 4; x++)
         {
-            rawHeights[x] = (heightNoise.GetNoise1d(chunk * Chunk.ChunkSize + x) + 1) / 2 * (dirtBottom - dirtTop) + averageHeight;
+            if (0.125 < mountainNoise.GetNoise1d(chunk * Chunk.ChunkSize + x))
+                rawHeights[x] = (heightNoise.GetNoise1d(chunk * Chunk.ChunkSize + x) + 1) / 2 * (dirtBottom - mountinTop) + averageHeight;
+            else
+                rawHeights[x] = (heightNoise.GetNoise1d(chunk * Chunk.ChunkSize + x) + 1) / 2 * (dirtBottom - dirtTop) + averageHeight;
         }
 
         for (int x = 0; x < Chunk.ChunkSize; x++)
@@ -112,7 +119,6 @@ public class ChunkGenerator : Node
             else
                 biome = Biomes.PLANE;
 
-            //int height = (int)Math.Round((heightNoise.GetNoise1d(chunk * Chunk.ChunkSize + x) + 1) / 2 * (dirtBottom - dirtTop)) + averageHeight;
             int height = (int)Math.Round((rawHeights[x] * filter[2] + rawHeights[x + 1] * filter[1] + rawHeights[x + 2] * filter[0] + rawHeights[x + 3] * filter[1] + rawHeights[x + 4] * filter[2]) / filterSum);
             int dirtHeight = (int)Math.Round((dirtNoise.GetNoise1d(chunk * Chunk.ChunkSize + x)) * 1.5 + 4);
             //if (dirtHeight < 2)

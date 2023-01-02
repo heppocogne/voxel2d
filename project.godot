@@ -8,11 +8,25 @@
 
 config_version=4
 
+_global_script_classes=[ {
+"base": "AnimatedTexture",
+"class": "AnimatedTexture2",
+"language": "GDScript",
+"path": "res://addons/animated_texture2/animated_texture2.gd"
+} ]
+_global_script_class_icons={
+"AnimatedTexture2": ""
+}
+
 [application]
 
 config/name="voxel2d"
 run/main_scene="res://main/main.tscn"
 config/icon="res://icon.png"
+
+[editor_plugins]
+
+enabled=PoolStringArray( "res://addons/animated_texture2/plugin.cfg" )
 
 [gui]
 
