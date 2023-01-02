@@ -11,6 +11,7 @@ public class ChunkGenerator : Node
     Node2D worldRoot;
     double[] filter = new double[3];
     double filterSum;
+    RandomNumberGenerator plantsRng = new RandomNumberGenerator();
 
     public override void _Ready()
     {
@@ -88,6 +89,8 @@ public class ChunkGenerator : Node
         mountainNoise.Seed = BaseSeed + 40;
         mountainNoise.Period = 64;
 
+        plantsRng.Seed = (ulong)(BaseSeed + chunk + 1 << 31);
+
         int averageHeight = 64;
         int dirtTop = -10;
         int dirtBottom = 10;
@@ -142,11 +145,18 @@ public class ChunkGenerator : Node
             int bedrock = FindTileID(tileset, "bedrock");
             int grassSnow = FindTileID(tileset, "grass_block_snow");
             int sand = FindTileID(tileset, "sand");
+            int grass = FindTileID(tileset, "grass");
+            int tallGrass = FindTileID(tileset, "tall_grass");
 
             System.Collections.Generic.List<int> tiles = new System.Collections.Generic.List<int>();
             switch (biome)
             {
                 case Biomes.PLANE:
+                    float r = plantsRng.Randf();
+                    if (0.75 < r)
+                        tiles.Add(tallGrass);
+                    else if (0.5 < r)
+                        tiles.Add(grass);
                     tiles.Add(grassBlock);
                     for (int i = 0; i < dirtHeight - 1; i++)
                         tiles.Add(dirt);
@@ -168,7 +178,7 @@ public class ChunkGenerator : Node
                 tiles.Add(bedrock);
 
             int y = 64;
-            for (int i = 0; i < height; i++)
+            while (tiles.Count != 0)
             {
                 map.SetCell(x, y, tiles[tiles.Count - 1]);
                 tiles.RemoveAt(tiles.Count - 1);
