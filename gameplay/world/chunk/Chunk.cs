@@ -1,38 +1,88 @@
 using Godot;
 using Godot.Collections;
 using System;
-using System.Diagnostics;
+using System.Collections.Generic;
 
-public class Chunk : TileMap
+public class Chunk : Node2D
 {
     static public readonly int ChunkSize = 32;
+    List<TileMap> layers = new List<TileMap>();
+
 
     public override void _Ready()
     {
+        foreach (TileMap layer in GetChildren())
+        {
+            layers.Add(layer);
+        }
     }
 
-    public Dictionary Serialize()
+    public Godot.Collections.Dictionary Serialize()
     {
-        Dictionary dic = new Dictionary();
-        Dictionary<Vector2, int> cellsDic = new Dictionary<Vector2, int>();
-        foreach (var value in GetUsedCells())
+        Godot.Collections.Dictionary dic = new Godot.Collections.Dictionary();
+        foreach (TileMap layer in layers)
         {
-            Vector2 cell = (Vector2)value;
-            cellsDic[cell] = GetCellv(cell);
+            Godot.Collections.Dictionary<Vector2, int> cellsDic = new Godot.Collections.Dictionary<Vector2, int>();
+            foreach (var value in layer.GetUsedCells())
+            {
+                Vector2 cell = (Vector2)value;
+                cellsDic[cell] = layer.GetCellv(cell);
+            }
+            dic[layer.Name] = cellsDic;
         }
-        dic["cells"] = cellsDic;
 
         return dic;
     }
 
-    public void Deserialize(Dictionary dic)
+    public void Deserialize(Godot.Collections.Dictionary dic)
     {
-        Dictionary cellsDic = (Dictionary)dic["cells"];
-        foreach (var k in cellsDic.Keys)
+        foreach (String layerName in dic.Keys)
         {
-            Vector2 vec = (Vector2)k;
-            int cell = (int)cellsDic[k];
-            SetCellv(vec, cell);
+            Godot.Collections.Dictionary layerDic = (Godot.Collections.Dictionary)dic[layerName];
+            TileMap layer = GetNode<TileMap>(layerName);
+            foreach (var k in layerDic.Keys)
+            {
+                Vector2 vec = (Vector2)k;
+                int cell = (int)layerDic[k];
+                layer.SetCellv(vec, cell);
+            }
         }
+    }
+
+    public void SetTileSet(TileSet tileset)
+    {
+        if (!IsInsideTree())
+        {
+            GD.PushWarning("Cannot set tileset");
+        }
+        foreach (TileMap layer in layers)
+        {
+            layer.TileSet = tileset;
+        }
+    }
+
+    public int LayerCount()
+    {
+        return GetChildCount();
+    }
+
+    public void SetCellv(int layer, Vector2 cell, int tile)
+    {
+        layers[layer].SetCellv(cell, tile);
+    }
+
+    public void SetCell(int layer, int x, int y, int tile)
+    {
+        layers[layer].SetCell(x, y, tile);
+    }
+
+    public int GetCellv(int layer, Vector2 cell)
+    {
+        return layers[layer].GetCellv(cell);
+    }
+
+    public int GetCell(int layer, int x, int y)
+    {
+        return layers[layer].GetCell(x, y);
     }
 }

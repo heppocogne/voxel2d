@@ -13,7 +13,7 @@ public class ChunkManager : Node
     [Export]
     public String WorldName = "";
     [Export]
-    public int VisibleChunkDistance = 4;
+    public int VisibleChunkDistance = 3;
     [Export]
     public NodePath PlayerNodePath;
 
@@ -109,8 +109,8 @@ public class ChunkManager : Node
         {
             Dictionary data = (Dictionary)f.GetVar();
             var map = GD.Load<PackedScene>("res://gameplay/world/chunk/chunk.tscn").Instance() as Chunk;
-            map.TileSet = Tileset;
             worldRoot.AddChild(map);
+            map.SetTileSet(Tileset);
             map.Position = new Vector2(chunk * Chunk.ChunkSize * 16, 0);
             map.Deserialize(data);
             loadedChunks.Add(chunk, map);

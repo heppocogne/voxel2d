@@ -65,7 +65,6 @@ public class ChunkGenerator : Node
         }
         var heightNoise = new OpenSimplexNoise();
         int s = (int)BaseSeed;
-        GD.Print(s);
         heightNoise.Seed = s;
         heightNoise.Period = 96;
 
@@ -95,8 +94,8 @@ public class ChunkGenerator : Node
         int mountainMiddle = -32;
 
         var map = GD.Load<PackedScene>("res://gameplay/world/chunk/chunk.tscn").Instance() as Chunk;
-        map.TileSet = tileset;
         worldRoot.AddChild(map);
+        map.SetTileSet(tileset);
         map.Position = new Vector2(chunk * Chunk.ChunkSize * 16, 0);
 
         float[] rawHeights = new float[Chunk.ChunkSize + 4];
@@ -110,8 +109,6 @@ public class ChunkGenerator : Node
                 rawHeights[x] = (n + 1) / 2 * (dirtBottom - mountainMiddle) + averageHeight;
             else
                 rawHeights[x] = (n + 1) / 2 * (dirtBottom - dirtTop) + averageHeight;
-
-            GD.Print(rawHeights[x]);
         }
 
         for (int x = 0; x < Chunk.ChunkSize; x++)
@@ -153,26 +150,27 @@ public class ChunkGenerator : Node
             int cactus = FindTileID(tileset, "cactus");
             int deadBush = FindTileID(tileset, "dead_bush");
 
-            System.Collections.Generic.List<int> tiles = new System.Collections.Generic.List<int>();
+            System.Collections.Generic.List<int> layer1Tiles = new System.Collections.Generic.List<int>();
+            System.Collections.Generic.List<int> layer2Tiles = new System.Collections.Generic.List<int>();
             switch (biome)
             {
                 case Biomes.PLANE:
                     float r = plantsRng.Randf();
                     if (0.75 < r)
-                        tiles.Add(tallGrass);
+                        layer2Tiles.Add(tallGrass);
                     else if (0.5 < r)
-                        tiles.Add(grass);
-                    tiles.Add(grassBlock);
+                        layer2Tiles.Add(grass);
+                    layer1Tiles.Add(grassBlock);
                     for (int i = 0; i < dirtHeight - 1; i++)
-                        tiles.Add(dirt);
+                        layer1Tiles.Add(dirt);
                     break;
                 case Biomes.SNOWY_PLANE:
                     r = plantsRng.Randf();
                     if (0.75 < r)
-                        tiles.Add(grass);
-                    tiles.Add(grassSnow);
+                        layer2Tiles.Add(grass);
+                    layer1Tiles.Add(grassSnow);
                     for (int i = 0; i < dirtHeight - 1; i++)
-                        tiles.Add(dirt);
+                        layer1Tiles.Add(dirt);
                     break;
                 case Biomes.DESERT:
                     r = plantsRng.Randf();
@@ -180,27 +178,33 @@ public class ChunkGenerator : Node
                     {
                         int c = plantsRng.RandiRange(1, 3);
                         for (int i = 0; i < c; i++)
-                            tiles.Add(cactus);
+                            layer2Tiles.Add(cactus);
                     }
                     else if (r < 0.25)
                     {
-                        tiles.Add(deadBush);
+                        layer2Tiles.Add(deadBush);
                     }
                     for (int i = 0; i < dirtHeight; i++)
-                        tiles.Add(sand);
+                        layer1Tiles.Add(sand);
                     break;
             }
 
             for (int i = 0; i < height - bedrockHeight - dirtHeight; i++)
-                tiles.Add(stone);
+                layer1Tiles.Add(stone);
             for (int i = 0; i < bedrockHeight; i++)
-                tiles.Add(bedrock);
+                layer1Tiles.Add(bedrock);
 
             int y = 64;
-            while (tiles.Count != 0)
+            while (layer1Tiles.Count != 0)
             {
-                map.SetCell(x, y, tiles[tiles.Count - 1]);
-                tiles.RemoveAt(tiles.Count - 1);
+                map.SetCell(1, x, y, layer1Tiles[layer1Tiles.Count - 1]);
+                layer1Tiles.RemoveAt(layer1Tiles.Count - 1);
+                y -= 1;
+            }
+            while (layer2Tiles.Count != 0)
+            {
+                map.SetCell(2, x, y, layer2Tiles[layer2Tiles.Count - 1]);
+                layer2Tiles.RemoveAt(layer2Tiles.Count - 1);
                 y -= 1;
             }
         }
