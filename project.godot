@@ -24,6 +24,10 @@ config/name="voxel2d"
 run/main_scene="res://main/main.tscn"
 config/icon="res://icon.png"
 
+[editor]
+
+convert_text_resources_to_binary_on_export=true
+
 [editor_plugins]
 
 enabled=PoolStringArray( "res://addons/animated_texture2/plugin.cfg" )
@@ -74,6 +78,7 @@ project/assembly_name="voxel2d"
 [physics]
 
 common/enable_pause_aware_picking=true
+2d/default_gravity=392
 
 [rendering]
 
