@@ -1,110 +1,11 @@
-[gd_scene load_steps=28 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://gameplay/ChunkGenerator.cs" type="Script" id=1]
-[ext_resource path="res://gameplay/entity/player/Player.cs" type="Script" id=2]
+[ext_resource path="res://gameplay/entity/player/player.tscn" type="PackedScene" id=2]
 [ext_resource path="res://gameplay/ChunkManager.cs" type="Script" id=3]
 [ext_resource path="res://gameplay/world/overworld_tileset.tres" type="TileSet" id=4]
 [ext_resource path="res://gameplay/game_screen.gd" type="Script" id=5]
-[ext_resource path="res://assets/WolfRpgEditor/CharaChip/[Special]Wolfarl.png" type="Texture" id=6]
 [ext_resource path="res://gameplay/World.cs" type="Script" id=7]
-
-[sub_resource type="AtlasTexture" id=6]
-atlas = ExtResource( 6 )
-region = Rect2( 0, 20, 14, 20 )
-
-[sub_resource type="AtlasTexture" id=7]
-atlas = ExtResource( 6 )
-region = Rect2( 14, 20, 14, 20 )
-
-[sub_resource type="AtlasTexture" id=8]
-atlas = ExtResource( 6 )
-region = Rect2( 28, 20, 14, 20 )
-
-[sub_resource type="AtlasTexture" id=9]
-atlas = ExtResource( 6 )
-region = Rect2( 14, 20, 14, 20 )
-
-[sub_resource type="AtlasTexture" id=2]
-atlas = ExtResource( 6 )
-region = Rect2( 0, 40, 14, 20 )
-
-[sub_resource type="AtlasTexture" id=3]
-atlas = ExtResource( 6 )
-region = Rect2( 14, 40, 14, 20 )
-
-[sub_resource type="AtlasTexture" id=4]
-atlas = ExtResource( 6 )
-region = Rect2( 28, 40, 14, 20 )
-
-[sub_resource type="AtlasTexture" id=11]
-atlas = ExtResource( 6 )
-region = Rect2( 14, 40, 14, 20 )
-
-[sub_resource type="AtlasTexture" id=12]
-atlas = ExtResource( 6 )
-region = Rect2( 14, 20, 14, 20 )
-
-[sub_resource type="AtlasTexture" id=13]
-atlas = ExtResource( 6 )
-region = Rect2( 56, 40, 14, 20 )
-
-[sub_resource type="AtlasTexture" id=14]
-atlas = ExtResource( 6 )
-region = Rect2( 14, 60, 14, 20 )
-
-[sub_resource type="AtlasTexture" id=15]
-atlas = ExtResource( 6 )
-region = Rect2( 56, 60, 14, 20 )
-
-[sub_resource type="AtlasTexture" id=16]
-atlas = ExtResource( 6 )
-region = Rect2( 14, 40, 14, 20 )
-
-[sub_resource type="AtlasTexture" id=17]
-atlas = ExtResource( 6 )
-region = Rect2( 14, 20, 14, 20 )
-
-[sub_resource type="AtlasTexture" id=18]
-atlas = ExtResource( 6 )
-region = Rect2( 56, 0, 14, 20 )
-
-[sub_resource type="AtlasTexture" id=19]
-atlas = ExtResource( 6 )
-region = Rect2( 14, 0, 14, 20 )
-
-[sub_resource type="AtlasTexture" id=20]
-atlas = ExtResource( 6 )
-region = Rect2( 56, 20, 14, 20 )
-
-[sub_resource type="AtlasTexture" id=21]
-atlas = ExtResource( 6 )
-region = Rect2( 14, 40, 14, 20 )
-
-[sub_resource type="SpriteFrames" id=1]
-animations = [ {
-"frames": [ SubResource( 6 ), SubResource( 7 ), SubResource( 8 ), SubResource( 9 ) ],
-"loop": true,
-"name": "left_walk",
-"speed": 5.0
-}, {
-"frames": [ SubResource( 2 ), SubResource( 3 ), SubResource( 4 ), SubResource( 11 ) ],
-"loop": true,
-"name": "right_walk",
-"speed": 5.0
-}, {
-"frames": [ SubResource( 12 ), SubResource( 13 ), SubResource( 14 ), SubResource( 15 ), SubResource( 16 ) ],
-"loop": true,
-"name": "turn_back",
-"speed": 6.0
-}, {
-"frames": [ SubResource( 17 ), SubResource( 18 ), SubResource( 19 ), SubResource( 20 ), SubResource( 21 ) ],
-"loop": true,
-"name": "turn_front",
-"speed": 6.0
-} ]
-
-[sub_resource type="RectangleShape2D" id=22]
-extents = Vector2( 6, 8.5 )
 
 [node name="GameScreen" type="Control"]
 anchor_right = 1.0
@@ -139,19 +40,4 @@ collision_layer = 0
 collision_mask = 0
 format = 1
 
-[node name="Player" type="KinematicBody2D" parent="ViewportContainer/Viewport/World"]
-collision_layer = 8
-collision_mask = 2
-script = ExtResource( 2 )
-
-[node name="AnimatedSprite" type="AnimatedSprite" parent="ViewportContainer/Viewport/World/Player"]
-frames = SubResource( 1 )
-animation = "right_walk"
-frame = 1
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="ViewportContainer/Viewport/World/Player"]
-shape = SubResource( 22 )
-
-[node name="Camera2D" type="Camera2D" parent="ViewportContainer/Viewport/World/Player"]
-current = true
-zoom = Vector2( 0.5, 0.5 )
+[node name="Player" parent="ViewportContainer/Viewport/World" instance=ExtResource( 2 )]

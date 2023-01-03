@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://gameplay/entity/entity.tscn" type="PackedScene" id=1]
+[ext_resource path="res://gameplay/entity/player/Player.cs" type="Script" id=2]
+[ext_resource path="res://gameplay/entity/player/wolfarl.tres" type="SpriteFrames" id=3]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 6, 9 )
+
+[node name="Player" instance=ExtResource( 1 )]
+script = ExtResource( 2 )
+WalkSpeed = 96.0
+RunSpeed = 128.0
+JumpHeight = 20.0
+
+[node name="CollisionShape2D" parent="." index="0"]
+shape = SubResource( 1 )
+
+[node name="AnimatedSprite" parent="." index="1"]
+frames = ExtResource( 3 )
+animation = "right_walk"
+
+[node name="Camera2D" type="Camera2D" parent="." index="2"]
+current = true
+zoom = Vector2( 0.5, 0.5 )
