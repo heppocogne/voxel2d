@@ -9,7 +9,7 @@ script = ExtResource( 1 )
 z_index = -256
 cell_size = Vector2( 16, 16 )
 cell_custom_transform = Transform2D( 16, 0, 0, 16, 0, 0 )
-collision_mask = 8
+collision_mask = 0
 format = 1
 
 [node name="Layer1" type="TileMap" parent="."]
@@ -24,5 +24,5 @@ z_index = 256
 cell_size = Vector2( 16, 16 )
 cell_custom_transform = Transform2D( 16, 0, 0, 16, 0, 0 )
 collision_layer = 4
-collision_mask = 8
+collision_mask = 0
 format = 1
