@@ -6,6 +6,8 @@ public class ChunkGenerator : Node
 {
     [Export]
     public float GaussianSigma = 1.0f;
+    [Export]
+    public int WorldBottom = 64;
     public uint BaseSeed = 0;
 
     Node2D worldRoot;
@@ -87,7 +89,7 @@ public class ChunkGenerator : Node
 
         plantsRng.Seed = (ulong)(BaseSeed + chunk + 1 << 31);
 
-        int averageHeight = 64;
+        int baseHeight = 56;
         int dirtTop = -10;
         int dirtBottom = 10;
         int mountainTop = -64;
@@ -104,11 +106,13 @@ public class ChunkGenerator : Node
             float mn = mountainNoise.GetNoise1d(chunk * Chunk.ChunkSize + x);
             float n = heightNoise.GetNoise1d(chunk * Chunk.ChunkSize + x);
             if (0.125 < mn)
-                rawHeights[x] = (n + 1) / 2 * (dirtBottom - mountainTop) + averageHeight;
+                rawHeights[x] = (n + 1) / 2 * (dirtBottom - mountainTop) + baseHeight;
             else if (0.08 < mn)
-                rawHeights[x] = (n + 1) / 2 * (dirtBottom - mountainMiddle) + averageHeight;
+                rawHeights[x] = (n + 1) / 2 * (dirtBottom - mountainMiddle) + baseHeight;
             else
-                rawHeights[x] = (n + 1) / 2 * (dirtBottom - dirtTop) + averageHeight;
+                rawHeights[x] = (n + 1) / 2 * (dirtBottom - dirtTop) + baseHeight;
+
+            //GD.Print(rawHeights[x]);
         }
 
         for (int x = 0; x < Chunk.ChunkSize; x++)
@@ -194,7 +198,7 @@ public class ChunkGenerator : Node
             for (int i = 0; i < bedrockHeight; i++)
                 layer1Tiles.Add(bedrock);
 
-            int y = 64;
+            int y = WorldBottom;
             while (layer1Tiles.Count != 0)
             {
                 map.SetCell(1, x, y, layer1Tiles[layer1Tiles.Count - 1]);
