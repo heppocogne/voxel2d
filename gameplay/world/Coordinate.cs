@@ -3,8 +3,11 @@ using System;
 
 public class Coordinate : TileMap
 {
-    public Vector2 TargetCell;
-    public bool TargetCellValid;
+    [Signal]
+    delegate void CellSelected(Vector2 target);
+
+    //public Vector2 TargetCell;
+    //public bool TargetCellValid;
 
     ChunkManager manager;
     Player player;
@@ -12,6 +15,7 @@ public class Coordinate : TileMap
     {
         manager = GetNode<ChunkManager>("../ChunkManager");
         player = GetNode<Player>("../Player");
+        Connect(nameof(CellSelected), player, "OnCellSelected");
     }
 
     public override void _Draw()
@@ -35,11 +39,8 @@ public class Coordinate : TileMap
         {
             Vector2 lt = mapPos * Chunk.CellSize;
             DrawRect(new Rect2(lt, Chunk.CellSize), new Color(0, 0, 0), false);
-            TargetCell = mapPos;
-            TargetCellValid = true;
+            EmitSignal(nameof(CellSelected), mapPos);
         }
-        else
-            TargetCellValid = false;
     }
 
     public override void _Process(float delta)
