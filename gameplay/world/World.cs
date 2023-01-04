@@ -29,7 +29,6 @@ public class World : Node2D
         for (; 0 <= spawnChunk.GetCell(1, 0, height); height--) ;
         Vector2 spawnPoint = new Vector2(0, height);
 
-        GD.Print(spawnPoint);
         player.Position = coordinate.MapToWorld(spawnPoint) + Chunk.CellSize / 2;
     }
 
@@ -74,16 +73,13 @@ public class World : Node2D
 
     public void SetCell(int x, int y, int tile)
     {
-        GD.Print("chunk=", MapToChunk(x));
         Chunk chunk = loader.GetChunk(MapToChunk(x));
         if (0 <= x)
         {
-            GD.Print("pos=[", x % Chunk.ChunkSize, ",", y, "]");
             chunk.SetCell(1, x % Chunk.ChunkSize, y, tile);
         }
         else
         {
-            GD.Print("pos=[", x % Chunk.ChunkSize + Chunk.ChunkSize, ",", y, "]");
             chunk.SetCell(1, x % Chunk.ChunkSize + Chunk.ChunkSize, y, tile);
         }
 

@@ -39,7 +39,6 @@ public class Entity : KinematicBody2D
         int currentChunk = World.MapToChunk((int)(Position.x / Chunk.CellSize.x));
         if (currentChunk != previousChunk)
         {
-            GD.Print(currentChunk);
             EmitSignal(nameof(ChunkChanged), currentChunk, previousChunk);
             previousChunk = currentChunk;
         }

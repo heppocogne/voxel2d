@@ -23,8 +23,6 @@ public class ChunkGenerator : Node
         filter[1] = Gauss(1, GaussianSigma);
         filter[2] = Gauss(2, GaussianSigma);
         filterSum = filter[0] + 2 * (filter[1] + filter[2]);
-
-        //GD.Print("[", filter[0], ",", filter[1], ",", filter[2], "]");
     }
 
     static double Gauss(float x, float sigma)
@@ -63,7 +61,7 @@ public class ChunkGenerator : Node
         var mountainNoise = new OpenSimplexNoise();
         mountainNoise.Seed = s + 40;
         mountainNoise.Persistence = 0.1f;
-        mountainNoise.Period = 64;
+        mountainNoise.Period = 96;
 
         plantsRng.Seed = (ulong)(BaseSeed + chunk + 1 << 31);
 
@@ -83,9 +81,9 @@ public class ChunkGenerator : Node
         {
             float mn = mountainNoise.GetNoise1d(chunk * Chunk.ChunkSize + x);
             float n = heightNoise.GetNoise1d(chunk * Chunk.ChunkSize + x);
-            if (0.125 < mn)
+            if (0.13 < mn)
                 rawHeights[x] = (n + 1) / 2 * (dirtBottom - mountainTop) + baseHeight;
-            else if (0.08 < mn)
+            else if (0.1 < mn)
                 rawHeights[x] = (n + 1) / 2 * (dirtBottom - mountainMiddle) + baseHeight;
             else
                 rawHeights[x] = (n + 1) / 2 * (dirtBottom - dirtTop) + baseHeight;

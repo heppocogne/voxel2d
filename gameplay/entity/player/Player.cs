@@ -85,9 +85,33 @@ public class Player : Entity
         Velocity = MoveAndSlide(Velocity, Vector2.Up);
 
 
-        if (leftClick && targetCellValid && digging != null)
+        if (leftClick && targetCellValid)
         {
-            digging.Damage(DigDamage * delta);
+            if (digging == null)
+            {
+                int id = worldRoot.GetCellv(targetCell);
+                if (0 <= id)
+                {
+                    digging = GD.Load<PackedScene>("res://gameplay/world/tile/digging_tile.tscn").Instance() as DiggingTile;
+                    digging.TilePosition = targetCell;
+                    Dictionary tiledata = worldRoot.GetTileData(id);
+                    digging.Solidity = (float)tiledata["Solidity"];
+                    Connect(nameof(DigCanceled), digging, "OnCanceled");
+                    digging.Connect("TileDestroyed", this, nameof(OnTileDestroyed));
+                    digging.Connect("TileDestroyed", worldRoot, nameof(OnTileDestroyed));
+                    worldRoot.AddChild(digging);
+                    digging.Position = coordinate.MapToWorld(targetCell);
+                }
+            }
+            else
+            {
+                digging.Damage(DigDamage * delta);
+            }
+        }
+        else if (!leftClick && targetCellValid)
+        {
+            EmitSignal(nameof(DigCanceled));
+            digging = null;
         }
     }
 
@@ -101,27 +125,7 @@ public class Player : Entity
             {
                 case (int)ButtonList.Left:
                     leftClick = mb.Pressed;
-                    if (leftClick && targetCellValid)
-                    {
-                        int id = worldRoot.GetCellv(targetCell);
-                        if (0 <= id)
-                        {
-                            digging = GD.Load<PackedScene>("res://gameplay/world/tile/digging_tile.tscn").Instance() as DiggingTile;
-                            digging.TilePosition = targetCell;
-                            Dictionary tiledata = worldRoot.GetTileData(id);
-                            digging.Solidity = (float)tiledata["Solidity"];
-                            Connect(nameof(DigCanceled), digging, "OnCanceled");
-                            digging.Connect("TileDestroyed", this, nameof(OnTileDestroyed));
-                            digging.Connect("TileDestroyed", worldRoot, nameof(OnTileDestroyed));
-                            worldRoot.AddChild(digging);
-                            digging.Position = coordinate.MapToWorld(targetCell);
-                        }
-                    }
-                    else if (!leftClick && targetCellValid)
-                    {
-                        EmitSignal(nameof(DigCanceled));
-                        digging = null;
-                    }
+
                     break;
             }
         }
@@ -129,6 +133,11 @@ public class Player : Entity
 
     public void OnCellSelected(Vector2 cell, bool valid)
     {
+        if (cell != targetCell && digging != null)
+        {
+            EmitSignal(nameof(DigCanceled));
+            digging = null;
+        }
         targetCell = cell;
         targetCellValid = valid;
     }
