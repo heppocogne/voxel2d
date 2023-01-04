@@ -25,6 +25,8 @@ public class Player : Entity
     Vector2 targetCell;
     bool targetCellValid;
     bool leftClick = false;
+    bool rightClick = false;
+    ButtonList lastClicked;
     DiggingTile digging;
 
     // physics
@@ -85,7 +87,7 @@ public class Player : Entity
         Velocity = MoveAndSlide(Velocity, Vector2.Up);
 
 
-        if (leftClick && targetCellValid)
+        if (IsLeftClick() && targetCellValid)
         {
             if (digging == null)
             {
@@ -108,7 +110,7 @@ public class Player : Entity
                 digging.Damage(DigDamage * delta);
             }
         }
-        else if (!leftClick && targetCellValid)
+        else if (!IsLeftClick() && targetCellValid)
         {
             EmitSignal(nameof(DigCanceled));
             digging = null;
@@ -121,14 +123,38 @@ public class Player : Entity
         if (@event is InputEventMouseButton)
         {
             var mb = @event as InputEventMouseButton;
-            switch (mb.ButtonIndex)
+            switch ((ButtonList)mb.ButtonIndex)
             {
-                case (int)ButtonList.Left:
+                case ButtonList.Left:
                     leftClick = mb.Pressed;
-
+                    lastClicked = ButtonList.Left;
+                    break;
+                case ButtonList.Right:
+                    rightClick = mb.Pressed;
+                    lastClicked = ButtonList.Right;
                     break;
             }
         }
+    }
+
+    bool IsLeftClick()
+    {
+        if (leftClick && !rightClick)
+            return true;
+        else if (leftClick && rightClick)
+            return lastClicked == ButtonList.Left;
+
+        return false;
+    }
+
+    bool IsRightClick()
+    {
+        if (rightClick && !leftClick)
+            return true;
+        else if (leftClick && rightClick)
+            return lastClicked == ButtonList.Right;
+
+        return false;
     }
 
     public void OnCellSelected(Vector2 cell, bool valid)
