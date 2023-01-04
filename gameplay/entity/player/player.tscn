@@ -5,7 +5,7 @@
 [ext_resource path="res://gameplay/entity/player/wolfarl.tres" type="SpriteFrames" id=3]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 6, 9 )
+extents = Vector2( 6, 7.5 )
 
 [node name="Player" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
@@ -13,8 +13,10 @@ HandLength = 72.0
 WalkSpeed = 96.0
 RunSpeed = 128.0
 JumpHeight = 36.0
+DigDamage = 0.2
 
 [node name="CollisionShape2D" parent="." index="0"]
+position = Vector2( 0, 1.5 )
 shape = SubResource( 1 )
 
 [node name="AnimatedSprite" parent="." index="1"]
