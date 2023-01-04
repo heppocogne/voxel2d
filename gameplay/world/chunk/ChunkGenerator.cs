@@ -89,8 +89,6 @@ public class ChunkGenerator : Node
                 rawHeights[x] = (n + 1) / 2 * (dirtBottom - mountainMiddle) + baseHeight;
             else
                 rawHeights[x] = (n + 1) / 2 * (dirtBottom - dirtTop) + baseHeight;
-
-            //GD.Print(rawHeights[x]);
         }
 
         for (int x = 0; x < Chunk.ChunkSize; x++)

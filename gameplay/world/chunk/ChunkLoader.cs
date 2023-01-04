@@ -114,7 +114,12 @@ public class ChunkLoader : Node
     public Chunk GetChunk(int chunk)
     {
         if (!generatedChunks.Contains(chunk))
-            return generator.Generate(chunk, worldRoot.Tileset);
+        {
+            Chunk map = generator.Generate(chunk, worldRoot.Tileset);
+            generatedChunks.Add(chunk);
+            loadedChunks.Add(chunk, map);
+            return map;
+        }
         else if (!loadedChunks.ContainsKey(chunk))
             return LoadChunk(chunk);
         else
