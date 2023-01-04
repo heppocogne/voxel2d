@@ -85,6 +85,7 @@ public class ChunkGenerator : Node
 
         var mountainNoise = new OpenSimplexNoise();
         mountainNoise.Seed = s + 40;
+        mountainNoise.Persistence = 0.1f;
         mountainNoise.Period = 64;
 
         plantsRng.Seed = (ulong)(BaseSeed + chunk + 1 << 31);
