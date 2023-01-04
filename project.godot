@@ -13,9 +13,15 @@ _global_script_classes=[ {
 "class": "AnimatedTexture2",
 "language": "GDScript",
 "path": "res://addons/animated_texture2/animated_texture2.gd"
+}, {
+"base": "Resource",
+"class": "TileMapData",
+"language": "GDScript",
+"path": "res://addons/tilemap_data_exporter/tilemap_data.gd"
 } ]
 _global_script_class_icons={
-"AnimatedTexture2": ""
+"AnimatedTexture2": "",
+"TileMapData": ""
 }
 
 [application]
@@ -30,7 +36,7 @@ convert_text_resources_to_binary_on_export=true
 
 [editor_plugins]
 
-enabled=PoolStringArray( "res://addons/animated_texture2/plugin.cfg" )
+enabled=PoolStringArray( "res://addons/animated_texture2/plugin.cfg", "res://addons/tilemap_data_exporter/plugin.cfg" )
 
 [gui]
 
