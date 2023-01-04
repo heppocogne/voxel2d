@@ -18,25 +18,9 @@ public class World : Node2D
         coordinate = GetNode<TileMap>("Coordinate");
 
         Chunk spawnChunk = manager.GetChunk(0);
-        int[] heights = new int[SpawnAreaSize];
-        int sumHeight = 0;
-        for (int x = 0; x < SpawnAreaSize; x++)
-        {
-            for (int y = generator.WorldBottom; 0 <= spawnChunk.GetCell(1, x, y); y--, heights[x]--) ;
-            sumHeight += heights[x];
-        }
-        float aveHeight = sumHeight / SpawnAreaSize;
-        Vector2 spawnPoint = Vector2.Zero;
-        float minDiff = Single.MaxValue;
-        for (int x = 0; x < SpawnAreaSize; x++)
-        {
-            float diff = Math.Abs(heights[x] - aveHeight);
-            if (diff < minDiff)
-            {
-                minDiff = diff;
-                spawnPoint = new Vector2(x, heights[x] + generator.WorldBottom);
-            }
-        }
+        int height = generator.WorldBottom;
+        for (; 0 <= spawnChunk.GetCell(1, 0, height); height--) ;
+        Vector2 spawnPoint = new Vector2(0, height);
 
         GD.Print(spawnPoint);
         player.Position = coordinate.MapToWorld(spawnPoint) + Chunk.CellSize / 2;

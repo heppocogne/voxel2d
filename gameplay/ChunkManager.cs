@@ -30,6 +30,7 @@ public class ChunkManager : Node
         generator = GetNode<ChunkGenerator>("ChunkGenerator");
         generator.BaseSeed = GD.Randi();
         player = GetNode<Player>(PlayerNodePath);
+        player.Connect("ChunkChanged", this, nameof(OnPlayerChunkChanged));
 
         String dirPath = GetChunkFilePath(0).Replace("0.chunk", "");
         Directory dir = new Directory();
@@ -39,9 +40,8 @@ public class ChunkManager : Node
         }
     }
 
-    public override void _Process(float delta)
+    public void OnPlayerChunkChanged(int newChunk, int oldChyunk)
     {
-        //base._Process(delta);
         for (int i = -VisibleChunkDistance; i <= VisibleChunkDistance; i++)
         {
             ShowChunk(i + player.ChunkPosition);
@@ -50,7 +50,6 @@ public class ChunkManager : Node
         {
             if (VisibleChunkDistance < Math.Abs(player.ChunkPosition - kv.Key))
             {
-                //GD.Print("unload ", kv.Key);
                 UnloadChunk(kv.Key);
             }
         }
@@ -60,14 +59,12 @@ public class ChunkManager : Node
     {
         if (!generatedChunks.Contains(chunk))
         {
-            //GD.Print("generate ", chunk);
             var map = generator.Generate(chunk, Tileset);
             generatedChunks.Add(chunk);
             loadedChunks.Add(chunk, map);
         }
         else if (!loadedChunks.ContainsKey(chunk))
         {
-            //GD.Print("load ", chunk);
             LoadChunk(chunk);
         }
     }
@@ -134,5 +131,22 @@ public class ChunkManager : Node
             return LoadChunk(chunk);
         else
             return loadedChunks[chunk];
+    }
+
+    static public int ToChunk(int x)
+    {
+        if (0 <= x)
+            return x / Chunk.ChunkSize;
+        else
+            return x / Chunk.ChunkSize - 1;
+    }
+
+    public int GetCell(int x, int y)
+    {
+        Chunk chunk = GetChunk(ToChunk(x));
+        if (0 <= x)
+            return chunk.GetCell(x % Chunk.ChunkSize, y);
+        else
+            return chunk.GetCell(x % Chunk.ChunkSize + Chunk.ChunkSize, y);
     }
 }

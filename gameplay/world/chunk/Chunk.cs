@@ -81,17 +81,44 @@ public class Chunk : Node2D
 
     public void SetCellv(int layer, Vector2 cell, int tile)
     {
-        layers[layer].SetCellv(cell, tile);
+        for (int i = 0; i < layers.Count; i++)
+        {
+            if (layer == i)
+                layers[i].SetCellv(cell, tile);
+            else
+                layers[i].SetCellv(cell, -1);
+        }
     }
 
     public void SetCell(int layer, int x, int y, int tile)
     {
-        layers[layer].SetCell(x, y, tile);
+        for (int i = 0; i < layers.Count; i++)
+        {
+            if (layer == i)
+                layers[i].SetCell(x, y, tile);
+            else
+                layers[i].SetCell(x, y, -1);
+        }
     }
 
-    public int GetCellv(int layer, Vector2 cell)
+    public int GetCellv(Vector2 cell)
     {
-        return layers[layer].GetCellv(cell);
+        foreach (TileMap l in layers)
+        {
+            if (l.GetCellv(cell) != -1)
+                return l.GetCellv(cell);
+        }
+        return -1;
+    }
+
+    public int GetCell(int x, int y)
+    {
+        foreach (TileMap l in layers)
+        {
+            if (l.GetCell(x, y) != -1)
+                return l.GetCell(x, y);
+        }
+        return -1;
     }
 
     public int GetCell(int layer, int x, int y)

@@ -9,6 +9,7 @@ extents = Vector2( 6, 9 )
 
 [node name="Player" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
+HandLength = 88.0
 WalkSpeed = 96.0
 RunSpeed = 128.0
 JumpHeight = 20.0
@@ -19,6 +20,7 @@ shape = SubResource( 1 )
 [node name="AnimatedSprite" parent="." index="1"]
 frames = ExtResource( 3 )
 animation = "right_walk"
+frame = 1
 
 [node name="Camera2D" type="Camera2D" parent="." index="2"]
 current = true

@@ -4,13 +4,15 @@ using System;
 public class Player : Entity
 {
     [Export]
+    public float HandLength = 5.5f * 16;
+    [Export]
     public float WalkSpeed = 96;
     [Export]
     public float RunSpeed = 128;
     [Export]
     public float JumpHeight = 20;
 
-
+    public bool CursorVisible;
 
     // physics
     float jumpInitialVelocity;
@@ -19,6 +21,11 @@ public class Player : Entity
     {
         base._Ready();
         jumpInitialVelocity = (float)Math.Sqrt(gravity * JumpHeight);
+    }
+
+    public override void _Process(float delta)
+    {
+        CursorVisible = GetLocalMousePosition().Length() < HandLength;
     }
 
     public override void _PhysicsProcess(float delta)

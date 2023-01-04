@@ -3,12 +3,16 @@ using System;
 
 public class Entity : KinematicBody2D
 {
+    [Signal]
+    delegate void ChunkChanged(int newChunk, int oldChyunk);
+
     [Export]
     public float MaxFallSpeed = 384;
 
     // state
     public int ChunkPosition = 0;
     public Vector2 Velocity = Vector2.Zero;
+    int previousChunk = Int32.MinValue;
 
     // physics
     protected int gravity;
@@ -32,6 +36,13 @@ public class Entity : KinematicBody2D
         Velocity += (gravity - airDiag * Velocity.y * Velocity.y) * delta * gravityVector;
         Velocity = MoveAndSlide(Velocity, Vector2.Up);
 
-        ChunkPosition = (int)(Position.x / (Chunk.ChunkSize * Chunk.CellSize.x));
+        int currentChunk = ChunkManager.ToChunk((int)(Position.x / Chunk.CellSize.x));
+        if (currentChunk != previousChunk)
+        {
+            GD.Print(currentChunk);
+            EmitSignal(nameof(ChunkChanged), currentChunk, previousChunk);
+            previousChunk = currentChunk;
+        }
+        ChunkPosition = currentChunk;
     }
 }
