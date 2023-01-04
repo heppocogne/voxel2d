@@ -17,7 +17,6 @@ public class ChunkManager : Node
     [Export]
     public NodePath PlayerNodePath;
 
-    //RandomNumberGenerator rng = new RandomNumberGenerator();
     Player player;
     Node2D worldRoot;
 
@@ -26,7 +25,6 @@ public class ChunkManager : Node
     ChunkGenerator generator;
     public override void _Ready()
     {
-        //rng.Randomize();
         generator = GetNode<ChunkGenerator>("ChunkGenerator");
         generator.BaseSeed = GD.Randi();
         player = GetNode<Player>(PlayerNodePath);

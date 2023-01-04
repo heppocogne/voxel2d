@@ -4,7 +4,7 @@ using System;
 public class Player : Entity
 {
     [Export]
-    public float HandLength = 5.5f * 16;
+    public float HandLength = 4.5f * 16;
     [Export]
     public float WalkSpeed = 96;
     [Export]

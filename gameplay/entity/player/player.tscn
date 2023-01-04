@@ -9,10 +9,10 @@ extents = Vector2( 6, 9 )
 
 [node name="Player" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
-HandLength = 88.0
+HandLength = 72.0
 WalkSpeed = 96.0
 RunSpeed = 128.0
-JumpHeight = 20.0
+JumpHeight = 36.0
 
 [node name="CollisionShape2D" parent="." index="0"]
 shape = SubResource( 1 )
