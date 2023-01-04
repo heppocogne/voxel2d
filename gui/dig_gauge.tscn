@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://gui/white_pixel.png" type="Texture" id=1]
+
+[sub_resource type="Theme" id=1]
+
+[node name="DigGauge" type="TextureProgress"]
+margin_right = 16.0
+margin_bottom = 1.0
+theme = SubResource( 1 )
+value = 50.0
+texture_under = ExtResource( 1 )
+texture_progress = ExtResource( 1 )
+tint_under = Color( 0.27451, 0.27451, 0.27451, 1 )
+nine_patch_stretch = true
