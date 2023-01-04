@@ -11,7 +11,7 @@ dest_files=[ "res://.import/overworld_tiles.tsv-dd7eb6a6b5147e006c991d37b2204c69
 
 [params]
 
-delimiter=0
+delimiter=1
 headers=true
-detect_numbers=false
+detect_numbers=true
 force_float=true

@@ -10,37 +10,21 @@ public class ChunkGenerator : Node
     public int WorldBottom = 64;
     public uint BaseSeed = 0;
 
-    Node2D worldRoot;
+    World worldRoot;
     double[] filter = new double[3];
     double filterSum;
     RandomNumberGenerator plantsRng = new RandomNumberGenerator();
 
     public override void _Ready()
     {
+        worldRoot = GetParent<World>();
+
         filter[0] = Gauss(0, GaussianSigma);
         filter[1] = Gauss(1, GaussianSigma);
         filter[2] = Gauss(2, GaussianSigma);
         filterSum = filter[0] + 2 * (filter[1] + filter[2]);
 
         //GD.Print("[", filter[0], ",", filter[1], ",", filter[2], "]");
-    }
-
-    static int FindTileID(TileSet tileset, String name)
-    {
-        if (tileset == null)
-            return -1;
-
-        foreach (int id in tileset.GetTilesIds())
-        {
-            if (tileset.TileGetName(id) == name)
-                return id;
-        }
-        foreach (int id in tileset.GetTilesIds())
-        {
-            if (tileset.TileGetName(id).Contains(name))
-                return id;
-        }
-        return -1;
     }
 
     static double Gauss(float x, float sigma)
@@ -58,13 +42,6 @@ public class ChunkGenerator : Node
 
     public Chunk Generate(int chunk, TileSet tileset)
     {
-        if (worldRoot == null)
-        {
-            if (GetTree().Root.HasNode("GameScreen/ViewportContainer/Viewport/World"))
-                worldRoot = GetTree().Root.GetNode<Node2D>("GameScreen/ViewportContainer/Viewport/World");
-            else
-                return null;
-        }
         var heightNoise = new OpenSimplexNoise();
         int s = (int)BaseSeed;
         heightNoise.Seed = s;
@@ -144,16 +121,16 @@ public class ChunkGenerator : Node
              * 5:sand
              */
 
-            int grassBlock = FindTileID(tileset, "grass_block");
-            int dirt = FindTileID(tileset, "dirt");
-            int stone = FindTileID(tileset, "stone");
-            int bedrock = FindTileID(tileset, "bedrock");
-            int grassSnow = FindTileID(tileset, "grass_block_snow");
-            int sand = FindTileID(tileset, "sand");
-            int grass = FindTileID(tileset, "grass");
-            int tallGrass = FindTileID(tileset, "tall_grass");
-            int cactus = FindTileID(tileset, "cactus");
-            int deadBush = FindTileID(tileset, "dead_bush");
+            int grassBlock = worldRoot.FindTileID("grass_block");
+            int dirt = worldRoot.FindTileID("dirt");
+            int stone = worldRoot.FindTileID("stone");
+            int bedrock = worldRoot.FindTileID("bedrock");
+            int grassSnow = worldRoot.FindTileID("grass_block_snow");
+            int sand = worldRoot.FindTileID("sand");
+            int grass = worldRoot.FindTileID("grass");
+            int tallGrass = worldRoot.FindTileID("tall_grass");
+            int cactus = worldRoot.FindTileID("cactus");
+            int deadBush = worldRoot.FindTileID("dead_bush");
 
             System.Collections.Generic.List<int> layer1Tiles = new System.Collections.Generic.List<int>();
             System.Collections.Generic.List<int> layer2Tiles = new System.Collections.Generic.List<int>();

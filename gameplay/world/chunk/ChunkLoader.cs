@@ -4,28 +4,26 @@ using System;
 using System.Linq;
 using System.Runtime.Remoting.Channels;
 
-public class ChunkManager : Node
+public class ChunkLoader : Node
 {
     const File.CompressionMode compressionMode = File.CompressionMode.Zstd;
 
-    [Export]
-    TileSet Tileset;
-    [Export]
-    public String WorldName = "";
     [Export]
     public int VisibleChunkDistance = 3;
     [Export]
     public NodePath PlayerNodePath;
 
     Player player;
-    Node2D worldRoot;
+    public World worldRoot;
 
     System.Collections.Generic.List<int> generatedChunks = new System.Collections.Generic.List<int>();
     System.Collections.Generic.Dictionary<int, Chunk> loadedChunks = new System.Collections.Generic.Dictionary<int, Chunk>();
     ChunkGenerator generator;
     public override void _Ready()
     {
-        generator = GetNode<ChunkGenerator>("ChunkGenerator");
+        worldRoot = GetParent<World>();
+
+        generator = GetNode<ChunkGenerator>("../ChunkGenerator");
         generator.BaseSeed = GD.Randi();
         player = GetNode<Player>(PlayerNodePath);
         player.Connect("ChunkChanged", this, nameof(OnPlayerChunkChanged));
@@ -57,7 +55,7 @@ public class ChunkManager : Node
     {
         if (!generatedChunks.Contains(chunk))
         {
-            var map = generator.Generate(chunk, Tileset);
+            var map = generator.Generate(chunk, worldRoot.Tileset);
             generatedChunks.Add(chunk);
             loadedChunks.Add(chunk, map);
         }
@@ -69,7 +67,7 @@ public class ChunkManager : Node
 
     String GetChunkFilePath(int chunk)
     {
-        return "user://worlds/" + WorldName + "/chunks/" + GD.Str(chunk) + ".chunk";
+        return "user://worlds/" + worldRoot.WorldName + "/chunks/" + GD.Str(chunk) + ".chunk";
     }
 
     public void UnloadChunk(int chunk)
@@ -90,14 +88,6 @@ public class ChunkManager : Node
 
     public Chunk LoadChunk(int chunk)
     {
-        if (worldRoot == null)
-        {
-            if (GetTree().Root.HasNode("GameScreen/ViewportContainer/Viewport/World"))
-                worldRoot = GetTree().Root.GetNode<Node2D>("GameScreen/ViewportContainer/Viewport/World");
-            else
-                return null;
-        }
-
         File f = new File();
         Error err = f.OpenCompressed(GetChunkFilePath(chunk), File.ModeFlags.Read, compressionMode);
         if (err == Error.Ok)
@@ -105,7 +95,7 @@ public class ChunkManager : Node
             Dictionary data = (Dictionary)f.GetVar();
             var map = GD.Load<PackedScene>("res://gameplay/world/chunk/chunk.tscn").Instance() as Chunk;
             worldRoot.AddChild(map);
-            map.SetTileSet(Tileset);
+            map.SetTileSet(worldRoot.Tileset);
             map.Position = new Vector2(chunk * Chunk.ChunkSize * 16, 0);
             map.Deserialize(data);
             loadedChunks.Add(chunk, map);
@@ -124,27 +114,10 @@ public class ChunkManager : Node
     public Chunk GetChunk(int chunk)
     {
         if (!generatedChunks.Contains(chunk))
-            return generator.Generate(chunk, Tileset);
+            return generator.Generate(chunk, worldRoot.Tileset);
         else if (!loadedChunks.ContainsKey(chunk))
             return LoadChunk(chunk);
         else
             return loadedChunks[chunk];
-    }
-
-    static public int ToChunk(int x)
-    {
-        if (0 <= x)
-            return x / Chunk.ChunkSize;
-        else
-            return x / Chunk.ChunkSize - 1;
-    }
-
-    public int GetCell(int x, int y)
-    {
-        Chunk chunk = GetChunk(ToChunk(x));
-        if (0 <= x)
-            return chunk.GetCell(x % Chunk.ChunkSize, y);
-        else
-            return chunk.GetCell(x % Chunk.ChunkSize + Chunk.ChunkSize, y);
     }
 }

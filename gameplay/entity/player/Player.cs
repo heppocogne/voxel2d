@@ -1,8 +1,13 @@
 using Godot;
+using Godot.Collections;
 using System;
+using System.Net.Mime;
 
 public class Player : Entity
 {
+    [Signal]
+    delegate void DigCanceled();
+
     [Export]
     public float HandLength = 4.5f * 16;
     [Export]
@@ -15,7 +20,12 @@ public class Player : Entity
     public float DigDamage = 0.2f;
 
     public bool CursorVisible;
+    Coordinate coordinate;
+    World worldRoot;
     Vector2 targetCell;
+    bool targetCellValid;
+    bool leftClick = false;
+    DiggingTile digging;
 
     // physics
     float jumpInitialVelocity;
@@ -24,6 +34,8 @@ public class Player : Entity
     {
         base._Ready();
         jumpInitialVelocity = (float)Math.Sqrt(gravity * JumpHeight);
+        worldRoot = GetParent<World>();
+        coordinate = worldRoot.GetNode<Coordinate>("Coordinate");
     }
 
     public override void _Process(float delta)
@@ -71,16 +83,59 @@ public class Player : Entity
         }
 
         Velocity = MoveAndSlide(Velocity, Vector2.Up);
+
+
+        if (leftClick && targetCellValid && digging != null)
+        {
+            digging.Damage(DigDamage * delta);
+        }
     }
 
     public override void _Input(InputEvent @event)
     {
         //base._Input(@event);
-
+        if (@event is InputEventMouseButton)
+        {
+            var mb = @event as InputEventMouseButton;
+            switch (mb.ButtonIndex)
+            {
+                case (int)ButtonList.Left:
+                    leftClick = mb.Pressed;
+                    if (leftClick && targetCellValid)
+                    {
+                        int id = worldRoot.GetCellv(targetCell);
+                        if (0 <= id)
+                        {
+                            digging = GD.Load<PackedScene>("res://gameplay/world/tile/digging_tile.tscn").Instance() as DiggingTile;
+                            digging.TilePosition = targetCell;
+                            Dictionary tiledata = worldRoot.GetTileData(id);
+                            digging.Solidity = (float)tiledata["Solidity"];
+                            Connect(nameof(DigCanceled), digging, "OnCanceled");
+                            digging.Connect("TileDestroyed", this, nameof(OnTileDestroyed));
+                            digging.Connect("TileDestroyed", worldRoot, nameof(OnTileDestroyed));
+                            worldRoot.AddChild(digging);
+                            digging.Position = coordinate.MapToWorld(targetCell);
+                        }
+                    }
+                    else if (!leftClick && targetCellValid)
+                    {
+                        EmitSignal(nameof(DigCanceled));
+                        digging = null;
+                    }
+                    break;
+            }
+        }
     }
 
-    public void OnCellSelected(Vector2 cell)
+    public void OnCellSelected(Vector2 cell, bool valid)
     {
         targetCell = cell;
+        targetCellValid = valid;
+    }
+
+    public void OnTileDestroyed(Vector2 pos)
+    {
+        digging = null;
+        targetCellValid = false;
     }
 }

@@ -1,12 +1,13 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://gameplay/world/chunk/ChunkGenerator.cs" type="Script" id=1]
 [ext_resource path="res://gameplay/entity/player/player.tscn" type="PackedScene" id=2]
-[ext_resource path="res://gameplay/world/chunk/ChunkManager.cs" type="Script" id=3]
-[ext_resource path="res://gameplay/world/overworld_tileset.tres" type="TileSet" id=4]
+[ext_resource path="res://gameplay/world/chunk/ChunkLoader.cs" type="Script" id=3]
+[ext_resource path="res://gameplay/world/tile/overworld_tileset.tres" type="TileSet" id=4]
 [ext_resource path="res://gameplay/game_screen.gd" type="Script" id=5]
 [ext_resource path="res://gameplay/world/Coordinate.cs" type="Script" id=6]
 [ext_resource path="res://gameplay/world/World.cs" type="Script" id=7]
+[ext_resource path="res://gameplay/world/tile/overworld_tiles.tsv" type="Resource" id=8]
 
 [node name="GameScreen" type="Control"]
 anchor_right = 1.0
@@ -27,14 +28,15 @@ render_target_update_mode = 3
 
 [node name="World" type="Node2D" parent="ViewportContainer/Viewport"]
 script = ExtResource( 7 )
-
-[node name="ChunkManager" type="Node" parent="ViewportContainer/Viewport/World"]
-script = ExtResource( 3 )
-Tileset = ExtResource( 4 )
 WorldName = "__test"
+Tileset = ExtResource( 4 )
+Tiledata = ExtResource( 8 )
+
+[node name="ChunkLoader" type="Node" parent="ViewportContainer/Viewport/World"]
+script = ExtResource( 3 )
 PlayerNodePath = NodePath("../Player")
 
-[node name="ChunkGenerator" type="Node" parent="ViewportContainer/Viewport/World/ChunkManager"]
+[node name="ChunkGenerator" type="Node" parent="ViewportContainer/Viewport/World"]
 script = ExtResource( 1 )
 GaussianSigma = 5.0
 

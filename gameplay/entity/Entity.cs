@@ -36,7 +36,7 @@ public class Entity : KinematicBody2D
         Velocity += (gravity - airDiag * Velocity.y * Velocity.y) * delta * gravityVector;
         Velocity = MoveAndSlide(Velocity, Vector2.Up);
 
-        int currentChunk = ChunkManager.ToChunk((int)(Position.x / Chunk.CellSize.x));
+        int currentChunk = World.MapToChunk((int)(Position.x / Chunk.CellSize.x));
         if (currentChunk != previousChunk)
         {
             GD.Print(currentChunk);
