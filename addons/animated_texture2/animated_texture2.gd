@@ -3,8 +3,8 @@ class_name AnimatedTexture2
 extends AnimatedTexture
 
 export var base_texture:Texture
-export var h_frames:int=1 setget set_h_frames
-export var v_frames:int=1
+export(int,1,256) var h_frames:int=1 setget set_h_frames
+export(int,1,256) var v_frames:int=1 setget set_v_frames
 enum FrameDirections{
 	HORIZONTAL,
 	VERTICAL,
@@ -16,17 +16,18 @@ var atlas:Array
 
 
 func _init():
+	frames=h_frames*v_frames
 	atlas=[]
 
 
 func set_h_frames(h:int):
-	h_frames=min(1,h)
+	h_frames=h
 	frames=h_frames*v_frames
 	atlas=[]
 
 
 func set_v_frames(v:int):
-	v_frames=min(1,v)
+	v_frames=v
 	frames=h_frames*v_frames
 	atlas=[]
 
