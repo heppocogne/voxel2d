@@ -2,18 +2,42 @@ class_name TileMapData
 extends Resource
 
 # id:PoolVector2Array
-export var map:Dictionary
+export var _map:Dictionary
 
 
 func _init():
-    map={}
+    _map={}
+
+
+func set_cell(x:int,y:int,tile:int):
+    set_cellv(Vector2(x,y),tile)
+
+
+func set_cellv(cell:Vector2,tile:int):
+    if !_map.has(tile):
+        _map[tile]=PoolVector2Array();
+    var v:PoolVector2Array=_map[tile]
+    v.push_back(cell)
+    _map[tile]=v
+
+
+func get_cell(x:int,y:int)->int:
+    return get_cellv(Vector2(x,y))
+
+
+func get_cellv(cell:Vector2)->int:
+    for id in _map:
+        for v in _map[id]:
+            if v==cell:
+                return id
+    return -1
 
 
 func get_rect()->Rect2:
     var rect:Rect2
 
-    for id in map:
-        for v in map[id]:
+    for id in _map:
+        for v in _map[id]:
             rect.expand(v)
     
     return rect
