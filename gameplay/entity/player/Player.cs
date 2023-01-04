@@ -11,8 +11,11 @@ public class Player : Entity
     public float RunSpeed = 128;
     [Export]
     public float JumpHeight = 20;
+    [Export]
+    public float DigDamage = 0.2f;
 
     public bool CursorVisible;
+    Vector2 targetCell;
 
     // physics
     float jumpInitialVelocity;
@@ -68,5 +71,16 @@ public class Player : Entity
         }
 
         Velocity = MoveAndSlide(Velocity, Vector2.Up);
+    }
+
+    public override void _Input(InputEvent @event)
+    {
+        //base._Input(@event);
+
+    }
+
+    public void OnCellSelected(Vector2 cell)
+    {
+        targetCell = cell;
     }
 }
