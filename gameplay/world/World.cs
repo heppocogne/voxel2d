@@ -19,8 +19,13 @@ public class World : Node2D
 
         Chunk spawnChunk = manager.GetChunk(0);
         int height = generator.WorldBottom;
-        for (; 0 <= spawnChunk.GetCell(1, 0, height); height--) ;
-        Vector2 spawnPoint = new Vector2(0, height);
+        int x;
+        if (SpawnAreaSize == 0)
+            x = 0;
+        else
+            x = (int)GD.Randi() % SpawnAreaSize;
+        for (; 0 <= spawnChunk.GetCell(1, x, height); height--) ;
+        Vector2 spawnPoint = new Vector2(x, height);
 
         GD.Print(spawnPoint);
         player.Position = coordinate.MapToWorld(spawnPoint) + Chunk.CellSize / 2;
