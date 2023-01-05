@@ -29,6 +29,8 @@ func _on_FileDialog_file_selected(path:String):
 
 
 func _on_AcceptDialog_confirmed():
-	for v in tilemap.get_used_rect():
-		tilemap.set_cellv(v,-1)
+	var rect:Rect2=tilemap.get_used_rect()
+	for y in range(rect.position.y,rect.size.y):
+		for x in range(rect.position.x,rect.size.x):
+			tilemap.set_cell(x,y,-1)
 	import_tilemap_data(tilemap_data)
