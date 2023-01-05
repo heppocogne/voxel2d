@@ -1,11 +1,12 @@
-Name	Hardness
-grass_block	0.6
-grass_block_snow	0.6
-dirt	0.5
-sand	0.5
-stone	1.5
-cobblestone	2
-bedrock	-1
-grass	0
-tall_grass	0
-cactus	0.4
+Name	Hardness	WithoutTools
+grass_block	0.6	TRUE
+grass_block_snow	0.6	TRUE
+dirt	0.5	TRUE
+sand	0.5	TRUE
+stone	1.5	FALSE
+cobblestone	2	FALSE
+bedrock	-1	FALSE
+grass	0	TRUE
+tall_grass	0	TRUE
+cactus	0.4	TRUE
+dead_bush	0	TRUE

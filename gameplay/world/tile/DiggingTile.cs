@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Drawing;
 
 public class DiggingTile : Node2D
 {
@@ -8,6 +9,7 @@ public class DiggingTile : Node2D
 
     public Vector2 TilePosition;
     public float Hardness;
+    public String Tool;
     TextureProgress progress;
 
     public override void _Ready()
@@ -23,7 +25,7 @@ public class DiggingTile : Node2D
         progress.Value = progress.Value - damage;
         if (progress.Value <= 0)
         {
-            EmitSignal(nameof(TileDestroyed), TilePosition);
+            EmitSignal(nameof(TileDestroyed), TilePosition, Tool);
             QueueFree();
         }
     }

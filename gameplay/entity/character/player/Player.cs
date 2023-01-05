@@ -105,6 +105,7 @@ public class Player : Character
                         digging = GD.Load<PackedScene>("res://gameplay/world/tile/digging_tile.tscn").Instance() as DiggingTile;
                         digging.TilePosition = targetCell;
                         digging.Hardness = hardness;
+                        digging.Tool = "";
                         Connect(nameof(DigCanceled), digging, "OnCanceled");
                         digging.Connect("TileDestroyed", this, nameof(OnTileDestroyed));
                         digging.Connect("TileDestroyed", worldRoot, nameof(OnTileDestroyed));
@@ -183,7 +184,7 @@ public class Player : Character
         targetCellValid = valid;
     }
 
-    public void OnTileDestroyed(Vector2 pos)
+    public void OnTileDestroyed(Vector2 pos, String tool)
     {
         digging = null;
         targetCellValid = false;

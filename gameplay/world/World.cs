@@ -12,6 +12,8 @@ public class World : Node2D
     public TileSet Tileset;
     [Export]
     public Resource Tiledata;
+    [Export]
+    public Resource Itemdata;
 
     Player player;
     ChunkLoader loader;
@@ -82,7 +84,6 @@ public class World : Node2D
         {
             chunk.SetCell(1, x % Chunk.ChunkSize + Chunk.ChunkSize, y, tile);
         }
-
     }
 
     public void SetCellv(Vector2 cell, int tile)
@@ -123,8 +124,21 @@ public class World : Node2D
         return GetTileData(Tileset.TileGetName(id));
     }
 
-    public void OnTileDestroyed(Vector2 cell)
+    public void OnTileDestroyed(Vector2 cell, String tool)
     {
+        int id = GetCellv(cell);
+        Dictionary tiledata = GetTileData(id);
+        if (tool == "")
+        {
+            if ((String)tiledata["WithoutTools"] == "TRUE")
+            {
+                Item item = GD.Load<PackedScene>("res://gameplay/entity/item/item.tscn").Instance() as Item;
+                AddChild(item);
+                item.GetNode<Sprite>("Sprite").Texture = Tileset.TileGetTexture(id);
+                item.ItemName = Tileset.TileGetName(id);
+                item.Position = coordinate.MapToWorld(cell) + new Vector2((float)GD.RandRange(0, 12), (float)GD.RandRange(0, 12));
+            }
+        }
         SetCellv(cell, -1);
     }
 }

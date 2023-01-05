@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://gameplay/world/chunk/ChunkGenerator.cs" type="Script" id=1]
 [ext_resource path="res://gameplay/entity/character/player/player.tscn" type="PackedScene" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://gameplay/world/World.cs" type="Script" id=7]
 [ext_resource path="res://gameplay/world/tile/tiles_data.tsv" type="Resource" id=8]
 [ext_resource path="res://gui/gui.tscn" type="PackedScene" id=9]
+[ext_resource path="res://gameplay/entity/item/items_data.tsv" type="Resource" id=10]
 
 [node name="GameScreen" type="Control"]
 anchor_right = 1.0
@@ -32,6 +33,7 @@ script = ExtResource( 7 )
 WorldName = "__test"
 Tileset = ExtResource( 4 )
 Tiledata = ExtResource( 8 )
+Itemdata = ExtResource( 10 )
 
 [node name="ChunkLoader" type="Node" parent="ViewportContainer/Viewport/World"]
 script = ExtResource( 3 )
