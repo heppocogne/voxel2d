@@ -20,8 +20,6 @@ public class Player : Entity
     public float DigDamage = 0.2f;
     [Export]
     public float PickupWidth = 1f;
-    [Export]
-    public int InventorySize = 36;
 
     public bool CursorVisible;
     Coordinate coordinate;
@@ -43,12 +41,7 @@ public class Player : Entity
         jumpInitialVelocity = (float)Math.Sqrt(gravity * JumpHeight);
         worldRoot = GetParent<World>();
         coordinate = worldRoot.GetNode<Coordinate>("Coordinate");
-        blockPlaceCooldown = GetNode<Timer>("BlockPlaceCooldownTimer");
-
-        if (InventorySize % 4 != 0)
-        {
-            GD.PushError("InventorySize must be multiple of 4");
-        }
+        blockPlaceCooldown = GetNode<Timer>("TilePlaceCooldownTimer");
     }
 
     public override void _Process(float delta)

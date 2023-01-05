@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://gameplay/entity/entity.tscn" type="PackedScene" id=1]
 [ext_resource path="res://gameplay/entity/player/Player.cs" type="Script" id=2]
 [ext_resource path="res://gameplay/entity/player/wolfarl.tres" type="SpriteFrames" id=3]
+[ext_resource path="res://gameplay/entity/player/Inventory.cs" type="Script" id=4]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 6, 7.5 )
@@ -15,7 +16,6 @@ RunSpeed = 128.0
 JumpHeight = 36.0
 DigDamage = 0.2
 PickupWidth = 1.0
-InventorySize = 40
 
 [node name="CollisionShape2D" parent="." index="0"]
 position = Vector2( 0, 1.5 )
@@ -29,6 +29,9 @@ frame = 1
 [node name="Camera2D" type="Camera2D" parent="." index="2"]
 current = true
 
-[node name="BlockPlaceCooldownTimer" type="Timer" parent="." index="3"]
+[node name="TilePlaceCooldownTimer" type="Timer" parent="." index="3"]
 wait_time = 0.25
 one_shot = true
+
+[node name="Inventory" type="Node" parent="." index="4"]
+script = ExtResource( 4 )
