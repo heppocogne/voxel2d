@@ -14,6 +14,8 @@ WalkSpeed = 96.0
 RunSpeed = 128.0
 JumpHeight = 36.0
 DigDamage = 0.2
+PickupWidth = 1.0
+InventorySize = 40
 
 [node name="CollisionShape2D" parent="." index="0"]
 position = Vector2( 0, 1.5 )
@@ -26,3 +28,7 @@ frame = 1
 
 [node name="Camera2D" type="Camera2D" parent="." index="2"]
 current = true
+
+[node name="BlockPlaceCooldownTimer" type="Timer" parent="." index="3"]
+wait_time = 0.25
+one_shot = true

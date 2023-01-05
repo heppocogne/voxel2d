@@ -18,6 +18,10 @@ public class Player : Entity
     public float JumpHeight = 20;
     [Export]
     public float DigDamage = 0.2f;
+    [Export]
+    public float PickupWidth = 1f;
+    [Export]
+    public int InventorySize = 36;
 
     public bool CursorVisible;
     Coordinate coordinate;
@@ -28,6 +32,7 @@ public class Player : Entity
     bool rightClick = false;
     ButtonList lastClicked;
     DiggingTile digging;
+    Timer blockPlaceCooldown;
 
     // physics
     float jumpInitialVelocity;
@@ -38,6 +43,12 @@ public class Player : Entity
         jumpInitialVelocity = (float)Math.Sqrt(gravity * JumpHeight);
         worldRoot = GetParent<World>();
         coordinate = worldRoot.GetNode<Coordinate>("Coordinate");
+        blockPlaceCooldown = GetNode<Timer>("BlockPlaceCooldownTimer");
+
+        if (InventorySize % 4 != 0)
+        {
+            GD.PushError("InventorySize must be multiple of 4");
+        }
     }
 
     public override void _Process(float delta)
@@ -79,7 +90,7 @@ public class Player : Entity
             }
         }
 
-        if (IsOnFloor() && Input.IsActionJustPressed("game_jump"))
+        if (IsOnFloor() && Input.IsActionPressed("game_jump"))
         {
             Velocity = new Vector2(Velocity.x, -jumpInitialVelocity);
         }
@@ -94,15 +105,19 @@ public class Player : Entity
                 int id = worldRoot.GetCellv(targetCell);
                 if (0 <= id)
                 {
-                    digging = GD.Load<PackedScene>("res://gameplay/world/tile/digging_tile.tscn").Instance() as DiggingTile;
-                    digging.TilePosition = targetCell;
                     Dictionary tiledata = worldRoot.GetTileData(id);
-                    digging.Solidity = (float)tiledata["Solidity"];
-                    Connect(nameof(DigCanceled), digging, "OnCanceled");
-                    digging.Connect("TileDestroyed", this, nameof(OnTileDestroyed));
-                    digging.Connect("TileDestroyed", worldRoot, nameof(OnTileDestroyed));
-                    worldRoot.AddChild(digging);
-                    digging.Position = coordinate.MapToWorld(targetCell);
+                    float solidity = (float)tiledata["Solidity"];
+                    if (0 <= solidity)
+                    {
+                        digging = GD.Load<PackedScene>("res://gameplay/world/tile/digging_tile.tscn").Instance() as DiggingTile;
+                        digging.TilePosition = targetCell;
+                        digging.Solidity = solidity;
+                        Connect(nameof(DigCanceled), digging, "OnCanceled");
+                        digging.Connect("TileDestroyed", this, nameof(OnTileDestroyed));
+                        digging.Connect("TileDestroyed", worldRoot, nameof(OnTileDestroyed));
+                        worldRoot.AddChild(digging);
+                        digging.Position = coordinate.MapToWorld(targetCell);
+                    }
                 }
             }
             else
@@ -114,6 +129,12 @@ public class Player : Entity
         {
             EmitSignal(nameof(DigCanceled));
             digging = null;
+        }
+
+        if (IsRightClick() && targetCellValid && worldRoot.GetCellv(targetCell) == -1 && blockPlaceCooldown.TimeLeft == 0.0)
+        {
+            worldRoot.SetCellv(targetCell, worldRoot.FindTileID("cobblestone"));
+            blockPlaceCooldown.Start();
         }
     }
 
@@ -132,6 +153,7 @@ public class Player : Entity
                 case ButtonList.Right:
                     rightClick = mb.Pressed;
                     lastClicked = ButtonList.Right;
+                    blockPlaceCooldown.Stop();
                     break;
             }
         }
