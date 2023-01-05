@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public class Entity : KinematicBody2D
+public class Character : KinematicBody2D
 {
     [Signal]
     delegate void ChunkChanged(int newChunk, int oldChyunk);

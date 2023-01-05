@@ -3,7 +3,7 @@ using Godot.Collections;
 using System;
 using System.Net.Mime;
 
-public class Player : Entity
+public class Player : Character
 {
     [Signal]
     delegate void DigCanceled();

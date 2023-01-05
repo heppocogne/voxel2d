@@ -1,8 +1,8 @@
 [gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://gameplay/entity/Entity.cs" type="Script" id=1]
+[ext_resource path="res://gameplay/entity/character/Character.cs" type="Script" id=1]
 
-[node name="Entity" type="KinematicBody2D"]
+[node name="Character" type="KinematicBody2D"]
 collision_layer = 8
 collision_mask = 2
 script = ExtResource( 1 )
