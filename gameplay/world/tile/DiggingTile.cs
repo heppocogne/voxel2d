@@ -7,14 +7,14 @@ public class DiggingTile : Node2D
     delegate void TileDestroyed(Vector2 pos);
 
     public Vector2 TilePosition;
-    public float Solidity;
+    public float Hardness;
     TextureProgress progress;
 
     public override void _Ready()
     {
         progress = GetNode<TextureProgress>("TextureProgress");
-        progress.MaxValue = Solidity;
-        progress.Value = Solidity;
+        progress.MaxValue = Hardness;
+        progress.Value = Hardness;
     }
 
     public void Damage(float damage)

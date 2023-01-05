@@ -99,12 +99,12 @@ public class Player : Entity
                 if (0 <= id)
                 {
                     Dictionary tiledata = worldRoot.GetTileData(id);
-                    float solidity = (float)tiledata["Solidity"];
-                    if (0 <= solidity)
+                    float hardness = (float)tiledata["Hardness"];
+                    if (0 <= hardness)
                     {
                         digging = GD.Load<PackedScene>("res://gameplay/world/tile/digging_tile.tscn").Instance() as DiggingTile;
                         digging.TilePosition = targetCell;
-                        digging.Solidity = solidity;
+                        digging.Hardness = hardness;
                         Connect(nameof(DigCanceled), digging, "OnCanceled");
                         digging.Connect("TileDestroyed", this, nameof(OnTileDestroyed));
                         digging.Connect("TileDestroyed", worldRoot, nameof(OnTileDestroyed));
