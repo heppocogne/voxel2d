@@ -1,15 +1,15 @@
 [gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://gameplay/entity/character/player/wolfarl.tres" type="SpriteFrames" id=1]
-[ext_resource path="res://gameplay/entity/character/player/Player.cs" type="Script" id=2]
+[ext_resource path="res://gameplay/entity/character/player/Player.cs" type="Script" id=1]
+[ext_resource path="res://gameplay/entity/character/player/Inventory.cs" type="Script" id=2]
 [ext_resource path="res://gameplay/entity/character/character.tscn" type="PackedScene" id=3]
-[ext_resource path="res://gameplay/entity/character/player/Inventory.cs" type="Script" id=4]
-
-[sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 6, 7.5 )
+[ext_resource path="res://gameplay/entity/character/player/player_collision.tres" type="Shape2D" id=4]
+[ext_resource path="res://gameplay/entity/character/player/wolfarl.tres" type="SpriteFrames" id=5]
 
 [node name="Player" instance=ExtResource( 3 )]
-script = ExtResource( 2 )
+collision_layer = 8
+collision_mask = 2
+script = ExtResource( 1 )
 HandLength = 72.0
 WalkSpeed = 96.0
 RunSpeed = 128.0
@@ -19,10 +19,10 @@ PickupWidth = 1.0
 
 [node name="CollisionShape2D" parent="." index="0"]
 position = Vector2( 0, 1.5 )
-shape = SubResource( 1 )
+shape = ExtResource( 4 )
 
 [node name="AnimatedSprite" parent="." index="1"]
-frames = ExtResource( 1 )
+frames = ExtResource( 5 )
 animation = "right_walk"
 frame = 1
 
@@ -34,4 +34,4 @@ wait_time = 0.25
 one_shot = true
 
 [node name="Inventory" type="Node" parent="." index="4"]
-script = ExtResource( 4 )
+script = ExtResource( 2 )

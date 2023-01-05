@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public class Item : KinematicBody2D
+public class Item : Entity
 {
     public String ItemName;
     public int Quantity;
