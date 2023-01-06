@@ -18,10 +18,6 @@ public class Player : Character
     public float JumpHeight = 20;
     [Export]
     public float DigDamage = 0.2f;
-    [Export]
-    public float ItemAttractionRange = 16f;
-    [Export]
-    public float ItemCollectionRange = 8f;
 
     public bool CursorVisible;
     Coordinate coordinate;

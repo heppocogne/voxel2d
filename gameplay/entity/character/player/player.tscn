@@ -21,8 +21,6 @@ WalkSpeed = 96.0
 RunSpeed = 128.0
 JumpHeight = 36.0
 DigDamage = 0.2
-ItemAttractionRange = 16.0
-ItemCollectionRange = 8.0
 
 [node name="CollisionShape2D" parent="." index="0"]
 position = Vector2( 0, 1.5 )
