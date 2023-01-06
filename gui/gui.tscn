@@ -1,9 +1,10 @@
 [gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://gui/gui.gd" type="Script" id=1]
-[ext_resource path="res://gui/item_slot/item_slot.tscn" type="PackedScene" id=2]
+[ext_resource path="res://gui/hotbar/hotbar_slot.tscn" type="PackedScene" id=2]
 [ext_resource path="res://gui/fonts/PixelMplus12-Regular.tres" type="DynamicFont" id=3]
 [ext_resource path="res://gui/item_slots.gd" type="Script" id=4]
+
 
 [node name="GUI" type="Control"]
 margin_right = 40.0
