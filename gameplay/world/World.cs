@@ -1,6 +1,7 @@
 using Godot;
 using Godot.Collections;
 using System;
+using System.Diagnostics;
 
 public class World : Node2D
 {
@@ -14,9 +15,12 @@ public class World : Node2D
     Resource _tiledata;
     [Export]
     Resource _itemdata;
+    [Export(PropertyHint.File, "*.json")]
+    String _recipedata;
 
     public Godot.Collections.Array Tiledata;
     public Godot.Collections.Array Itemdata;
+    public Dictionary Recipedata;
 
     Player player;
     ChunkLoader loader;
@@ -38,6 +42,17 @@ public class World : Node2D
 
         Tiledata = (Godot.Collections.Array)_tiledata.Get("records");
         Itemdata = (Godot.Collections.Array)_itemdata.Get("records");
+
+        File f = new File();
+        if (f.Open(_recipedata, File.ModeFlags.Read) == Error.Ok)
+        {
+            var result = JSON.Parse(f.GetAsText());
+            if (result.Error == Error.Ok)
+            {
+                Recipedata = (Dictionary)result.Result;
+            }
+        }
+
     }
 
     static public int MapToChunk(int x)
@@ -122,7 +137,7 @@ public class World : Node2D
             if ((String)d["Name"] == tilename)
                 return d;
         }
-        GD.PushError("Tile name " + tilename + " is not found");
+        GD.PushError("Tile name '" + tilename + "' is not found");
         return new Dictionary();
     }
 
@@ -138,19 +153,43 @@ public class World : Node2D
             if ((String)d["Name"] == itemname)
                 return d;
         }
-        GD.PushError("Item name " + itemname + " is not found");
+        // Automatically generate tile items
+        Dictionary tiledata = FindTileData(itemname);
+        if (tiledata.Contains("Name"))
+        {
+            Dictionary d = FindItemData("__tile_template");
+            Dictionary item = new Dictionary();
+            item["Name"] = itemname;
+            item["Stack"] = d["Stack"];
+            item["Kind"] = d["Kind"];
+            if ((String)d["Texture"] != "")
+                item["Texture"] = d["Texture"];
+            else
+                item["Texture"] = Tileset.TileGetTexture(FindTileID(itemname));
+
+            Itemdata.Add(item);
+            return item;
+        }
+        GD.PushError("Item name '" + itemname + "' is not found");
         return new Dictionary();
     }
 
-    public Dictionary GetItemData(String itemname)
+    public Item CreateItemIntance(String itemname)
     {
-        foreach (Dictionary d in Itemdata)
+        Item item = GD.Load<PackedScene>("res://gameplay/entity/item/item.tscn").Instance() as Item;
+        if ((String)FindItemData(itemname)["Kind"] == "tile")
         {
-            if ((String)d["Name"] == itemname)
-                return d;
+            int id = FindTileID(itemname);
+            item.ItemTexture = Tileset.TileGetTexture(id);
+            item.ItemName = Tileset.TileGetName(id);
         }
-        GD.PushError("Item name " + itemname + " is not found");
-        return new Dictionary();
+        else
+        {
+            Dictionary d = FindTileData(itemname);
+            item.ItemTexture = GD.Load<Texture>((String)d["Texture"]);
+            item.ItemName = itemname;
+        }
+        return item;
     }
 
     public void OnTileDestroyed(Vector2 cell, String tool)

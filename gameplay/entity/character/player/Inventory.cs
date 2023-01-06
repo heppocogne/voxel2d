@@ -26,7 +26,7 @@ public class Inventory : Node
         {
             if (Items[i] != null && Items[i].ItemName == item.ItemName)
             {
-                Dictionary d = worldRoot.GetItemData(item.ItemName);
+                Dictionary d = worldRoot.FindItemData(item.ItemName);
                 int stack = (int)(float)d["Stack"];
                 if (stack == -1 || Items[i].Quantity < stack)
                 {

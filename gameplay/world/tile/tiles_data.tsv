@@ -14,3 +14,7 @@ oak_log	2		1	2	wooden_axe
 oak_planks	2		1	2	wooden_axe
 oak_leaves	0.2		0	2	
 oak_sapling	0	put	1	3	
+spruce_log	2		1	2	wooden_axe
+spruce_planks	2		1	2	wooden_axe
+spruce_leaves	0.2		0	2	
+spruce_sapling	0	put	1	3	
