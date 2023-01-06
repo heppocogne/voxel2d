@@ -15,20 +15,20 @@ public class Entity : KinematicBody2D
     int previousChunk = Int32.MinValue;
 
     // physics
-    protected int gravity;
+    public int Gravity;
     protected float airDiag;
     protected Vector2 gravityVector;
 
     public override void _Ready()
     {
-        gravity = (int)ProjectSettings.GetSetting("physics/2d/default_gravity");
+        Gravity = (int)ProjectSettings.GetSetting("physics/2d/default_gravity");
         gravityVector = (Vector2)ProjectSettings.GetSetting("physics/2d/default_gravity_vector");
-        airDiag = gravity / (MaxFallSpeed * MaxFallSpeed);
+        airDiag = Gravity / (MaxFallSpeed * MaxFallSpeed);
     }
 
     public override void _PhysicsProcess(float delta)
     {
-        Velocity += (gravity - airDiag * Velocity.y * Velocity.y) * delta * gravityVector;
+        Velocity += (Gravity - airDiag * Velocity.y * Velocity.y) * delta * gravityVector;
         Velocity = MoveAndSlide(Velocity, Vector2.Up);
 
         int currentChunk = World.MapToChunk((int)(Position.x / Chunk.CellSize.x));

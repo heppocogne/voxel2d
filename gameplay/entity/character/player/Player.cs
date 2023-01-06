@@ -42,7 +42,7 @@ public class Player : Character
     public override void _Ready()
     {
         base._Ready();
-        jumpInitialVelocity = (float)Math.Sqrt(gravity * JumpHeight);
+        jumpInitialVelocity = (float)Math.Sqrt(Gravity * JumpHeight);
         worldRoot = GetParent<World>();
         coordinate = worldRoot.GetNode<Coordinate>("Coordinate");
         blockPlaceCooldown = GetNode<Timer>("TilePlaceCooldownTimer");
@@ -210,7 +210,7 @@ public class Player : Character
         if (body is Item)
         {
             Item item = body as Item;
-            item.Acceleration = 1.1f * gravity * (Position - item.Position).Normalized();
+            item.Acceleration = 1.1f * Gravity * (Position - item.Position).Normalized();
         }
     }
 

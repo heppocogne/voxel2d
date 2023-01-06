@@ -22,5 +22,7 @@ public class Item : Entity
 
         Velocity += Acceleration * delta;
         MoveAndSlide(Velocity, Vector2.Up);
+        if (IsOnFloor())
+            Velocity *= 0.75f;
     }
 }
