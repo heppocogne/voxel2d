@@ -5,7 +5,7 @@ using System;
 public class Inventory : Node
 {
     [Signal]
-    delegate void InventoryStateChanged(Array<Item> items);
+    delegate void StateChanged(Array<Item> items);
 
     [Export]
     public int Size = 36;
@@ -62,6 +62,11 @@ public class Inventory : Node
             Items[slot].Quantity++;
             item.QueueFree();
         }
-        EmitSignal(nameof(InventoryStateChanged), new Godot.Collections.Array(Items));
+        InformStateChanged();
+    }
+
+    public void InformStateChanged()
+    {
+        EmitSignal(nameof(StateChanged), new Godot.Collections.Array(Items));
     }
 }

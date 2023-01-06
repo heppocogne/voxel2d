@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://gui/gui.gd" type="Script" id=1]
 [ext_resource path="res://gui/item_slot/item_slot.tscn" type="PackedScene" id=2]
 [ext_resource path="res://gui/fonts/PixelMplus12-Regular.tres" type="DynamicFont" id=3]
+[ext_resource path="res://gui/item_slots.gd" type="Script" id=4]
 
 [node name="GUI" type="Control"]
 margin_right = 40.0
@@ -46,55 +47,57 @@ margin_right = 480.0
 margin_bottom = 14.0
 custom_fonts/font = ExtResource( 3 )
 
-[node name="ItemSlots" type="CenterContainer" parent="MarginContainer/VBoxContainer/VBoxContainer"]
+[node name="Hotbar" type="CenterContainer" parent="MarginContainer/VBoxContainer/VBoxContainer"]
 margin_top = 18.0
 margin_right = 960.0
 margin_bottom = 50.0
+script = ExtResource( 4 )
 
-[node name="Panel" type="Panel" parent="MarginContainer/VBoxContainer/VBoxContainer/ItemSlots"]
-self_modulate = Color( 1, 1, 1, 0.25098 )
+[node name="Panel" type="Panel" parent="MarginContainer/VBoxContainer/VBoxContainer/Hotbar"]
+self_modulate = Color( 0.498039, 1, 0.498039, 0.25098 )
 margin_left = 336.0
 margin_right = 624.0
 margin_bottom = 32.0
 rect_min_size = Vector2( 288, 32 )
 
-[node name="GridContainer" type="GridContainer" parent="MarginContainer/VBoxContainer/VBoxContainer/ItemSlots/Panel"]
-margin_right = 288.0
+[node name="GridContainer" type="GridContainer" parent="MarginContainer/VBoxContainer/VBoxContainer/Hotbar"]
+margin_left = 336.0
+margin_right = 624.0
 margin_bottom = 32.0
 custom_constants/hseparation = 0
 columns = 9
 
-[node name="ItemSlot1" parent="MarginContainer/VBoxContainer/VBoxContainer/ItemSlots/Panel/GridContainer" instance=ExtResource( 2 )]
+[node name="ItemSlot1" parent="MarginContainer/VBoxContainer/VBoxContainer/Hotbar/GridContainer" instance=ExtResource( 2 )]
 focused = true
 
-[node name="ItemSlot2" parent="MarginContainer/VBoxContainer/VBoxContainer/ItemSlots/Panel/GridContainer" instance=ExtResource( 2 )]
+[node name="ItemSlot2" parent="MarginContainer/VBoxContainer/VBoxContainer/Hotbar/GridContainer" instance=ExtResource( 2 )]
 margin_left = 32.0
 margin_right = 64.0
 
-[node name="ItemSlot3" parent="MarginContainer/VBoxContainer/VBoxContainer/ItemSlots/Panel/GridContainer" instance=ExtResource( 2 )]
+[node name="ItemSlot3" parent="MarginContainer/VBoxContainer/VBoxContainer/Hotbar/GridContainer" instance=ExtResource( 2 )]
 margin_left = 64.0
 margin_right = 96.0
 
-[node name="ItemSlot4" parent="MarginContainer/VBoxContainer/VBoxContainer/ItemSlots/Panel/GridContainer" instance=ExtResource( 2 )]
+[node name="ItemSlot4" parent="MarginContainer/VBoxContainer/VBoxContainer/Hotbar/GridContainer" instance=ExtResource( 2 )]
 margin_left = 96.0
 margin_right = 128.0
 
-[node name="ItemSlot5" parent="MarginContainer/VBoxContainer/VBoxContainer/ItemSlots/Panel/GridContainer" instance=ExtResource( 2 )]
+[node name="ItemSlot5" parent="MarginContainer/VBoxContainer/VBoxContainer/Hotbar/GridContainer" instance=ExtResource( 2 )]
 margin_left = 128.0
 margin_right = 160.0
 
-[node name="ItemSlot6" parent="MarginContainer/VBoxContainer/VBoxContainer/ItemSlots/Panel/GridContainer" instance=ExtResource( 2 )]
+[node name="ItemSlot6" parent="MarginContainer/VBoxContainer/VBoxContainer/Hotbar/GridContainer" instance=ExtResource( 2 )]
 margin_left = 160.0
 margin_right = 192.0
 
-[node name="ItemSlot7" parent="MarginContainer/VBoxContainer/VBoxContainer/ItemSlots/Panel/GridContainer" instance=ExtResource( 2 )]
+[node name="ItemSlot7" parent="MarginContainer/VBoxContainer/VBoxContainer/Hotbar/GridContainer" instance=ExtResource( 2 )]
 margin_left = 192.0
 margin_right = 224.0
 
-[node name="ItemSlot8" parent="MarginContainer/VBoxContainer/VBoxContainer/ItemSlots/Panel/GridContainer" instance=ExtResource( 2 )]
+[node name="ItemSlot8" parent="MarginContainer/VBoxContainer/VBoxContainer/Hotbar/GridContainer" instance=ExtResource( 2 )]
 margin_left = 224.0
 margin_right = 256.0
 
-[node name="ItemSlot9" parent="MarginContainer/VBoxContainer/VBoxContainer/ItemSlots/Panel/GridContainer" instance=ExtResource( 2 )]
+[node name="ItemSlot9" parent="MarginContainer/VBoxContainer/VBoxContainer/Hotbar/GridContainer" instance=ExtResource( 2 )]
 margin_left = 256.0
 margin_right = 288.0

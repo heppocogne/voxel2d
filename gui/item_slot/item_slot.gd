@@ -2,7 +2,7 @@ tool
 extends TextureRect
 
 export var focused:=false setget set_focused
-var item_name:String
+var display_name:String
 
 onready var item_texture:TextureRect=$CenterContainer/TextureRect
 onready var label:Label=$Label
@@ -17,16 +17,18 @@ func set_focused(f:bool):
 	$BoldFrame.visible=focused
 
 
-func _on_item_changed(tex:Texture,name:String):
-	item_name=name
-	item_texture.texture=tex
+func clear():
+	set_item_info("",null,0)
 
 
-func _on_number_changed(n:int):
-	if n==0:
-		_on_item_changed(null,"")
-		label.visible=false
-	elif n==1:
-		label.visible=false
+func set_item_info(item_name:String,texture:Texture,n:int):
+	display_name=item_name
+	item_texture.texture=texture
+	set_item_quantity(n)
+
+
+func set_item_quantity(n:int):
+	if n==0 or n==1:
+		label.text=""
 	else:
 		label.text=str(n)

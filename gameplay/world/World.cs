@@ -145,10 +145,10 @@ public class World : Node2D
             if ((String)tiledata["WithoutTools"] == "TRUE")
             {
                 Item item = GD.Load<PackedScene>("res://gameplay/entity/item/item.tscn").Instance() as Item;
-                AddChild(item);
-                item.GetNode<Sprite>("Sprite").Texture = Tileset.TileGetTexture(id);
+                item.ItemTexture = Tileset.TileGetTexture(id);
                 item.ItemName = Tileset.TileGetName(id);
                 item.Position = coordinate.MapToWorld(cell) + new Vector2((float)GD.RandRange(0, 12), (float)GD.RandRange(0, 12));
+                AddChild(item);
             }
         }
         SetCellv(cell, -1);

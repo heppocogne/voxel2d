@@ -33,6 +33,7 @@ public class Player : Character
     ButtonList lastClicked;
     DiggingTile digging;
     Timer blockPlaceCooldown;
+    int hotbarSlot;
     Inventory inventory;
 
     // physics
@@ -131,8 +132,18 @@ public class Player : Character
 
         if (IsRightClick() && targetCellValid && worldRoot.GetCellv(targetCell) == -1 && blockPlaceCooldown.TimeLeft == 0.0)
         {
-            worldRoot.SetCellv(targetCell, worldRoot.FindTileID("cobblestone"));
-            blockPlaceCooldown.Start();
+            if (inventory.Items[hotbarSlot] != null)
+            {
+                worldRoot.SetCellv(targetCell, worldRoot.FindTileID(inventory.Items[hotbarSlot].ItemName));
+                inventory.Items[hotbarSlot].Quantity -= 1;
+                if (inventory.Items[hotbarSlot].Quantity == 0)
+                {
+                    inventory.Items[hotbarSlot].QueueFree();
+                    inventory.Items[hotbarSlot] = null;
+                }
+                inventory.InformStateChanged();
+                blockPlaceCooldown.Start();
+            }
         }
     }
 
@@ -220,5 +231,10 @@ public class Player : Character
             Item item = body as Item;
             inventory.CollectItem(item);
         }
+    }
+
+    public void OnHotbarStateChanged(int slot)
+    {
+        hotbarSlot = slot;
     }
 }
