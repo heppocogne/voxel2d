@@ -130,15 +130,19 @@ public class Player : Character
         {
             if (inventory.Items[hotbarSlot] != null)
             {
-                worldRoot.SetCellv(targetCell, worldRoot.FindTileID(inventory.Items[hotbarSlot].ItemName));
-                inventory.Items[hotbarSlot].Quantity -= 1;
-                if (inventory.Items[hotbarSlot].Quantity == 0)
+                Dictionary itemdata = worldRoot.FindItemData(inventory.Items[hotbarSlot].ItemName);
+                if (itemdata.Contains("Kind") && (String)itemdata["Kind"] == "tile")
                 {
-                    inventory.Items[hotbarSlot].QueueFree();
-                    inventory.Items[hotbarSlot] = null;
+                    worldRoot.SetCellv(targetCell, worldRoot.FindTileID(inventory.Items[hotbarSlot].ItemName));
+                    inventory.Items[hotbarSlot].Quantity -= 1;
+                    if (inventory.Items[hotbarSlot].Quantity == 0)
+                    {
+                        inventory.Items[hotbarSlot].QueueFree();
+                        inventory.Items[hotbarSlot] = null;
+                    }
+                    inventory.InformStateChanged();
+                    blockPlaceCooldown.Start();
                 }
-                inventory.InformStateChanged();
-                blockPlaceCooldown.Start();
             }
         }
     }
