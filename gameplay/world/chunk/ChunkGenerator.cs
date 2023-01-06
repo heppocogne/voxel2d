@@ -180,7 +180,6 @@ public class ChunkGenerator : Node
             {
                 if (rng.Randf() < 0.1)
                 {
-                    GD.Print(x, ",", y);
                     switch (biome)
                     {
                         case Biomes.PLANE:
