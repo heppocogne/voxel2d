@@ -52,6 +52,8 @@ format = 1
 script = ExtResource( 6 )
 
 [node name="Player" parent="ViewportContainer/Viewport/World" instance=ExtResource( 2 )]
+ItemAttractionRange = 16.0
+ItemCollectionRange = 8.0
 
 [node name="GUILayer" type="CanvasLayer" parent="ViewportContainer"]
 

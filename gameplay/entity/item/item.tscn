@@ -7,7 +7,7 @@
 extents = Vector2( 4, 4 )
 
 [node name="Item" instance=ExtResource( 1 )]
-collision_layer = 8
+collision_layer = 16
 collision_mask = 2
 script = ExtResource( 2 )
 

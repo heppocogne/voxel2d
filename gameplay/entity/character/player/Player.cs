@@ -19,7 +19,9 @@ public class Player : Character
     [Export]
     public float DigDamage = 0.2f;
     [Export]
-    public float PickupWidth = 1f;
+    public float ItemAttractionRange = 16f;
+    [Export]
+    public float ItemCollectionRange = 8f;
 
     public bool CursorVisible;
     Coordinate coordinate;
@@ -31,6 +33,7 @@ public class Player : Character
     ButtonList lastClicked;
     DiggingTile digging;
     Timer blockPlaceCooldown;
+    Inventory inventory;
 
     // physics
     float jumpInitialVelocity;
@@ -42,6 +45,7 @@ public class Player : Character
         worldRoot = GetParent<World>();
         coordinate = worldRoot.GetNode<Coordinate>("Coordinate");
         blockPlaceCooldown = GetNode<Timer>("TilePlaceCooldownTimer");
+        inventory = GetNode<Inventory>("Inventory");
     }
 
     public override void _Process(float delta)
@@ -188,5 +192,33 @@ public class Player : Character
     {
         digging = null;
         targetCellValid = false;
+    }
+
+    public void OnItemAttractionAreaBodyEntered(Node body)
+    {
+        if (body is Item)
+        {
+            Item item = body as Item;
+            item.Acceleration = 1.1f * gravity * (Position - item.Position).Normalized();
+        }
+    }
+
+    public void OnItemAttractionAreaBodyExited(Node body)
+    {
+        if (body is Item)
+        {
+            Item item = body as Item;
+            if (0 <= inventory.FindAvailableSlot(item))
+                item.Acceleration = Vector2.Zero;
+        }
+    }
+
+    public void OnItemCollectionAreaBodyEntered(Node body)
+    {
+        if (body is Item)
+        {
+            Item item = body as Item;
+            inventory.CollectItem(item);
+        }
     }
 }

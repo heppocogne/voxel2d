@@ -11,7 +11,7 @@ dest_files=[ "res://.import/items_data.tsv-d7d7c22b7b3c419b6d4daf08a2a622c4.res"
 
 [params]
 
-delimiter=0
+delimiter=1
 headers=true
 detect_numbers=true
 force_float=true

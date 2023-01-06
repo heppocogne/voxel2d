@@ -116,12 +116,24 @@ public class World : Node2D
             if ((String)d["Name"] == tilename)
                 return d;
         }
+        GD.PushError("Item name " + tilename + " is not found");
         return new Dictionary();
     }
 
     public Dictionary GetTileData(int id)
     {
         return GetTileData(Tileset.TileGetName(id));
+    }
+
+    public Dictionary GetItemData(String itemname)
+    {
+        foreach (Dictionary d in (Godot.Collections.Array)Itemdata.Get("records"))
+        {
+            if ((String)d["Name"] == itemname)
+                return d;
+        }
+        GD.PushError("Item name " + itemname + " is not found");
+        return new Dictionary();
     }
 
     public void OnTileDestroyed(Vector2 cell, String tool)
