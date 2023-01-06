@@ -142,7 +142,7 @@ public class World : Node2D
         Dictionary tiledata = GetTileData(id);
         if (tool == "")
         {
-            if ((String)tiledata["WithoutTools"] == "TRUE")
+            if ((int)(float)tiledata["WithoutTools"] == 1)
             {
                 Item item = GD.Load<PackedScene>("res://gameplay/entity/item/item.tscn").Instance() as Item;
                 item.ItemTexture = Tileset.TileGetTexture(id);

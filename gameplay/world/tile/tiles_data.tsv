@@ -1,12 +1,16 @@
-Name	Hardness	WithoutTools
-grass_block	0.6	TRUE
-grass_block_snow	0.6	TRUE
-dirt	0.5	TRUE
-sand	0.5	TRUE
-stone	1.5	FALSE
-cobblestone	2	FALSE
-bedrock	-1	FALSE
-grass	0	TRUE
-tall_grass	0	TRUE
-cactus	0.4	TRUE
-dead_bush	0	TRUE
+Name	Hardness	Feature	WithoutTools
+grass_block	0.6		1
+grass_block_snow	0.6		1
+dirt	0.5		1
+sand	0.5	fall	1
+stone	1.5		0
+cobblestone	2		0
+bedrock	-1		0
+grass	0	put	1
+tall_grass	0	put	1
+cactus	0.4	put	1
+dead_bush	0	put	1
+oak_log	2		1
+oak_planks	2		1
+oak_leaves	0.2		0
+oak_sapling	0	put	1
