@@ -3,7 +3,7 @@
 [ext_resource path="res://gui/gui.gd" type="Script" id=1]
 [ext_resource path="res://gui/hotbar/hotbar_slot.tscn" type="PackedScene" id=2]
 [ext_resource path="res://gui/fonts/PixelMplus12-Regular.tres" type="DynamicFont" id=3]
-[ext_resource path="res://gui/hotbar.gd" type="Script" id=4]
+[ext_resource path="res://gui/hotbar/hotbar.gd" type="Script" id=4]
 
 
 [node name="GUI" type="Control"]

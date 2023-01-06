@@ -14,6 +14,16 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/animated_texture2/animated_texture2.gd"
 }, {
+"base": "TextureRect",
+"class": "HotbarSlot",
+"language": "GDScript",
+"path": "res://gui/hotbar/hotbar_slot.gd"
+}, {
+"base": "TextureRect",
+"class": "InventorySlot",
+"language": "GDScript",
+"path": "res://gui/inventory/inventory_slot.gd"
+}, {
 "base": "Resource",
 "class": "TileMapData",
 "language": "GDScript",
@@ -21,6 +31,8 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "AnimatedTexture2": "",
+"HotbarSlot": "",
+"InventorySlot": "",
 "TileMapData": ""
 }
 

@@ -1,0 +1,45 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://gui/fonts/misaki_gothic_2nd.tres" type="DynamicFont" id=1]
+[ext_resource path="res://gui/inventory/inventory_slot32.png" type="Texture" id=2]
+[ext_resource path="res://gui/inventory/inventory_slot.gd" type="Script" id=3]
+[ext_resource path="res://gui/fonts/PixelMplus12-Regular.tres" type="DynamicFont" id=4]
+
+[node name="InventorySlot" type="TextureRect"]
+margin_right = 32.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+texture = ExtResource( 2 )
+expand = true
+script = ExtResource( 3 )
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 24.0
+margin_bottom = 24.0
+
+[node name="TextureRect" type="TextureRect" parent="CenterContainer"]
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 8.0
+margin_bottom = 8.0
+
+[node name="Label" type="Label" parent="."]
+margin_left = 4.0
+margin_top = 20.0
+margin_right = 28.0
+margin_bottom = 28.0
+custom_fonts/font = ExtResource( 1 )
+align = 2
+
+[node name="PopupPanel" type="PopupPanel" parent="."]
+margin_right = 8.0
+margin_bottom = 8.0
+
+[node name="Label" type="Label" parent="PopupPanel"]
+margin_left = 4.0
+margin_top = 4.0
+margin_right = 4.0
+margin_bottom = 18.0
+custom_fonts/font = ExtResource( 4 )
