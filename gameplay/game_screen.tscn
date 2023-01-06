@@ -42,6 +42,7 @@ PlayerNodePath = NodePath("../Player")
 [node name="ChunkGenerator" type="Node" parent="ViewportContainer/Viewport/World"]
 script = ExtResource( 1 )
 GaussianSigma = 5.0
+WorldBottom = 128
 
 [node name="Coordinate" type="TileMap" parent="ViewportContainer/Viewport/World"]
 z_index = 512

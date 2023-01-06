@@ -11,18 +11,11 @@ public class ChunkGenerator : Node
     public uint BaseSeed = 0;
 
     World worldRoot;
-    double[] filter = new double[3];
-    double filterSum;
-    RandomNumberGenerator plantsRng = new RandomNumberGenerator();
+    RandomNumberGenerator rng = new RandomNumberGenerator();
 
     public override void _Ready()
     {
         worldRoot = GetParent<World>();
-
-        filter[0] = Gauss(0, GaussianSigma);
-        filter[1] = Gauss(1, GaussianSigma);
-        filter[2] = Gauss(2, GaussianSigma);
-        filterSum = filter[0] + 2 * (filter[1] + filter[2]);
     }
 
     static double Gauss(float x, float sigma)
@@ -43,6 +36,7 @@ public class ChunkGenerator : Node
         var heightNoise = new OpenSimplexNoise();
         int s = (int)BaseSeed;
         heightNoise.Seed = s;
+        heightNoise.Persistence = 0.01f;
         heightNoise.Period = 96;
 
         var dirtNoise = new OpenSimplexNoise();
@@ -56,6 +50,7 @@ public class ChunkGenerator : Node
 
         var biomeNoise = new OpenSimplexNoise();
         biomeNoise.Seed = s + 30;
+        biomeNoise.Persistence = 0.1f;
         biomeNoise.Period = 640;
 
         var mountainNoise = new OpenSimplexNoise();
@@ -63,35 +58,30 @@ public class ChunkGenerator : Node
         mountainNoise.Persistence = 0.1f;
         mountainNoise.Period = 96;
 
-        plantsRng.Seed = (ulong)(BaseSeed + chunk + 1 << 31);
+        rng.Seed = (ulong)(BaseSeed + chunk + 1 << 31);
+
+        uint biomeNoseOffset = rng.Randi() % (uint)biomeNoise.Period;
+        uint mountainNoseOffset = rng.Randi() % (uint)mountainNoise.Period;
 
         int baseHeight = 56;
-        int dirtTop = -10;
+        int dirtTop = -96;
         int dirtBottom = 10;
-        int mountainTop = -64;
-        int mountainMiddle = -32;
 
         var map = GD.Load<PackedScene>("res://gameplay/world/chunk/chunk.tscn").Instance() as Chunk;
         worldRoot.AddChild(map);
         map.SetTileSet(tileset);
         map.Position = new Vector2(chunk * Chunk.ChunkSize * 16, 0);
 
-        float[] rawHeights = new float[Chunk.ChunkSize + 4];
-        for (int x = 0; x < Chunk.ChunkSize + 4; x++)
+        float[] rawHeights = new float[Chunk.ChunkSize];
+        for (int x = 0; x < Chunk.ChunkSize; x++)
         {
-            float mn = mountainNoise.GetNoise1d(chunk * Chunk.ChunkSize + x);
             float n = heightNoise.GetNoise1d(chunk * Chunk.ChunkSize + x);
-            if (0.13 < mn)
-                rawHeights[x] = (n + 1) / 2 * (dirtBottom - mountainTop) + baseHeight;
-            else if (0.1 < mn)
-                rawHeights[x] = (n + 1) / 2 * (dirtBottom - mountainMiddle) + baseHeight;
-            else
-                rawHeights[x] = (n + 1) / 2 * (dirtBottom - dirtTop) + baseHeight;
+            rawHeights[x] = (n + 1) / 2 * (dirtBottom - dirtTop) + baseHeight;
         }
 
         for (int x = 0; x < Chunk.ChunkSize; x++)
         {
-            float biomeValue = biomeNoise.GetNoise1d(chunk * Chunk.ChunkSize + x);
+            float biomeValue = biomeNoise.GetNoise1d(chunk * Chunk.ChunkSize + x + biomeNoseOffset);
             Biomes biome;
             if (biomeValue <= -0.15)
                 biome = Biomes.SNOWY_PLANE;
@@ -100,7 +90,7 @@ public class ChunkGenerator : Node
             else
                 biome = Biomes.PLANE;
 
-            int height = (int)Math.Round((rawHeights[x] * filter[2] + rawHeights[x + 1] * filter[1] + rawHeights[x + 2] * filter[0] + rawHeights[x + 3] * filter[1] + rawHeights[x + 4] * filter[2]) / filterSum);
+            int height = (int)Math.Round(rawHeights[x]);
             int dirtHeight = (int)Math.Round((dirtNoise.GetNoise1d(chunk * Chunk.ChunkSize + x)) * 1.5 + 4);
             int bedrockHeight = (int)Math.Round((bedrockNoise.GetNoise1d(chunk * Chunk.ChunkSize + x)) * 4) + 3;
 
@@ -140,7 +130,7 @@ public class ChunkGenerator : Node
             switch (biome)
             {
                 case Biomes.PLANE:
-                    float r = plantsRng.Randf();
+                    float r = rng.Randf();
                     if (0.75 < r)
                         layer3Tiles.Add(tallGrass);
                     else if (0.5 < r)
@@ -150,7 +140,7 @@ public class ChunkGenerator : Node
                         layer2Tiles.Add(dirt);
                     break;
                 case Biomes.SNOWY_PLANE:
-                    r = plantsRng.Randf();
+                    r = rng.Randf();
                     if (0.75 < r)
                         layer3Tiles.Add(grass);
                     layer2Tiles.Add(grassSnow);
@@ -158,10 +148,10 @@ public class ChunkGenerator : Node
                         layer2Tiles.Add(dirt);
                     break;
                 case Biomes.DESERT:
-                    r = plantsRng.Randf();
+                    r = rng.Randf();
                     if (r < 0.1)
                     {
-                        int c = plantsRng.RandiRange(1, 3);
+                        int c = rng.RandiRange(1, 3);
                         for (int i = 0; i < c; i++)
                             layer3Tiles.Add(cactus);
                     }
@@ -188,7 +178,7 @@ public class ChunkGenerator : Node
             }
             if (layer3Tiles.Count == 0)
             {
-                if (plantsRng.Randf() < 0.05)
+                if (rng.Randf() < 0.1)
                 {
                     GD.Print(x, ",", y);
                     switch (biome)
