@@ -175,13 +175,13 @@ public class ChunkGenerator : Node
             int y = WorldBottom;
             while (layer1Tiles.Count != 0)
             {
-                map.SetCell(1, x, y, layer1Tiles[layer1Tiles.Count - 1]);
+                map.SetCell(2, x, y, layer1Tiles[layer1Tiles.Count - 1]);
                 layer1Tiles.RemoveAt(layer1Tiles.Count - 1);
                 y -= 1;
             }
             while (layer2Tiles.Count != 0)
             {
-                map.SetCell(2, x, y, layer2Tiles[layer2Tiles.Count - 1]);
+                map.SetCell(3, x, y, layer2Tiles[layer2Tiles.Count - 1]);
                 layer2Tiles.RemoveAt(layer2Tiles.Count - 1);
                 y -= 1;
             }

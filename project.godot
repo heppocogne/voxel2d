@@ -73,8 +73,9 @@ game_jump={
 [layer_names]
 
 2d_physics/layer_1="BackTiles"
-2d_physics/layer_2="TerrainTiles"
-2d_physics/layer_3="ForeTiles"
+2d_physics/layer_2="BackTiles2"
+2d_physics/layer_3="TerrainTiles"
+2d_physics/layer_4="ForeTiles"
 2d_physics/layer_10="Player"
 2d_physics/layer_11="Items"
 

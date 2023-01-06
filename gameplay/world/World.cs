@@ -28,7 +28,7 @@ public class World : Node2D
 
         Chunk spawnChunk = loader.GetChunk(0);
         int height = generator.WorldBottom;
-        for (; 0 <= spawnChunk.GetCell(1, 0, height); height--) ;
+        for (; 0 <= spawnChunk.GetCell(2, 0, height); height--) ;
         Vector2 spawnPoint = new Vector2(0, height);
 
         player.Position = coordinate.MapToWorld(spawnPoint) + Chunk.CellSize / 2;
@@ -36,7 +36,7 @@ public class World : Node2D
 
     static public int MapToChunk(int x)
     {
-        if (0 <= x)
+        if (0 <= x || x % Chunk.ChunkSize == 0)
             return x / Chunk.ChunkSize;
         else
             return x / Chunk.ChunkSize - 1;
@@ -48,7 +48,7 @@ public class World : Node2D
         if (0 <= x)
             return chunk.GetCell(x % Chunk.ChunkSize, y);
         else
-            return chunk.GetCell(x % Chunk.ChunkSize + Chunk.ChunkSize, y);
+            return chunk.GetCell(Mathf.PosMod(x, Chunk.ChunkSize), y);
     }
 
     public int GetUsedLayer(int x, int y)
@@ -60,7 +60,7 @@ public class World : Node2D
             if (0 <= x)
                 id = chunk.GetCell(i, x % Chunk.ChunkSize, y);
             else
-                id = chunk.GetCell(i, x % Chunk.ChunkSize + Chunk.ChunkSize, y);
+                id = chunk.GetCell(i, Mathf.PosMod(x, Chunk.ChunkSize), y);
 
             if (id != 0)
                 return i;
@@ -78,11 +78,11 @@ public class World : Node2D
         Chunk chunk = loader.GetChunk(MapToChunk(x));
         if (0 <= x)
         {
-            chunk.SetCell(1, x % Chunk.ChunkSize, y, tile);
+            chunk.SetCell(2, x % Chunk.ChunkSize, y, tile);
         }
         else
         {
-            chunk.SetCell(1, x % Chunk.ChunkSize + Chunk.ChunkSize, y, tile);
+            chunk.SetCell(2, Mathf.PosMod(x, Chunk.ChunkSize), y, tile);
         }
     }
 
@@ -148,6 +148,7 @@ public class World : Node2D
                 item.ItemTexture = Tileset.TileGetTexture(id);
                 item.ItemName = Tileset.TileGetName(id);
                 item.Position = coordinate.MapToWorld(cell) + new Vector2((float)GD.RandRange(0, 12), (float)GD.RandRange(0, 12));
+                item.Velocity = Mathf.Polar2Cartesian(32, (float)GD.RandRange(Math.PI, 2 * Math.PI));
                 AddChild(item);
             }
         }
