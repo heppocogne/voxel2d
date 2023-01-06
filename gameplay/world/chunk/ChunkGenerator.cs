@@ -102,11 +102,7 @@ public class ChunkGenerator : Node
 
             int height = (int)Math.Round((rawHeights[x] * filter[2] + rawHeights[x + 1] * filter[1] + rawHeights[x + 2] * filter[0] + rawHeights[x + 3] * filter[1] + rawHeights[x + 4] * filter[2]) / filterSum);
             int dirtHeight = (int)Math.Round((dirtNoise.GetNoise1d(chunk * Chunk.ChunkSize + x)) * 1.5 + 4);
-            //if (dirtHeight < 2)
-            //    dirtHeight = 2;
             int bedrockHeight = (int)Math.Round((bedrockNoise.GetNoise1d(chunk * Chunk.ChunkSize + x)) * 4) + 3;
-            //if (bedrockHeight < 1)
-            //    bedrockHeight = 1;
 
             // grass block, dirt, ,stone bedrock
             /* 0:grass block
@@ -128,27 +124,38 @@ public class ChunkGenerator : Node
             int cactus = worldRoot.FindTileID("cactus");
             int deadBush = worldRoot.FindTileID("dead_bush");
 
-            System.Collections.Generic.List<int> layer1Tiles = new System.Collections.Generic.List<int>();
+            Resource[] oakTrees = {
+                GD.Load("res://gameplay/world/templates/oak_tree1.tres"),
+                GD.Load("res://gameplay/world/templates/oak_tree2.tres"),
+                GD.Load("res://gameplay/world/templates/oak_tree3.tres"),
+            };
+            Resource[] spruceTrees = {
+                GD.Load("res://gameplay/world/templates/spruce_tree1.tres"),
+                GD.Load("res://gameplay/world/templates/spruce_tree2.tres"),
+                GD.Load("res://gameplay/world/templates/spruce_tree3.tres"),
+            };
+
             System.Collections.Generic.List<int> layer2Tiles = new System.Collections.Generic.List<int>();
+            System.Collections.Generic.List<int> layer3Tiles = new System.Collections.Generic.List<int>();
             switch (biome)
             {
                 case Biomes.PLANE:
                     float r = plantsRng.Randf();
                     if (0.75 < r)
-                        layer2Tiles.Add(tallGrass);
+                        layer3Tiles.Add(tallGrass);
                     else if (0.5 < r)
-                        layer2Tiles.Add(grass);
-                    layer1Tiles.Add(grassBlock);
+                        layer3Tiles.Add(grass);
+                    layer2Tiles.Add(grassBlock);
                     for (int i = 0; i < dirtHeight - 1; i++)
-                        layer1Tiles.Add(dirt);
+                        layer2Tiles.Add(dirt);
                     break;
                 case Biomes.SNOWY_PLANE:
                     r = plantsRng.Randf();
                     if (0.75 < r)
-                        layer2Tiles.Add(grass);
-                    layer1Tiles.Add(grassSnow);
+                        layer3Tiles.Add(grass);
+                    layer2Tiles.Add(grassSnow);
                     for (int i = 0; i < dirtHeight - 1; i++)
-                        layer1Tiles.Add(dirt);
+                        layer2Tiles.Add(dirt);
                     break;
                 case Biomes.DESERT:
                     r = plantsRng.Randf();
@@ -156,34 +163,53 @@ public class ChunkGenerator : Node
                     {
                         int c = plantsRng.RandiRange(1, 3);
                         for (int i = 0; i < c; i++)
-                            layer2Tiles.Add(cactus);
+                            layer3Tiles.Add(cactus);
                     }
                     else if (r < 0.25)
                     {
-                        layer2Tiles.Add(deadBush);
+                        layer3Tiles.Add(deadBush);
                     }
                     for (int i = 0; i < dirtHeight; i++)
-                        layer1Tiles.Add(sand);
+                        layer2Tiles.Add(sand);
                     break;
             }
 
             for (int i = 0; i < height - bedrockHeight - dirtHeight; i++)
-                layer1Tiles.Add(stone);
+                layer2Tiles.Add(stone);
             for (int i = 0; i < bedrockHeight; i++)
-                layer1Tiles.Add(bedrock);
+                layer2Tiles.Add(bedrock);
 
             int y = WorldBottom;
-            while (layer1Tiles.Count != 0)
-            {
-                map.SetCell(2, x, y, layer1Tiles[layer1Tiles.Count - 1]);
-                layer1Tiles.RemoveAt(layer1Tiles.Count - 1);
-                y -= 1;
-            }
             while (layer2Tiles.Count != 0)
             {
-                map.SetCell(3, x, y, layer2Tiles[layer2Tiles.Count - 1]);
+                map.SetCell(2, x, y, layer2Tiles[layer2Tiles.Count - 1]);
                 layer2Tiles.RemoveAt(layer2Tiles.Count - 1);
                 y -= 1;
+            }
+            if (layer3Tiles.Count == 0)
+            {
+                if (plantsRng.Randf() < 0.05)
+                {
+                    GD.Print(x, ",", y);
+                    switch (biome)
+                    {
+                        case Biomes.PLANE:
+                            oakTrees[GD.Randi() % 3].Call("place_on_tilemap", map.Layers[3], new Vector2(x, y));
+                            break;
+                        case Biomes.SNOWY_PLANE:
+                            spruceTrees[GD.Randi() % 3].Call("place_on_tilemap", map.Layers[3], new Vector2(x, y));
+                            break;
+                    }
+                }
+            }
+            else
+            {
+                while (layer3Tiles.Count != 0)
+                {
+                    map.SetCell(3, x, y, layer3Tiles[layer3Tiles.Count - 1]);
+                    layer3Tiles.RemoveAt(layer3Tiles.Count - 1);
+                    y -= 1;
+                }
             }
         }
         return map;

@@ -9,7 +9,7 @@ public class Chunk : Node2D
     static public readonly int ChunkSize = 32;
     static public readonly int LayersCount = 4;
 
-    List<TileMap> layers = new List<TileMap>();
+    public List<TileMap> Layers = new List<TileMap>();
 
 
 
@@ -17,10 +17,10 @@ public class Chunk : Node2D
     {
         foreach (TileMap layer in GetChildren())
         {
-            layers.Add(layer);
+            Layers.Add(layer);
         }
 
-        if (LayersCount != layers.Count)
+        if (LayersCount != Layers.Count)
         {
             GD.PushError("LayersCount is wrong");
         }
@@ -29,7 +29,7 @@ public class Chunk : Node2D
     public Godot.Collections.Dictionary Serialize()
     {
         Godot.Collections.Dictionary dic = new Godot.Collections.Dictionary();
-        foreach (TileMap layer in layers)
+        foreach (TileMap layer in Layers)
         {
             /*
              * "Layer0":{
@@ -75,7 +75,7 @@ public class Chunk : Node2D
         {
             GD.PushWarning("Cannot set tileset");
         }
-        foreach (TileMap layer in layers)
+        foreach (TileMap layer in Layers)
         {
             layer.TileSet = tileset;
         }
@@ -83,29 +83,29 @@ public class Chunk : Node2D
 
     public void SetCellv(int layer, Vector2 cell, int tile)
     {
-        for (int i = 0; i < layers.Count; i++)
+        for (int i = 0; i < Layers.Count; i++)
         {
             if (layer == i)
-                layers[i].SetCellv(cell, tile);
+                Layers[i].SetCellv(cell, tile);
             else
-                layers[i].SetCellv(cell, -1);
+                Layers[i].SetCellv(cell, -1);
         }
     }
 
     public void SetCell(int layer, int x, int y, int tile)
     {
-        for (int i = 0; i < layers.Count; i++)
+        for (int i = 0; i < Layers.Count; i++)
         {
             if (layer == i)
-                layers[i].SetCell(x, y, tile);
+                Layers[i].SetCell(x, y, tile);
             else
-                layers[i].SetCell(x, y, -1);
+                Layers[i].SetCell(x, y, -1);
         }
     }
 
     public int GetCellv(Vector2 cell)
     {
-        foreach (TileMap l in layers)
+        foreach (TileMap l in Layers)
         {
             if (l.GetCellv(cell) != -1)
                 return l.GetCellv(cell);
@@ -115,7 +115,7 @@ public class Chunk : Node2D
 
     public int GetCell(int x, int y)
     {
-        foreach (TileMap l in layers)
+        foreach (TileMap l in Layers)
         {
             if (l.GetCell(x, y) != -1)
                 return l.GetCell(x, y);
@@ -125,6 +125,6 @@ public class Chunk : Node2D
 
     public int GetCell(int layer, int x, int y)
     {
-        return layers[layer].GetCell(x, y);
+        return Layers[layer].GetCell(x, y);
     }
 }
