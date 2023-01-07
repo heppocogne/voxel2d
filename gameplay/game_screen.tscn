@@ -34,6 +34,7 @@ WorldName = "__test"
 Tileset = ExtResource( 4 )
 _tiledata = ExtResource( 8 )
 _itemdata = ExtResource( 10 )
+_recipedata = "res://gameplay/entity/item/crafting_recipe.json"
 
 [node name="ChunkLoader" type="Node" parent="ViewportContainer/Viewport/World"]
 script = ExtResource( 3 )

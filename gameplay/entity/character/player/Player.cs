@@ -243,40 +243,6 @@ public class Player : Character
         hotbarSlot = slot;
     }
 
-    public bool IsCraftable(Dictionary recipe)
-    {
-        Dictionary<Godot.Collections.Array, int> required = new Dictionary<Godot.Collections.Array, int>();
-        foreach (Dictionary r in recipe)
-        {
-            if (r["input"] is Array)
-                required.Add((Array)r["input"], (int)(float)r["quantity"]);
-            else if (r["input"] is String)
-                required.Add(new Array { r["input"] }, (int)(float)r["quantity"]);
-        }
-
-        foreach (Item item in Inventory.Items)
-        {
-            foreach (var pair in required)
-            {
-                foreach (String n in pair.Key)
-                {
-                    if (n == item.ItemName)
-                    {
-                        required[pair.Key] -= item.Quantity;
-                        break;
-                    }
-                }
-            }
-        }
-
-        foreach (int r in required.Values)
-        {
-            if (0 < r)
-                return false;
-        }
-        return true;
-    }
-
     public void OnPlayerTreeExiting()
     {
         foreach (Item item in Inventory.Items)

@@ -1,5 +1,5 @@
 {
-    "oak_plunks": {
+    "oak_planks": {
         "input": [
             {
                 "item": "oak_log",
@@ -8,7 +8,7 @@
         ],
         "quantity": 4
     },
-    "spruce_plunks": {
+    "spruce_planks": {
         "input": [
             {
                 "item": "spruce_log",
@@ -21,8 +21,8 @@
         "input": [
             {
                 "item": [
-                    "oak_plunks",
-                    "spruce_plunks"
+                    "oak_planks",
+                    "spruce_planks"
                 ],
                 "quantity": 1
             }
@@ -37,8 +37,8 @@
             },
             {
                 "item": [
-                    "oak_plunks",
-                    "spruce_plunks"
+                    "oak_planks",
+                    "spruce_planks"
                 ],
                 "quantity": 3
             }
@@ -53,8 +53,8 @@
             },
             {
                 "item": [
-                    "oak_plunks",
-                    "spruce_plunks"
+                    "oak_planks",
+                    "spruce_planks"
                 ],
                 "quantity": 3
             }
@@ -69,8 +69,8 @@
             },
             {
                 "item": [
-                    "oak_plunks",
-                    "spruce_plunks"
+                    "oak_planks",
+                    "spruce_planks"
                 ],
                 "quantity": 1
             }

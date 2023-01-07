@@ -71,6 +71,11 @@ public class Inventory : Node
 
     public void InformInventoryStateChanged()
     {
+        foreach (String itemName in worldRoot.Recipedata.Keys)
+        {
+            GD.Print(itemName, ":", IsCraftable((Dictionary)worldRoot.Recipedata[itemName]));
+        }
+        GD.Print("--------");
         EmitSignal(nameof(StateChanged), new Godot.Collections.Array(Items));
     }
 
@@ -81,5 +86,41 @@ public class Inventory : Node
             Items[i] = items[i] as Item;
         }
         InformInventoryStateChanged();
+    }
+
+    public bool IsCraftable(Dictionary recipe)
+    {
+        Dictionary<Godot.Collections.Array, int> required = new Dictionary<Godot.Collections.Array, int>();
+        foreach (Dictionary r in (Array)recipe["input"])
+        {
+            if (r["item"] is Array)
+                required.Add((Array)r["item"], (int)(float)r["quantity"]);
+            else
+                required.Add(new Array { r["item"] }, (int)(float)r["quantity"]);
+        }
+
+
+        foreach (Item item in Items)
+        {
+            foreach (var pair in required)
+            {
+                foreach (String n in pair.Key)
+                {
+                    if (item != null && n == item.ItemName)
+                    {
+                        required[pair.Key] -= item.Quantity;
+                        break;
+                    }
+                }
+            }
+        }
+        GD.Print(required);
+
+        foreach (int r in required.Values)
+        {
+            if (0 < r)
+                return false;
+        }
+        return true;
     }
 }
