@@ -1,80 +1,64 @@
 {
     "oak_planks": {
-        "input": [
-            {
-                "item": "oak_log",
-                "quantity": 1
-            }
-        ],
-        "quantity": 4
+        "input": {
+            "oak_log": 1
+        },
+        "output": 4
     },
     "spruce_planks": {
-        "input": [
-            {
-                "item": "spruce_log",
-                "quantity": 1
-            }
-        ],
-        "quantity": 4
+        "input": {
+            "spruce_log": 1
+        },
+        "output": 4
     },
     "stick": {
         "input": [
             {
-                "item": [
-                    "oak_planks",
-                    "spruce_planks"
-                ],
-                "quantity": 1
+                "oak_planks": 2
+            },
+            {
+                "spruce_planks": 2
             }
         ],
-        "quantity": 4
+        "output": 4
     },
     "wooden_pickaxe": {
         "input": [
             {
-                "item": "stick",
-                "quantity": 2
+                "stick": 2,
+                "oak_planks": 3
             },
             {
-                "item": [
-                    "oak_planks",
-                    "spruce_planks"
-                ],
-                "quantity": 3
+                "stick": 2,
+                "spruce_planks": 3
             }
         ],
-        "quantity": 1
+        "output": 1
     },
     "wooden_axe": {
         "input": [
             {
-                "item": "stick",
-                "quantity": 2
+                "stick": 2,
+                "oak_planks": 3
             },
             {
-                "item": [
-                    "oak_planks",
-                    "spruce_planks"
-                ],
-                "quantity": 3
+                "stick": 2,
+                "spruce_planks": 3
             }
         ],
-        "quantity": 1
+        "output": 1
     },
     "wooden_shovel": {
         "input": [
             {
-                "item": "stick",
-                "quantity": 2
+                "stick": 2,
+                "oak_planks": 1
             },
             {
-                "item": [
-                    "oak_planks",
-                    "spruce_planks"
-                ],
-                "quantity": 1
+                "stick": 2,
+                "spruce_planks": 1
             }
         ],
-        "quantity": 1
-    },
+        "output": 1
+    }
 }

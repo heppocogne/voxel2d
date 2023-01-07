@@ -1,7 +1,6 @@
 using Godot;
 using Godot.Collections;
 using System;
-using System.Diagnostics;
 
 public class World : Node2D
 {
@@ -174,7 +173,7 @@ public class World : Node2D
         return new Dictionary();
     }
 
-    public Item CreateItemIntance(String itemname)
+    public Item CreateItemIntance(String itemname, int count = 1)
     {
         Item item = GD.Load<PackedScene>("res://gameplay/entity/item/item.tscn").Instance() as Item;
         if ((String)FindItemData(itemname)["Kind"] == "tile")
@@ -189,6 +188,7 @@ public class World : Node2D
             item.ItemTexture = GD.Load<Texture>((String)d["Texture"]);
             item.ItemName = itemname;
         }
+        item.Quantity = count;
         return item;
     }
 

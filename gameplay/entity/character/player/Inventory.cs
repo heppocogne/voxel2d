@@ -71,9 +71,9 @@ public class Inventory : Node
 
     public void InformInventoryStateChanged()
     {
-        foreach (String itemName in worldRoot.Recipedata.Keys)
+        foreach (String item in worldRoot.Recipedata.Keys)
         {
-            GD.Print(itemName, ":", IsCraftable((Dictionary)worldRoot.Recipedata[itemName]));
+            GD.Print(item, "=", IsCraftable((Dictionary)worldRoot.Recipedata[item]));
         }
         GD.Print("--------");
         EmitSignal(nameof(StateChanged), new Godot.Collections.Array(Items));
@@ -90,35 +90,39 @@ public class Inventory : Node
 
     public bool IsCraftable(Dictionary recipe)
     {
-        Dictionary<Godot.Collections.Array, int> required = new Dictionary<Godot.Collections.Array, int>();
-        foreach (Dictionary r in (Array)recipe["input"])
+        if (recipe["input"] is Array)
         {
-            if (r["item"] is Array)
-                required.Add((Array)r["item"], (int)(float)r["quantity"]);
-            else
-                required.Add(new Array { r["item"] }, (int)(float)r["quantity"]);
-        }
-
-
-        foreach (Item item in Items)
-        {
-            foreach (var pair in required)
+            foreach (Dictionary r in (Array)recipe["input"])
             {
-                foreach (String n in pair.Key)
+                if (IsCraftableInternal(r))
+                    return true;
+            }
+            return false;
+        }
+        else if (recipe["input"] is Dictionary)
+        {
+            return IsCraftableInternal((Dictionary)recipe["input"]);
+        }
+        GD.PushError("Unexpected recipie format");
+        return false;
+    }
+
+    private bool IsCraftableInternal(Dictionary input)
+    {
+        foreach (String key in input.Keys)
+        {
+            int count = 0;
+            int required = (int)(float)input[key];
+            foreach (Item item in Items)
+            {
+                if (item != null && item.ItemName == key)
                 {
-                    if (item != null && n == item.ItemName)
-                    {
-                        required[pair.Key] -= item.Quantity;
+                    count += item.Quantity;
+                    if (required <= count)
                         break;
-                    }
                 }
             }
-        }
-        GD.Print(required);
-
-        foreach (int r in required.Values)
-        {
-            if (0 < r)
+            if (count < required)
                 return false;
         }
         return true;
