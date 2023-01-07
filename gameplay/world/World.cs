@@ -184,7 +184,7 @@ public class World : Node2D
         }
         else
         {
-            Dictionary d = FindTileData(itemname);
+            Dictionary d = FindItemData(itemname);
             item.ItemTexture = GD.Load<Texture>((String)d["Texture"]);
             item.ItemName = itemname;
         }

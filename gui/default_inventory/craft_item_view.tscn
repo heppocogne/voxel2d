@@ -1,0 +1,38 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://gui/fonts/misaki_gothic_2nd.tres" type="DynamicFont" id=1]
+[ext_resource path="res://gui/fonts/PixelMplus12-Regular.tres" type="DynamicFont" id=2]
+[ext_resource path="res://gui/default_inventory/craft_item_view.gd" type="Script" id=3]
+
+[node name="CraftItemView" type="CenterContainer"]
+margin_right = 32.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+script = ExtResource( 3 )
+
+[node name="TextureRect" type="TextureRect" parent="."]
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 24.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 16, 16 )
+
+[node name="Label" type="Label" parent="TextureRect"]
+margin_top = 12.0
+margin_right = 16.0
+margin_bottom = 20.0
+custom_fonts/font = ExtResource( 1 )
+align = 2
+
+[node name="PopupPanel" type="PopupPanel" parent="."]
+margin_left = 12.0
+margin_top = 5.0
+margin_right = 20.0
+margin_bottom = 27.0
+
+[node name="Label" type="Label" parent="PopupPanel"]
+margin_left = 4.0
+margin_top = 4.0
+margin_right = 4.0
+margin_bottom = 18.0
+custom_fonts/font = ExtResource( 2 )

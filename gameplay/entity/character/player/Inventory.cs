@@ -71,10 +71,12 @@ public class Inventory : Node
 
     public void InformInventoryStateChanged()
     {
+        /*
         foreach (String item in worldRoot.Recipedata.Keys)
         {
             GD.Print(item, "=", IsCraftable((Dictionary)worldRoot.Recipedata[item]));
-        }
+        }*/
+        GD.Print(GetAvailableRecipes());
         GD.Print("--------");
         EmitSignal(nameof(StateChanged), new Godot.Collections.Array(Items));
     }
@@ -88,7 +90,7 @@ public class Inventory : Node
         InformInventoryStateChanged();
     }
 
-    public bool IsCraftable(Dictionary recipe)
+    bool IsCraftable(Dictionary recipe)
     {
         if (recipe["input"] is Array)
         {
@@ -107,7 +109,7 @@ public class Inventory : Node
         return false;
     }
 
-    private bool IsCraftableInternal(Dictionary input)
+    bool IsCraftableInternal(Dictionary input)
     {
         foreach (String key in input.Keys)
         {
@@ -126,5 +128,115 @@ public class Inventory : Node
                 return false;
         }
         return true;
+    }
+
+    public Dictionary<Item, Array<Item>> GetAvailableRecipes()
+    {
+        Dictionary<Item, Array<Item>> result = new Dictionary<Item, Array<Item>>();
+        Dictionary recipes = (Dictionary)worldRoot.Recipedata;
+        foreach (String outputName in recipes.Keys)
+        {
+            Dictionary recipe = (Dictionary)recipes[outputName];
+            if (recipe["input"] is Array)
+            {
+                Array inputRecipeVariation = (Array)recipe["input"];
+                foreach (Dictionary irv in inputRecipeVariation)
+                {
+                    if (IsCraftableInternal(irv))
+                    {
+                        Item output = worldRoot.CreateItemIntance(outputName, (int)(float)recipe["output"]);
+                        Array<Item> inputs = new Array<Item>();
+                        foreach (String requiredItem in irv.Keys)
+                        {
+                            Item input = worldRoot.CreateItemIntance(requiredItem, (int)(float)irv[requiredItem]);
+                            inputs.Add(input);
+                        }
+                        result.Add(output, inputs);
+                    }
+                }
+            }
+            else if (recipe["input"] is Dictionary)
+            {
+                if (IsCraftableInternal((Dictionary)recipe["input"]))
+                {
+                    Item output = worldRoot.CreateItemIntance(outputName, (int)(float)recipe["output"]);
+                    Array<Item> inputs = new Array<Item>();
+                    var inputItemNames = ((Dictionary)recipe["input"]).Keys;
+                    foreach (String requiredItem in inputItemNames)
+                    {
+                        Item input = worldRoot.CreateItemIntance(requiredItem, (int)(float)((Dictionary)recipe["input"])[requiredItem]);
+                        inputs.Add(input);
+                    }
+                    result.Add(output, inputs);
+                }
+            }
+            else
+                GD.PushError("Unexpected recipie format");
+        }
+
+        return result;
+    }
+
+    void IncreaseItem(Dictionary itemdata)
+    {
+        String itemname = (String)itemdata["Name"];
+        int maxStack = (int)(float)itemdata["Stack"];
+
+        for (int i = 0; i < Items.Length; i++)
+        {
+            if (Items[i] != null && Items[i].ItemName == itemname && Items[i].Quantity < maxStack)
+            {
+                Items[i].Quantity++;
+                return;
+            }
+        }
+
+        for (int i = 0; i < Items.Length; i++)
+        {
+            if (Items[i] == null)
+            {
+                Items[i] = worldRoot.CreateItemIntance(itemname);
+                return;
+            }
+        }
+    }
+
+    void DecreaseItem(Dictionary itemdata)
+    {
+        String itemname = (String)itemdata["Name"];
+        for (int i = 0; i < Items.Length; i++)
+        {
+            if (Items[i] != null && Items[i].ItemName == itemname)
+            {
+                Items[i].Quantity--;
+                if (Items[i].Quantity == 0)
+                {
+                    Items[i].QueueFree();
+                    Items[i] = null;
+                }
+                return;
+            }
+        }
+    }
+
+    public void OnCrafted(Item result, Array<Item> consumed)
+    {
+        Dictionary itemdata = worldRoot.FindItemData(result.ItemName);
+        for (int i = 0; i < result.Quantity; i++)
+        {
+            IncreaseItem(itemdata);
+        }
+        result.QueueFree();
+
+        for (int i = 0; i < consumed.Count; i++)
+        {
+            itemdata = worldRoot.FindItemData(consumed[i].ItemName);
+            for (int j = 0; j < consumed[i].Quantity; j++)
+            {
+                DecreaseItem(itemdata);
+            }
+        }
+
+        InformInventoryStateChanged();
     }
 }
