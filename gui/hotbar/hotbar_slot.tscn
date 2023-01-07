@@ -14,16 +14,14 @@ expand = true
 script = ExtResource( 3 )
 
 [node name="CenterContainer" type="CenterContainer" parent="."]
-margin_left = 8.0
-margin_top = 8.0
-margin_right = 24.0
-margin_bottom = 24.0
+margin_right = 32.0
+margin_bottom = 32.0
 
 [node name="TextureRect" type="TextureRect" parent="CenterContainer"]
-margin_left = 8.0
-margin_top = 8.0
-margin_right = 8.0
-margin_bottom = 8.0
+margin_left = 16.0
+margin_top = 16.0
+margin_right = 16.0
+margin_bottom = 16.0
 
 [node name="BoldFrame" type="TextureRect" parent="."]
 visible = false
