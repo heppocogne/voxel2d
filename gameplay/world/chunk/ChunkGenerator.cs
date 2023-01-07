@@ -18,12 +18,6 @@ public class ChunkGenerator : Node
         worldRoot = GetParent<World>();
     }
 
-    static double Gauss(float x, float sigma)
-    {
-        var s22 = 2 * sigma * sigma;
-        return Math.Exp(-(x * x / s22)) / Math.Sqrt(Math.PI * s22);
-    }
-
     enum Biomes
     {
         PLANE,
@@ -36,8 +30,8 @@ public class ChunkGenerator : Node
         var heightNoise = new OpenSimplexNoise();
         int s = (int)BaseSeed;
         heightNoise.Seed = s;
-        heightNoise.Persistence = 0.01f;
-        heightNoise.Period = 96;
+        heightNoise.Persistence = 0.9f;
+        heightNoise.Period = 64;
 
         var dirtNoise = new OpenSimplexNoise();
 
