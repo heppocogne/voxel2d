@@ -34,6 +34,10 @@ public class Entity : KinematicBody2D
         int currentChunk = World.MapToChunk((int)(Position.x / Chunk.CellSize.x));
         if (currentChunk != previousChunk)
         {
+            String previousGroup = "Chunk:" + GD.Str(previousChunk);
+            if (IsInGroup(previousGroup))
+                RemoveFromGroup(previousGroup);
+            AddToGroup("Chunk:" + GD.Str(currentChunk));
             EmitSignal(nameof(ChunkChanged), currentChunk, previousChunk);
             previousChunk = currentChunk;
         }
