@@ -14,6 +14,16 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/animated_texture2/animated_texture2.gd"
 }, {
+"base": "NinePatchRect",
+"class": "BaseInventory",
+"language": "GDScript",
+"path": "res://gui/inventory/base_inventory.gd"
+}, {
+"base": "Sprite",
+"class": "GrabbedItem",
+"language": "GDScript",
+"path": "res://gui/inventory/grabbed_item.gd"
+}, {
 "base": "TextureRect",
 "class": "HotbarSlot",
 "language": "GDScript",
@@ -31,6 +41,8 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "AnimatedTexture2": "",
+"BaseInventory": "",
+"GrabbedItem": "",
 "HotbarSlot": "",
 "InventorySlot": "",
 "TileMapData": ""
@@ -79,6 +91,11 @@ game_down={
 game_jump={
 "deadzone": 0.5,
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":32,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+ ]
+}
+game_inventory={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":69,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
  ]
 }
 

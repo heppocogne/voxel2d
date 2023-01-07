@@ -210,4 +210,16 @@ public class World : Node2D
         }
         SetCellv(cell, -1);
     }
+
+    public void OnInventoryOpened()
+    {
+        Modulate = new Color(0.5f, 0.5f, 0.5f);
+        player.BlockUserInput = true;
+    }
+
+    public void OnInventoryClosed()
+    {
+        Modulate = new Color(1, 1, 1);
+        player.BlockUserInput = false;
+    }
 }

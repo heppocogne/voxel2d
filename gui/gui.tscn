@@ -5,7 +5,6 @@
 [ext_resource path="res://gui/fonts/PixelMplus12-Regular.tres" type="DynamicFont" id=3]
 [ext_resource path="res://gui/hotbar/hotbar.gd" type="Script" id=4]
 
-
 [node name="GUI" type="Control"]
 margin_right = 40.0
 margin_bottom = 40.0
@@ -102,3 +101,7 @@ margin_right = 256.0
 [node name="ItemSlot9" parent="MarginContainer/VBoxContainer/VBoxContainer/Hotbar/GridContainer" instance=ExtResource( 2 )]
 margin_left = 256.0
 margin_right = 288.0
+
+[node name="InventoryContainer" type="CenterContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0

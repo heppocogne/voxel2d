@@ -1,7 +1,8 @@
 using Godot;
 using Godot.Collections;
 using System;
-using System.Net.Mime;
+using System.Linq;
+using Array = Godot.Collections.Array;
 
 public class Player : Character
 {
@@ -19,6 +20,7 @@ public class Player : Character
     [Export]
     public float DigDamage = 0.2f;
 
+    public bool BlockUserInput = false;
     public bool CursorVisible;
     Coordinate coordinate;
     World worldRoot;
@@ -30,7 +32,7 @@ public class Player : Character
     DiggingTile digging;
     Timer blockPlaceCooldown;
     int hotbarSlot;
-    Inventory inventory;
+    public Inventory Inventory;
 
     // physics
     float jumpInitialVelocity;
@@ -42,7 +44,7 @@ public class Player : Character
         worldRoot = GetParent<World>();
         coordinate = worldRoot.GetNode<Coordinate>("Coordinate");
         blockPlaceCooldown = GetNode<Timer>("TilePlaceCooldownTimer");
-        inventory = GetNode<Inventory>("Inventory");
+        Inventory = GetNode<Inventory>("Inventory");
     }
 
     public override void _Process(float delta)
@@ -53,6 +55,9 @@ public class Player : Character
     public override void _PhysicsProcess(float delta)
     {
         base._PhysicsProcess(delta);
+
+        if (BlockUserInput)
+            return;
 
         bool l = Input.IsActionPressed("game_left");
         bool r = Input.IsActionPressed("game_right");
@@ -128,19 +133,19 @@ public class Player : Character
 
         if (IsRightClick() && targetCellValid && worldRoot.GetCellv(targetCell) == -1 && blockPlaceCooldown.TimeLeft == 0.0)
         {
-            if (inventory.Items[hotbarSlot] != null)
+            if (Inventory.Items[hotbarSlot] != null)
             {
-                Dictionary itemdata = worldRoot.FindItemData(inventory.Items[hotbarSlot].ItemName);
+                Dictionary itemdata = worldRoot.FindItemData(Inventory.Items[hotbarSlot].ItemName);
                 if (itemdata.Contains("Kind") && (String)itemdata["Kind"] == "tile")
                 {
-                    worldRoot.SetCellv(targetCell, worldRoot.FindTileID(inventory.Items[hotbarSlot].ItemName));
-                    inventory.Items[hotbarSlot].Quantity -= 1;
-                    if (inventory.Items[hotbarSlot].Quantity == 0)
+                    worldRoot.SetCellv(targetCell, worldRoot.FindTileID(Inventory.Items[hotbarSlot].ItemName));
+                    Inventory.Items[hotbarSlot].Quantity -= 1;
+                    if (Inventory.Items[hotbarSlot].Quantity == 0)
                     {
-                        inventory.Items[hotbarSlot].QueueFree();
-                        inventory.Items[hotbarSlot] = null;
+                        Inventory.Items[hotbarSlot].QueueFree();
+                        Inventory.Items[hotbarSlot] = null;
                     }
-                    inventory.InformStateChanged();
+                    Inventory.InformStateChanged();
                     blockPlaceCooldown.Start();
                 }
             }
@@ -219,7 +224,7 @@ public class Player : Character
         if (body is Item)
         {
             Item item = body as Item;
-            if (0 <= inventory.FindAvailableSlot(item))
+            if (0 <= Inventory.FindAvailableSlot(item))
                 item.Acceleration = Vector2.Zero;
         }
     }
@@ -229,12 +234,55 @@ public class Player : Character
         if (body is Item)
         {
             Item item = body as Item;
-            inventory.CollectItem(item);
+            Inventory.CollectItem(item);
         }
     }
 
     public void OnHotbarStateChanged(int slot)
     {
         hotbarSlot = slot;
+    }
+
+    public bool IsCraftable(Dictionary recipe)
+    {
+        Dictionary<Godot.Collections.Array, int> required = new Dictionary<Godot.Collections.Array, int>();
+        foreach (Dictionary r in recipe)
+        {
+            if (r["input"] is Array)
+                required.Add((Array)r["input"], (int)(float)r["quantity"]);
+            else if (r["input"] is String)
+                required.Add(new Array { r["input"] }, (int)(float)r["quantity"]);
+        }
+
+        foreach (Item item in Inventory.Items)
+        {
+            foreach (var pair in required)
+            {
+                foreach (String n in pair.Key)
+                {
+                    if (n == item.ItemName)
+                    {
+                        required[pair.Key] -= item.Quantity;
+                        break;
+                    }
+                }
+            }
+        }
+
+        foreach (int r in required.Values)
+        {
+            if (0 < r)
+                return false;
+        }
+        return true;
+    }
+
+    public void OnPlayerTreeExiting()
+    {
+        foreach (Item item in Inventory.Items)
+        {
+            if (item != null)
+                item.QueueFree();
+        }
     }
 }

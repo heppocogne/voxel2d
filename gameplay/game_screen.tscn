@@ -58,3 +58,6 @@ script = ExtResource( 6 )
 
 [node name="GUI" parent="ViewportContainer/GUILayer" instance=ExtResource( 9 )]
 player_nodepath = NodePath("../../Viewport/World/Player")
+
+[connection signal="inventory_closed" from="ViewportContainer/GUILayer/GUI" to="ViewportContainer/Viewport/World" method="OnInventoryClosed"]
+[connection signal="inventory_opened" from="ViewportContainer/GUILayer/GUI" to="ViewportContainer/Viewport/World" method="OnInventoryOpened"]

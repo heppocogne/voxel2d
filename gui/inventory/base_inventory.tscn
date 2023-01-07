@@ -8,6 +8,8 @@
 [node name="DefaultInventory" type="NinePatchRect"]
 margin_right = 336.0
 margin_bottom = 160.0
+rect_min_size = Vector2( 336, 160 )
+mouse_filter = 0
 texture = ExtResource( 1 )
 patch_margin_left = 8
 patch_margin_top = 8

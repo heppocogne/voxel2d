@@ -14,10 +14,6 @@ func set_recipe(r:Dictionary):
 	recipe=r
 
 
-func check_craftabe(items:Array):
-	pass
-
-
 func _on_HBoxContainer_resized_or_sort_children():
 	rect_min_size=$HBoxContainer.rect_size
 
