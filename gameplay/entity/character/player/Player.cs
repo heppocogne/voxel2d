@@ -145,7 +145,7 @@ public class Player : Character
                         Inventory.Items[hotbarSlot].QueueFree();
                         Inventory.Items[hotbarSlot] = null;
                     }
-                    Inventory.InformStateChanged();
+                    Inventory.InformInventoryStateChanged();
                     blockPlaceCooldown.Start();
                 }
             }

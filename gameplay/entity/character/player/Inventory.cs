@@ -1,6 +1,7 @@
 using Godot;
 using Godot.Collections;
 using System;
+using Array = Godot.Collections.Array;
 
 public class Inventory : Node
 {
@@ -52,6 +53,9 @@ public class Inventory : Node
         if (slot == -1)
             return;
 
+        if (item.IsInGroup("Chunk:" + item.ChunkPosition))
+            item.RemoveFromGroup("Chunk:" + item.ChunkPosition);
+
         if (Items[slot] == null)
         {
             Items[slot] = item;
@@ -62,11 +66,20 @@ public class Inventory : Node
             Items[slot].Quantity++;
             item.QueueFree();
         }
-        InformStateChanged();
+        InformInventoryStateChanged();
     }
 
-    public void InformStateChanged()
+    public void InformInventoryStateChanged()
     {
         EmitSignal(nameof(StateChanged), new Godot.Collections.Array(Items));
+    }
+
+    public void OnInventoryManipulated(Array items)
+    {
+        for (int i = 0; i < Size; i++)
+        {
+            Items[i] = items[i] as Item;
+        }
+        InformInventoryStateChanged();
     }
 }

@@ -10,6 +10,7 @@ onready var vbox_container:Container=$MarginContainer/VBoxContainer
 onready var hotbar:Container=$MarginContainer/VBoxContainer/VBoxContainer/Hotbar
 onready var inventory_container:CenterContainer=$InventoryContainer
 var inventory:BaseInventory
+var grabbed_item:GrabbedItem
 
 
 func _ready():
@@ -35,3 +36,14 @@ func _process(_delta:float):
 func _on_Window_size_changed():
 	margin_container.rect_size=OS.window_size
 	inventory_container.rect_size=OS.window_size
+
+
+func _on_item_grabbed(grabbed:GrabbedItem):
+	grabbed_item=grabbed
+	add_child(grabbed_item)
+
+
+func _on_item_released():
+	if grabbed_item:
+		grabbed_item.queue_free()
+	grabbed_item=null

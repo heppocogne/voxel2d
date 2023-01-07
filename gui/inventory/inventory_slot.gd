@@ -1,11 +1,14 @@
 class_name InventorySlot
 extends TextureRect
 
+signal state_changed()
 signal item_grabbed(grabbed_item)
+signal item_released()
 
 var display_name:String
 var quantity:=0
 
+var gui_root:Control
 onready var item_texture:TextureRect=$CenterContainer/TextureRect
 onready var label:Label=$Label
 onready var popup:PopupPanel=$PopupPanel
@@ -15,6 +18,9 @@ var _str_size:Vector2
 
 func _ready():
 	$PopupPanel/Label.text=display_name
+	gui_root=get_tree().root.get_node("GameScreen/ViewportContainer/GUILayer/GUI")
+	connect("item_grabbed",gui_root,"_on_item_grabbed")
+	connect("item_released",gui_root,"_on_item_released")
 
 
 func clear():
@@ -32,7 +38,7 @@ func set_item_info(item_name:String,texture:Texture,n:int):
 func _process(_delta:float):
 	if Rect2(Vector2.ZERO,rect_size).has_point(get_local_mouse_position()) and display_name!="":
 		popup.popup(Rect2(
-			get_global_mouse_position(),
+			get_global_mouse_position()+Vector2(16,0),
 			_str_size))
 	else:
 		popup.hide()
@@ -44,10 +50,26 @@ func _input(event:InputEvent):
 		if mb.pressed:
 			if mb.button_index==BUTTON_LEFT and Rect2(Vector2.ZERO,rect_size).has_point(get_local_mouse_position()):
 				print_debug("pressed")
-#				var grabbed:GrabbedItem=preload("res://gui/inventory/grabbed_item.tscn").instance()
-#				grabbed.set_item_info(display_name,item_texture.texture,quantity)
-#				emit_signal("item_grabbed",grabbed)
-#				clear()
+				if display_name=="":
+					if gui_root.grabbed_item:
+						# place
+						set_item_info(gui_root.grabbed_item.display_name,gui_root.grabbed_item.texture,gui_root.grabbed_item.quantity)
+						emit_signal("item_released")
+						emit_signal("state_changed")
+				else:
+					var grabbed:GrabbedItem=preload("res://gui/inventory/grabbed_item.tscn").instance()
+					grabbed.set_item_info(display_name,item_texture.texture,quantity)
+					if gui_root.grabbed_item:
+						# swap
+						set_item_info(gui_root.grabbed_item.display_name,gui_root.grabbed_item.texture,gui_root.grabbed_item.quantity)
+						emit_signal("item_released")
+						emit_signal("item_grabbed",grabbed)
+						emit_signal("state_changed")
+					else:
+						# grab
+						emit_signal("item_grabbed",grabbed)
+						emit_signal("state_changed")
+						clear()
 
 
 func set_item_quantity(n:int):
