@@ -9,6 +9,7 @@ public class Item : Entity
 
     // physics
     public Vector2 Acceleration;
+    public float XDamp;
 
     public override void _Ready()
     {
@@ -21,8 +22,7 @@ public class Item : Entity
         base._PhysicsProcess(delta);
 
         Velocity += Acceleration * delta;
-        MoveAndSlide(Velocity, Vector2.Up);
-        if (IsOnFloor())
-            Velocity *= 0.75f;
+        Velocity = new Vector2(Velocity.x * (float)Math.Pow(XDamp, delta), Velocity.y);
+        Velocity = MoveAndSlide(Velocity, Vector2.Up);
     }
 }

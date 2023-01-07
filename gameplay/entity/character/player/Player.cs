@@ -216,6 +216,7 @@ public class Player : Character
         {
             Item item = body as Item;
             item.Acceleration = 1.1f * Gravity * (Position - item.Position).Normalized();
+            item.XDamp = 1;
         }
     }
 
@@ -225,7 +226,10 @@ public class Player : Character
         {
             Item item = body as Item;
             if (0 <= Inventory.FindAvailableSlot(item))
+            {
                 item.Acceleration = Vector2.Zero;
+                item.XDamp = 0.1f;
+            }
         }
     }
 
