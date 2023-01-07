@@ -16,10 +16,13 @@ public class World : Node2D
     Resource _itemdata;
     [Export(PropertyHint.File, "*.json")]
     String _recipedata;
+    [Export]
+    Resource _tooldata;
 
     public Godot.Collections.Array Tiledata;
     public Godot.Collections.Array Itemdata;
     public Dictionary Recipedata;
+    public Godot.Collections.Array ToolMaterialData;
 
     Player player;
     ChunkLoader loader;
@@ -51,6 +54,8 @@ public class World : Node2D
                 Recipedata = (Dictionary)result.Result;
             }
         }
+
+        ToolMaterialData = (Godot.Collections.Array)_tooldata.Get("records");
 
     }
 
@@ -173,11 +178,23 @@ public class World : Node2D
         return new Dictionary();
     }
 
+    public Dictionary FindToolMaterial(String material)
+    {
+        foreach (Dictionary d in ToolMaterialData)
+        {
+            if ((String)d["Material"] == material)
+                return d;
+        }
+        GD.PushError("Tool material '" + material + "' is not found");
+        return new Dictionary();
+    }
+
     public Item CreateItemIntance(String itemname, int count = 1)
     {
-        Item item = GD.Load<PackedScene>("res://gameplay/entity/item/item.tscn").Instance() as Item;
+        Item item;
         if ((String)FindItemData(itemname)["Kind"] == "tile")
         {
+            item = GD.Load<PackedScene>("res://gameplay/entity/item/item.tscn").Instance() as Item;
             int id = FindTileID(itemname);
             item.ItemTexture = Tileset.TileGetTexture(id);
             item.ItemName = Tileset.TileGetName(id);
@@ -185,6 +202,18 @@ public class World : Node2D
         else
         {
             Dictionary d = FindItemData(itemname);
+            if ((String)d["Kind"] == "tool")
+            {
+                Tool itemAsTool = GD.Load<PackedScene>("res://gameplay/entity/item/tool.tscn").Instance() as Tool;
+                itemAsTool.MaxDurability = (int)(float)FindToolMaterial(itemname.Left(itemname.Find("_")))["Durability"];
+                itemAsTool.Durability = itemAsTool.MaxDurability;
+
+                item = itemAsTool;
+            }
+            else
+            {
+                item = GD.Load<PackedScene>("res://gameplay/entity/item/item.tscn").Instance() as Item;
+            }
             item.ItemTexture = GD.Load<Texture>((String)d["Texture"]);
             item.ItemName = itemname;
         }
@@ -192,17 +221,16 @@ public class World : Node2D
         return item;
     }
 
-    public void OnTileDestroyed(Vector2 cell, String tool)
+    public void OnTileDestroyed(Vector2 cell, bool ToolFitness)
     {
         int id = GetCellv(cell);
         Dictionary tiledata = GetTileData(id);
-        if (tool == "")
+        if (ToolFitness || (int)(float)tiledata["WithoutTools"] == 1)
         {
-            if ((int)(float)tiledata["WithoutTools"] == 1)
+            String dropItem = (String)tiledata["DropItem"];
+            if (dropItem != "")
             {
-                Item item = GD.Load<PackedScene>("res://gameplay/entity/item/item.tscn").Instance() as Item;
-                item.ItemTexture = Tileset.TileGetTexture(id);
-                item.ItemName = Tileset.TileGetName(id);
+                Item item = CreateItemIntance(dropItem);
                 item.Position = coordinate.MapToWorld(cell) + new Vector2((float)GD.RandRange(0, 12), (float)GD.RandRange(0, 12));
                 item.Velocity = Mathf.Polar2Cartesian(32, (float)GD.RandRange(Math.PI, 2 * Math.PI));
                 AddChild(item);

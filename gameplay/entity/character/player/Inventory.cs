@@ -71,13 +71,6 @@ public class Inventory : Node
 
     public void InformInventoryStateChanged()
     {
-        /*
-        foreach (String item in worldRoot.Recipedata.Keys)
-        {
-            GD.Print(item, "=", IsCraftable((Dictionary)worldRoot.Recipedata[item]));
-        }*/
-        GD.Print(GetAvailableRecipes());
-        GD.Print("--------");
         EmitSignal(nameof(StateChanged), new Godot.Collections.Array(Items));
     }
 

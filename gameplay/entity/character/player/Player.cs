@@ -111,7 +111,20 @@ public class Player : Character
                         digging = GD.Load<PackedScene>("res://gameplay/world/tile/digging_tile.tscn").Instance() as DiggingTile;
                         digging.TilePosition = targetCell;
                         digging.Hardness = hardness;
-                        digging.Tool = "";
+                        digging.Tiledata = tiledata;
+                        if (Inventory.Items[hotbarSlot] is Tool)
+                        {
+                            String toolName = Inventory.Items[hotbarSlot].ItemName;
+                            digging.ToolMaterial = toolName.Left(toolName.Find("_"));
+                            digging.ToolKind = toolName.Right(toolName.Find("_") + 1);
+                            digging.CheckToolFitness();
+                            GD.Print(digging.ToolFitness);
+                        }
+                        else
+                        {
+                            digging.ToolMaterial = "";
+                            digging.ToolKind = "";
+                        }
                         Connect(nameof(DigCanceled), digging, "OnCanceled");
                         digging.Connect("TileDestroyed", this, nameof(OnTileDestroyed));
                         digging.Connect("TileDestroyed", worldRoot, nameof(OnTileDestroyed));
@@ -122,7 +135,12 @@ public class Player : Character
             }
             else
             {
-                digging.Damage(DigDamage * delta);
+                if (digging.ToolMaterial == "" || !digging.ToolFitness)
+                    digging.Damage(DigDamage * delta);
+                else
+                {
+                    digging.Damage(DigDamage * delta * (float)worldRoot.FindToolMaterial(digging.ToolMaterial)["Power"]);
+                }
             }
         }
         else if (!IsLeftClick() && targetCellValid)
@@ -204,7 +222,7 @@ public class Player : Character
         targetCellValid = valid;
     }
 
-    public void OnTileDestroyed(Vector2 pos, String tool)
+    public void OnTileDestroyed(Vector2 pos, bool ToolFitness)
     {
         digging = null;
         targetCellValid = false;
