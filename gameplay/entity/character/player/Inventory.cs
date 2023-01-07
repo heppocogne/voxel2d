@@ -137,11 +137,11 @@ public class Inventory : Node
                 {
                     if (IsCraftableInternal(irv))
                     {
-                        Item output = worldRoot.CreateItemIntance(outputName, (int)(float)recipe["output"]);
+                        Item output = worldRoot.CreateItemInstance(outputName, (int)(float)recipe["output"]);
                         Array<Item> inputs = new Array<Item>();
                         foreach (String requiredItem in irv.Keys)
                         {
-                            Item input = worldRoot.CreateItemIntance(requiredItem, (int)(float)irv[requiredItem]);
+                            Item input = worldRoot.CreateItemInstance(requiredItem, (int)(float)irv[requiredItem]);
                             inputs.Add(input);
                         }
                         result.Add(output, inputs);
@@ -152,12 +152,12 @@ public class Inventory : Node
             {
                 if (IsCraftableInternal((Dictionary)recipe["input"]))
                 {
-                    Item output = worldRoot.CreateItemIntance(outputName, (int)(float)recipe["output"]);
+                    Item output = worldRoot.CreateItemInstance(outputName, (int)(float)recipe["output"]);
                     Array<Item> inputs = new Array<Item>();
                     var inputItemNames = ((Dictionary)recipe["input"]).Keys;
                     foreach (String requiredItem in inputItemNames)
                     {
-                        Item input = worldRoot.CreateItemIntance(requiredItem, (int)(float)((Dictionary)recipe["input"])[requiredItem]);
+                        Item input = worldRoot.CreateItemInstance(requiredItem, (int)(float)((Dictionary)recipe["input"])[requiredItem]);
                         inputs.Add(input);
                     }
                     result.Add(output, inputs);
@@ -188,7 +188,7 @@ public class Inventory : Node
         {
             if (Items[i] == null)
             {
-                Items[i] = worldRoot.CreateItemIntance(itemname);
+                Items[i] = worldRoot.CreateItemInstance(itemname);
                 return;
             }
         }
@@ -228,6 +228,7 @@ public class Inventory : Node
             {
                 DecreaseItem(itemdata);
             }
+            consumed[i].QueueFree();
         }
 
         InformInventoryStateChanged();

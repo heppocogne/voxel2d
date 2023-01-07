@@ -42,22 +42,20 @@ func _update_inventory():
 
 func _inform_inverntory_state():
 	var items:Array=[]
+	items.resize(36)
 	var i:=0
 	for s in $MarginContainer/VBoxContainer/PlayerInventory/GridContainer2.get_children():
-		if s:
-			items.push_back(preload("res://gameplay/entity/item/item.tscn").instance())
-			items[i].ItemTexture=s.item_texture.texture
-			items[i].ItemName=s.display_name
-			items[i].Quantity=s.quantity
+		if s and s.display_name!="":
+			# tool items are broken here
+			print_debug(s.display_name)
+			items[i]=world_node.CreateItemInstance(s.display_name,s.quantity)
 		else:
 			items[i]=null
 		i+=1
 	for s in $MarginContainer/VBoxContainer/PlayerInventory/GridContainer.get_children():
-		if s:
-			items.push_back(preload("res://gameplay/entity/item/item.tscn").instance())
-			items[i].ItemTexture=s.item_texture.texture
-			items[i].ItemName=s.display_name
-			items[i].Quantity=s.quantity
+		if s and s.display_name!="":
+			print_debug(s.display_name)
+			items[i]=world_node.CreateItemInstance(s.display_name,s.quantity)
 		else:
 			items[i]=null
 		i+=1

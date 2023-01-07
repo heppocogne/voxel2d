@@ -189,7 +189,7 @@ public class World : Node2D
         return new Dictionary();
     }
 
-    public Item CreateItemIntance(String itemname, int count = 1)
+    public Item CreateItemInstance(String itemname, int count = 1)
     {
         Item item;
         if ((String)FindItemData(itemname)["Kind"] == "tile")
@@ -230,7 +230,7 @@ public class World : Node2D
             String dropItem = (String)tiledata["DropItem"];
             if (dropItem != "")
             {
-                Item item = CreateItemIntance(dropItem);
+                Item item = CreateItemInstance(dropItem);
                 item.Position = coordinate.MapToWorld(cell) + new Vector2((float)GD.RandRange(0, 12), (float)GD.RandRange(0, 12));
                 item.Velocity = Mathf.Polar2Cartesian(32, (float)GD.RandRange(Math.PI, 2 * Math.PI));
                 AddChild(item);
