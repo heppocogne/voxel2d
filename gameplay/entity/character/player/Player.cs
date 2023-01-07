@@ -118,7 +118,6 @@ public class Player : Character
                             digging.ToolMaterial = toolName.Left(toolName.Find("_"));
                             digging.ToolKind = toolName.Right(toolName.Find("_") + 1);
                             digging.CheckToolFitness();
-                            GD.Print(digging.ToolFitness);
                         }
                         else
                         {

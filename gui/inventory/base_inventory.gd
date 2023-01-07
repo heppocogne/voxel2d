@@ -47,14 +47,12 @@ func _inform_inverntory_state():
 	for s in $MarginContainer/VBoxContainer/PlayerInventory/GridContainer2.get_children():
 		if s and s.display_name!="":
 			# tool items are broken here
-			print_debug(s.display_name)
 			items[i]=world_node.CreateItemInstance(s.display_name,s.quantity)
 		else:
 			items[i]=null
 		i+=1
 	for s in $MarginContainer/VBoxContainer/PlayerInventory/GridContainer.get_children():
 		if s and s.display_name!="":
-			print_debug(s.display_name)
 			items[i]=world_node.CreateItemInstance(s.display_name,s.quantity)
 		else:
 			items[i]=null
