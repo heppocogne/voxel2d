@@ -4,7 +4,7 @@ var craft_list:VBoxContainer
 
 
 func _ready():
-	craft_list=$MarginContainer/VBoxContainer/HBoxContainer/ItemList/VBoxContainer
+	craft_list=$MarginContainer/VBoxContainer/HBoxContainer/ScrollContainer/VBoxContainer
 	_update_recipe_list()
 
 

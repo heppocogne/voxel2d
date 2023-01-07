@@ -5,6 +5,7 @@ signal selected_slot_changed(slot)
 onready var item_slots:GridContainer=$GridContainer
 onready var hotbar_slots:Array=$GridContainer.get_children()
 var selected_slot:=0
+var inventory_opened:=false
 
 
 func _ready():
@@ -12,6 +13,9 @@ func _ready():
 
 
 func _input(event:InputEvent):
+	if inventory_opened:
+		return
+	
 	if event is InputEventMouseButton:
 		var mb:=event as InputEventMouseButton
 		if mb.pressed:
@@ -40,3 +44,13 @@ func _on_PlayerInvetory_state_changed(items:Array):
 			hotbar_slots[i].clear()
 		else:
 			hotbar_slots[i].set_item_info(item.ItemName,item.ItemTexture,item.Quantity)
+
+
+func _on_GUI_inventory_opened():
+	inventory_opened=true
+	mouse_filter=Control.MOUSE_FILTER_IGNORE
+
+
+func _on_GUI_inventory_closed():
+	inventory_opened=false
+	mouse_filter=Control.MOUSE_FILTER_STOP

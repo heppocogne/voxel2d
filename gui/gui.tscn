@@ -105,3 +105,6 @@ margin_right = 288.0
 [node name="InventoryContainer" type="CenterContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
+
+[connection signal="inventory_closed" from="." to="MarginContainer/VBoxContainer/VBoxContainer/Hotbar" method="_on_GUI_inventory_closed"]
+[connection signal="inventory_opened" from="." to="MarginContainer/VBoxContainer/VBoxContainer/Hotbar" method="_on_GUI_inventory_opened"]
