@@ -4,3 +4,6 @@ stick	64	material	res://assets/GoodVibes/items/stick.png
 wooden_pickaxe	1	tool	res://assets/GoodVibes/items/wooden_pickaxe.png
 wooden_axe	1	tool	res://assets/GoodVibes/items/wooden_axe.png
 wooden_shovel	1	tool	res://assets/GoodVibes/items/wooden_shovel.png
+stone_pickaxe	1	tool	res://assets/GoodVibes/items/stone_pickaxe.png
+stone_axe	1	tool	res://assets/GoodVibes/items/stone_axe.png
+stone_shovel	1	tool	res://assets/GoodVibes/items/stone_shovel.png

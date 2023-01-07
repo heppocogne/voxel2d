@@ -49,7 +49,6 @@ func _input(event:InputEvent):
 		var mb:=event as InputEventMouseButton
 		if mb.pressed:
 			if mb.button_index==BUTTON_LEFT and Rect2(Vector2.ZERO,rect_size).has_point(get_local_mouse_position()):
-				print_debug("pressed")
 				if display_name=="":
 					if gui_root.grabbed_item:
 						# place

@@ -60,5 +60,26 @@
             }
         ],
         "output": 1
+    },
+    "stone_pickaxe": {
+        "input": {
+            "stick": 2,
+            "cobblestone": 3
+        },
+        "output": 1
+    },
+    "stone_axe": {
+        "input": {
+            "stick": 2,
+            "cobblestone": 3
+        },
+        "output": 1
+    },
+    "stone_shovel": {
+        "input": {
+            "stick": 2,
+            "cobblestone": 1
+        },
+        "output": 1
     }
 }
