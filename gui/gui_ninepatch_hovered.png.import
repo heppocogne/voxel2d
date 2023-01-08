@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/gui_ninepatch_focused.png-568f936effbc15957310a37c93d04e9f.stex"
+path="res://.import/gui_ninepatch_hovered.png-56cb976931f95e3b40898c4f9aa74d4b.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://gui/gui_ninepatch_focused.png"
-dest_files=[ "res://.import/gui_ninepatch_focused.png-568f936effbc15957310a37c93d04e9f.stex" ]
+source_file="res://gui/gui_ninepatch_hovered.png"
+dest_files=[ "res://.import/gui_ninepatch_hovered.png-56cb976931f95e3b40898c4f9aa74d4b.stex" ]
 
 [params]
 
