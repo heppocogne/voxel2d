@@ -155,7 +155,11 @@ public class World : Node2D
         foreach (Dictionary d in Itemdata)
         {
             if ((String)d["Name"] == itemname)
+            {
+                if ((String)d["Texture"] == "")
+                    d["Texture"] = "res://assets/GoodVibes/items/" + (String)d["Name"] + ".png";
                 return d;
+            }
         }
         // Automatically generate tile items
         Dictionary tiledata = FindTileData(itemname);
@@ -225,7 +229,7 @@ public class World : Node2D
     {
         int id = GetCellv(cell);
         Dictionary tiledata = GetTileData(id);
-        if (ToolFitness || (int)(float)tiledata["WithoutTools"] == 1)
+        if (ToolFitness || (int)(float)tiledata["RequireTools"] == 0)
         {
             String dropItem = (String)tiledata["DropItem"];
             if (dropItem != "")

@@ -1,9 +1,22 @@
 Name	Stack	Kind	Texture
 __tile_template	64	tile	
-stick	64	material	res://assets/GoodVibes/items/stick.png
-wooden_pickaxe	1	tool	res://assets/GoodVibes/items/wooden_pickaxe.png
-wooden_axe	1	tool	res://assets/GoodVibes/items/wooden_axe.png
-wooden_shovel	1	tool	res://assets/GoodVibes/items/wooden_shovel.png
-stone_pickaxe	1	tool	res://assets/GoodVibes/items/stone_pickaxe.png
-stone_axe	1	tool	res://assets/GoodVibes/items/stone_axe.png
-stone_shovel	1	tool	res://assets/GoodVibes/items/stone_shovel.png
+stick	64	material	
+wooden_pickaxe	1	tool	
+wooden_axe	1	tool	
+wooden_shovel	1	tool	
+stone_pickaxe	1	tool	
+stone_axe	1	tool	
+stone_shovel	1	tool	
+coal	64	material	
+iron_ingot	64	material	
+iron_pickaxe	1	tool	
+iron_axe	1	tool	
+iron_shovel	1	tool	
+gold_ingot	64	material	
+golden_pickaxe	1	tool	
+golden_axe	1	tool	
+golden_shovel	1	tool	
+diamond	64	material	
+diamond_pickaxe	1	tool	
+diamond_axe	1	tool	
+diamond_shovel	1	tool	

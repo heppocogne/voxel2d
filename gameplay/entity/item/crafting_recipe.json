@@ -81,5 +81,68 @@
             "cobblestone": 1
         },
         "output": 1
+    },
+    "iron_pickaxe": {
+        "input": {
+            "stick": 2,
+            "iron_ingot": 3
+        },
+        "output": 1
+    },
+    "iron_axe": {
+        "input": {
+            "stick": 2,
+            "iron_ingot": 3
+        },
+        "output": 1
+    },
+    "iron_shovel": {
+        "input": {
+            "stick": 2,
+            "iron_ingot": 1
+        },
+        "output": 1
+    },
+    "golden_pickaxe": {
+        "input": {
+            "stick": 2,
+            "gold_ingot": 3
+        },
+        "output": 1
+    },
+    "golden_axe": {
+        "input": {
+            "stick": 2,
+            "gold_ingot": 3
+        },
+        "output": 1
+    },
+    "golden_shovel": {
+        "input": {
+            "stick": 2,
+            "gold_ingot": 1
+        },
+        "output": 1
+    },
+    "diamond_pickaxe": {
+        "input": {
+            "stick": 2,
+            "diamond": 3
+        },
+        "output": 1
+    },
+    "diamond_axe": {
+        "input": {
+            "stick": 2,
+            "diamond": 3
+        },
+        "output": 1
+    },
+    "diamond_shovel": {
+        "input": {
+            "stick": 2,
+            "diamond": 1
+        },
+        "output": 1
     }
 }

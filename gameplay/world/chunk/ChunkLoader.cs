@@ -20,6 +20,7 @@ public class ChunkLoader : Node
     System.Collections.Generic.Dictionary<int, Chunk> loadedChunks = new System.Collections.Generic.Dictionary<int, Chunk>();
     ChunkGenerator chunkGenerator;
     CaveGenerator caveGenerator;
+    OreGenerator oreGenerator;
     public override void _Ready()
     {
         worldRoot = GetParent<World>();
@@ -28,6 +29,8 @@ public class ChunkLoader : Node
         chunkGenerator.BaseSeed = GD.Randi();
         caveGenerator = GetNode<CaveGenerator>("../CaveGenerator");
         caveGenerator.BaseSeed = GD.Randi();
+        oreGenerator = GetNode<OreGenerator>("../OreGenerator");
+        oreGenerator.BaseSeed = GD.Randi();
         player = GetNode<Player>(PlayerNodePath);
         player.Connect("ChunkChanged", this, nameof(OnPlayerChunkChanged));
 
@@ -131,6 +134,7 @@ public class ChunkLoader : Node
         loadedChunks.Add(chunk, map);
         // This function may call GenerateChunk() internally
         caveGenerator.Generate(chunk);
+        oreGenerator.Generate(chunk);
         return map;
     }
 }

@@ -1,20 +1,28 @@
-Name	Hardness	DropItem	Feature	WithoutTools	Layer	Tool
-grass_block	0.6	dirt		1	2	wooden_shovel
-grass_block_snow	0.6	dirt		1	2	wooden_shovel
-dirt	0.5	dirt		1	2	wooden_shovel
-sand	0.5	sand	fall	1	2	wooden_shovel
-stone	1.5	cobblestone		0	2	wooden_pickaxe
-cobblestone	2	cobblestone		0	2	wooden_pickaxe
+Name	Hardness	DropItem	Feature	RequireTools	Layer	Tool
+grass_block	0.6	dirt		0	2	wooden_shovel
+grass_block_snow	0.6	dirt		0	2	wooden_shovel
+dirt	0.5	dirt		0	2	wooden_shovel
+sand	0.5	sand	fall	0	2	wooden_shovel
+stone	1.5	cobblestone		1	2	wooden_pickaxe
+cobblestone	2	cobblestone		1	2	wooden_pickaxe
 bedrock	-1			0	2	
 grass	0		put	1	3	
-tall_grass	0		put	1	3	
-cactus	0.4	cactus	put	1	3	
-dead_bush	0	stick	put	1	3	
-oak_log	2	oak_log		1	2	wooden_axe
-oak_planks	2	oak_planks		1	2	wooden_axe
+tall_grass	0		put	0	3	
+cactus	0.4	cactus	put	0	3	
+dead_bush	0	stick	put	0	3	
+oak_log	2	oak_log		0	2	wooden_axe
+oak_planks	2	oak_planks		0	2	wooden_axe
 oak_leaves	0.2			0	2	
-oak_sapling	0	oak_sapling	put	1	3	
-spruce_log	2	spruce_log		1	2	wooden_axe
-spruce_planks	2	spruce_planks		1	2	wooden_axe
+oak_sapling	0	oak_sapling	put	0	3	
+spruce_log	2	spruce_log		0	2	wooden_axe
+spruce_planks	2	spruce_planks		0	2	wooden_axe
 spruce_leaves	0.2			0	2	
-spruce_sapling	0	spruce_sapling	put	1	3	
+spruce_sapling	0	spruce_sapling	put	0	3	
+coal_ore	3	coal		1	2	wooden_pickaxe
+coal_block	5			1	2	wooden_pickaxe
+iron_ore	3	iron_ingot		1	2	stone_pickaxe
+iron_block	5			1	2	stone_pickaxe
+gold_ore	3	gold_ingot		1	2	iron_pickaxe
+gold_block	3			1	2	iron_pickaxe
+diamond_ore	3	diamond		1	2	iron_pickaxe
+diamond_block	5			1	2	iron_pickaxe
