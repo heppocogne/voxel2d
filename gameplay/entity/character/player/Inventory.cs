@@ -233,4 +233,37 @@ public class Inventory : Node
 
         InformInventoryStateChanged();
     }
+
+    public Dictionary Serialize()
+    {
+        Dictionary data = new Dictionary();
+        Array items = new Array();
+
+        foreach (Item i in Items)
+        {
+            if (i != null)
+                items.Add(i.Serialize());
+            else
+                items.Add(null);
+        }
+        data["items"] = items;
+        return data;
+    }
+
+    public static Inventory Deserialize(Dictionary dic, World world)
+    {
+        Inventory result = new Inventory();
+
+        result.Size = ((Array)dic["items"]).Count;
+        result.Items = new Item[result.Size];
+        for (int i = 0; i < result.Size; i++)
+        {
+            if (((Array)dic["items"])[i] == null)
+                result.Items[i] = null;
+            else
+                result.Items[i] = Item.Deserialize(dic, world) as Item;
+        }
+
+        return result;
+    }
 }

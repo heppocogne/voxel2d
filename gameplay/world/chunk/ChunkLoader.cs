@@ -1,6 +1,7 @@
 using Godot;
 using Godot.Collections;
 using System;
+using System.IO.MemoryMappedFiles;
 using System.Linq;
 using System.Runtime.Remoting.Channels;
 
@@ -77,6 +78,10 @@ public class ChunkLoader : Node
     public void UnloadChunk(int chunk)
     {
         Dictionary data = loadedChunks[chunk].Serialize();
+        foreach (Entity e in GetTree().GetNodesInGroup("Chunk:" + GD.Str(chunk)))
+        {
+            e.QueueFree();
+        }
         File f = new File();
         Error err = f.OpenCompressed(GetChunkFilePath(chunk), File.ModeFlags.Write, compressionMode);
         if (err == Error.Ok)
@@ -136,6 +141,7 @@ public class ChunkLoader : Node
     Chunk GenerateChunk(int chunk)
     {
         Chunk map = chunkGenerator.Generate(chunk, worldRoot.Tileset);
+        map.ChunkNumber = chunk;
         generatedChunks.Add(chunk);
         loadedChunks.Add(chunk, map);
         // This function may call GenerateChunk() internally

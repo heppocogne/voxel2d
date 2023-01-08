@@ -9,6 +9,7 @@ public class Chunk : Node2D
     static public readonly int ChunkSize = 32;
     static public readonly int LayersCount = 4;
 
+    public int ChunkNumber;
     public List<TileMap> Layers = new List<TileMap>();
 
 
@@ -51,14 +52,26 @@ public class Chunk : Node2D
         }
 
         Godot.Collections.Dictionary dic2 = new Godot.Collections.Dictionary();
+        dic2["number"] = ChunkNumber;
         dic2["layers"] = layersDic;
+        Godot.Collections.Array<Dictionary> entities = new Godot.Collections.Array<Dictionary>();
+
+        foreach (Entity e in GetTree().GetNodesInGroup("Chunk:" + GD.Str(ChunkNumber)))
+        {
+            entities.Add(e.Serialize());
+        }
+        dic2["entities"] = entities;
+        GD.Print(entities);
+
         return dic2;
     }
 
-    static public Chunk Deserialize(Godot.Collections.Dictionary dic, Node parent)
+    static public Chunk Deserialize(Godot.Collections.Dictionary dic, World parent)
     {
         Chunk chunk = GD.Load<PackedScene>("res://gameplay/world/chunk/chunk.tscn").Instance<Chunk>();
         parent.AddChild(chunk);
+
+        chunk.ChunkNumber = (int)dic["number"];
 
         Dictionary layersDic = (Dictionary)dic["layers"];
         foreach (String layerName in layersDic.Keys)
@@ -71,6 +84,12 @@ public class Chunk : Node2D
                 foreach (Vector2 vec in vecs)
                     layer.SetCellv(vec, id);
             }
+        }
+
+        Godot.Collections.Array entities = (Godot.Collections.Array)dic["entities"];
+        foreach (Dictionary e in entities)
+        {
+            Entity.Deserialize(e, parent);
         }
 
         return chunk;

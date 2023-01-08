@@ -74,7 +74,6 @@ public class OreGenerator : Node
                 if (rng.Randf() < Diamond && worldRoot.GetCell(x + Chunk.ChunkSize * chunk, y) == 2)
 
                 {
-                    GD.Print(x, ",", y);
                     worldRoot.SetCell(x + Chunk.ChunkSize * chunk, y, diamondOre);
                 }
 

@@ -1,7 +1,8 @@
 using Godot;
+using Godot.Collections;
 using System;
 
-public class Entity : KinematicBody2D
+public abstract class Entity : KinematicBody2D
 {
     [Signal]
     delegate void ChunkChanged(int newChunk, int oldChyunk);
@@ -42,5 +43,24 @@ public class Entity : KinematicBody2D
             previousChunk = currentChunk;
         }
         ChunkPosition = currentChunk;
+    }
+
+    public virtual Dictionary Serialize()
+    {
+        Dictionary data = new Dictionary();
+        data["instance"] = Filename;
+        data["position"] = Position;
+
+        return data;
+    }
+
+    protected abstract Entity _DeserializeImpl(Dictionary dic, World world);
+
+    public static Entity Deserialize(Dictionary dic, World world)
+    {
+        Entity entity = GD.Load<PackedScene>((String)dic["instance"]).Instance<Entity>();
+        world.AddChild(entity);
+        entity.Position = (Vector2)dic["position"];
+        return entity._DeserializeImpl(dic, world);
     }
 }

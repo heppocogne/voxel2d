@@ -272,4 +272,20 @@ public class Player : Character
                 item.QueueFree();
         }
     }
+
+    public override Dictionary Serialize()
+    {
+        Dictionary data = base.Serialize();
+        //data["instance"] = "res://gameplay/entity/character/player/player.tscn";
+        data["inventory"] = Inventory.Serialize();
+
+        return data;
+    }
+
+    protected override Entity _DeserializeImpl(Dictionary dic, World world)
+    {
+        base._DeserializeImpl(dic, world);
+
+        return this;
+    }
 }

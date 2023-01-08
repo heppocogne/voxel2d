@@ -1,4 +1,5 @@
 using Godot;
+using Godot.Collections;
 using System;
 
 public class Character : Entity
@@ -11,5 +12,21 @@ public class Character : Entity
     {
         base._Ready();
         sprite = GetNode<AnimatedSprite>("AnimatedSprite");
+    }
+
+    public override Dictionary Serialize()
+    {
+        Dictionary data = base.Serialize();
+        //data["instance"] = "res://gameplay/entity/character/character.tscn";
+        data["facing_right"] = facingRight;
+
+        return data;
+    }
+
+    protected override Entity _DeserializeImpl(Dictionary dic, World world)
+    {
+        facingRight = (bool)dic["facing_right"];
+
+        return this;
     }
 }

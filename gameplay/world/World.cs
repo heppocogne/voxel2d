@@ -156,8 +156,11 @@ public class World : Node2D
         {
             if ((String)d["Name"] == itemname)
             {
-                if ((String)d["Texture"] == "")
-                    d["Texture"] = "res://assets/GoodVibes/items/" + (String)d["Name"] + ".png";
+                int tileID = FindTileID(itemname);
+                if (0 <= tileID)
+                    d["Texture"] = Tileset.TileGetTexture(tileID).ResourcePath;
+                else if (itemname != "__tile_template")
+                    d["Texture"] = "res://assets/GoodVibes/items/" + itemname + ".png";
                 return d;
             }
         }
@@ -173,7 +176,7 @@ public class World : Node2D
             if ((String)d["Texture"] != "")
                 item["Texture"] = d["Texture"];
             else
-                item["Texture"] = Tileset.TileGetTexture(FindTileID(itemname));
+                item["Texture"] = Tileset.TileGetTexture(FindTileID(itemname)).ResourcePath;
 
             Itemdata.Add(item);
             return item;
@@ -253,5 +256,12 @@ public class World : Node2D
     {
         Modulate = new Color(1, 1, 1);
         player.BlockUserInput = false;
+    }
+
+    public Dictionary Serialize()
+    {
+        Dictionary data = new Dictionary();
+        data["player_chunk"] = player.ChunkPosition;
+        return data;
     }
 }
