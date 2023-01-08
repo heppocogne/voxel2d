@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://gameplay/world/chunk/ChunkGenerator.cs" type="Script" id=1]
 [ext_resource path="res://gameplay/entity/character/player/player.tscn" type="PackedScene" id=2]
@@ -11,6 +11,7 @@
 [ext_resource path="res://gui/gui.tscn" type="PackedScene" id=9]
 [ext_resource path="res://gameplay/entity/item/items_data.tsv" type="Resource" id=10]
 [ext_resource path="res://gameplay/entity/item/tool_material_data.tsv" type="Resource" id=11]
+[ext_resource path="res://gameplay/world/CaveGenerator.cs" type="Script" id=12]
 
 [node name="GameScreen" type="Control"]
 anchor_right = 1.0
@@ -40,12 +41,16 @@ _tooldata = ExtResource( 11 )
 
 [node name="ChunkLoader" type="Node" parent="ViewportContainer/Viewport/World"]
 script = ExtResource( 3 )
+VisibleChunkDistance = 4
 PlayerNodePath = NodePath("../Player")
 
 [node name="ChunkGenerator" type="Node" parent="ViewportContainer/Viewport/World"]
 script = ExtResource( 1 )
 GaussianSigma = 5.0
 WorldBottom = 128
+
+[node name="CaveGenerator" type="Node" parent="ViewportContainer/Viewport/World"]
+script = ExtResource( 12 )
 
 [node name="Coordinate" type="TileMap" parent="ViewportContainer/Viewport/World"]
 z_index = 512

@@ -18,13 +18,16 @@ public class ChunkLoader : Node
 
     System.Collections.Generic.List<int> generatedChunks = new System.Collections.Generic.List<int>();
     System.Collections.Generic.Dictionary<int, Chunk> loadedChunks = new System.Collections.Generic.Dictionary<int, Chunk>();
-    ChunkGenerator generator;
+    ChunkGenerator chunkGenerator;
+    CaveGenerator caveGenerator;
     public override void _Ready()
     {
         worldRoot = GetParent<World>();
 
-        generator = GetNode<ChunkGenerator>("../ChunkGenerator");
-        generator.BaseSeed = GD.Randi();
+        chunkGenerator = GetNode<ChunkGenerator>("../ChunkGenerator");
+        chunkGenerator.BaseSeed = GD.Randi();
+        caveGenerator = GetNode<CaveGenerator>("../CaveGenerator");
+        caveGenerator.BaseSeed = GD.Randi();
         player = GetNode<Player>(PlayerNodePath);
         player.Connect("ChunkChanged", this, nameof(OnPlayerChunkChanged));
 
@@ -55,9 +58,7 @@ public class ChunkLoader : Node
     {
         if (!generatedChunks.Contains(chunk))
         {
-            var map = generator.Generate(chunk, worldRoot.Tileset);
-            generatedChunks.Add(chunk);
-            loadedChunks.Add(chunk, map);
+            GenerateChunk(chunk);
         }
         else if (!loadedChunks.ContainsKey(chunk))
         {
@@ -115,14 +116,21 @@ public class ChunkLoader : Node
     {
         if (!generatedChunks.Contains(chunk))
         {
-            Chunk map = generator.Generate(chunk, worldRoot.Tileset);
-            generatedChunks.Add(chunk);
-            loadedChunks.Add(chunk, map);
-            return map;
+            return GenerateChunk(chunk);
         }
         else if (!loadedChunks.ContainsKey(chunk))
             return LoadChunk(chunk);
         else
             return loadedChunks[chunk];
+    }
+
+    Chunk GenerateChunk(int chunk)
+    {
+        Chunk map = chunkGenerator.Generate(chunk, worldRoot.Tileset);
+        generatedChunks.Add(chunk);
+        loadedChunks.Add(chunk, map);
+        // This function may call GenerateChunk() internally
+        caveGenerator.Generate(chunk);
+        return map;
     }
 }

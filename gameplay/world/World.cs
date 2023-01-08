@@ -37,18 +37,19 @@ public class World : Node2D
 
         Chunk spawnChunk = loader.GetChunk(0);
         Rect2 rect = spawnChunk.Layers[2].GetUsedRect();
-        int height = (int)rect.Position.y;
-        for (; spawnChunk.GetCell(2, 0, height) < 0; height++) ;
-        Vector2 spawnPoint = new Vector2(0, height - 1);
+        rect.Expand(rect.Position + Vector2.Up);
+        Vector2 spawnPoint = new Vector2(0, 64);
+        for (int x = 0; x < SpawnAreaSize; x++)
+        {
+            for (int y = (int)rect.Position.y; spawnChunk.GetCell(2, x, y) < 0; y++)
+            {
+                if (y - 1 < spawnPoint.y)
+                    spawnPoint = new Vector2(x, y - 1);
+            }
+        }
 
         player.Position = coordinate.MapToWorld(spawnPoint) + Chunk.CellSize / 2;
-        /*
-        int height = generator.WorldBottom;
-        for (; 0 <= spawnChunk.GetCell(2, 0, height); height--) ;
-        Vector2 spawnPoint = new Vector2(0, height);
 
-        player.Position = coordinate.MapToWorld(spawnPoint) + Chunk.CellSize / 2;
-        */
         Tiledata = (Godot.Collections.Array)_tiledata.Get("records");
         Itemdata = (Godot.Collections.Array)_itemdata.Get("records");
 
