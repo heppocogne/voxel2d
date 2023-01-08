@@ -14,6 +14,10 @@ public class Coordinate : TileMap
     public override void _Ready()
     {
         world = GetParent<World>();
+    }
+
+    public void Init()
+    {
         player = GetNode<Player>("../Player");
         Connect(nameof(CellSelected), player, "OnCellSelected");
     }

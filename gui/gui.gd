@@ -1,7 +1,5 @@
 extends Control
 
-export var player_nodepath:NodePath
-
 signal inventory_opened()
 signal inventory_closed()
 
@@ -15,10 +13,13 @@ var grabbed_item:GrabbedItem
 
 func _ready():
 	get_tree().root.connect("size_changed", self, "_on_Window_size_changed")
-	var player_node:KinematicBody2D=get_node(player_nodepath)
+	_on_Window_size_changed()
+
+
+func setup():
+	var player_node:KinematicBody2D=$"../../Viewport/World/Player"
 	player_node.get_node("Inventory").connect("StateChanged",hotbar,"_on_PlayerInvetory_state_changed")
 	hotbar.connect("selected_slot_changed",player_node,"OnHotbarStateChanged")
-	_on_Window_size_changed()
 
 
 func _process(_delta:float):

@@ -27,28 +27,13 @@ public class World : Node2D
     Player player;
     ChunkLoader loader;
     ChunkGenerator generator;
-    TileMap coordinate;
+    Coordinate coordinate;
     public override void _Ready()
     {
-        player = GetNode<Player>("Player");
+        //player = GetNode<Player>("Player");
         loader = GetNode<ChunkLoader>("ChunkLoader");
         generator = GetNode<ChunkGenerator>("ChunkGenerator");
-        coordinate = GetNode<TileMap>("Coordinate");
-
-        Chunk spawnChunk = loader.GetChunk(0);
-        Rect2 rect = spawnChunk.Layers[2].GetUsedRect();
-        rect.Expand(rect.Position + Vector2.Up);
-        Vector2 spawnPoint = new Vector2(0, 64);
-        for (int x = 0; x < SpawnAreaSize; x++)
-        {
-            for (int y = (int)rect.Position.y; spawnChunk.GetCell(2, x, y) < 0; y++)
-            {
-                if (y - 1 < spawnPoint.y)
-                    spawnPoint = new Vector2(x, y - 1);
-            }
-        }
-
-        player.Position = coordinate.MapToWorld(spawnPoint) + Chunk.CellSize / 2;
+        coordinate = GetNode<Coordinate>("Coordinate");
 
         Tiledata = (Godot.Collections.Array)_tiledata.Get("records");
         Itemdata = (Godot.Collections.Array)_itemdata.Get("records");
@@ -64,7 +49,32 @@ public class World : Node2D
         }
 
         ToolMaterialData = (Godot.Collections.Array)_tooldata.Get("records");
+    }
 
+    public void NewWorld()
+    {
+        player = GD.Load<PackedScene>("res://gameplay/entity/character/player/player.tscn").Instance<Player>();
+        AddChild(player);
+        loader.InitAsNewWorld();
+        coordinate.Init();
+
+        Chunk spawnChunk = loader.GetChunk(0);
+        Rect2 rect = spawnChunk.Layers[2].GetUsedRect();
+        rect.Expand(rect.Position);
+        Vector2 spawnPoint = new Vector2(0, 64);
+        for (int x = 0; x < SpawnAreaSize; x++)
+        {
+            for (int y = (int)rect.Position.y - 1; spawnChunk.GetCell(2, x, y) < 0; y++)
+            {
+                if (y - 1 < spawnPoint.y)
+                {
+                    spawnPoint = new Vector2(x, y - 1);
+                    GD.Print(spawnPoint);
+                }
+            }
+        }
+
+        player.Position = coordinate.MapToWorld(spawnPoint) + Chunk.CellSize / 2;
     }
 
     public int GetCell(int x, int y)
@@ -258,10 +268,54 @@ public class World : Node2D
         player.BlockUserInput = false;
     }
 
+    public void Save()
+    {
+        loader.UnloadAll();
+        String dirPath = "user://worlds/" + WorldName + "/";
+        Directory dir = new Directory();
+        if (!dir.DirExists(dirPath))
+        {
+            dir.MakeDirRecursive(dirPath);
+        }
+        String filename = dirPath + "world";
+
+        File f = new File();
+        if (f.OpenCompressed(filename, File.ModeFlags.Write) == Error.Ok)
+        {
+            f.StoreVar(Serialize());
+            f.Close();
+        }
+    }
+
     public Dictionary Serialize()
     {
         Dictionary data = new Dictionary();
         data["player_chunk"] = player.ChunkPosition;
+        data["generated_chunks"] = loader.GeneratedChunks;
+        //data["instance"] = Filename;
         return data;
+    }
+
+    public void LoadWorld()
+    {
+        String filename = "user://worlds/" + WorldName + "/world";
+
+        File f = new File();
+        if (f.OpenCompressed(filename, File.ModeFlags.Read) == Error.Ok)
+        {
+            Dictionary data = (Dictionary)f.GetVar();
+            int playerChunk = (int)data["player_chunk"];
+            Godot.Collections.Array generatedChunks = (Godot.Collections.Array)data["generated_chunks"];
+            loader.GeneratedChunks = new Godot.Collections.Array<int>();
+            foreach (int chunk in generatedChunks)
+            {
+                loader.GeneratedChunks.Add(chunk);
+            }
+            f.Close();
+
+            Chunk spawnChunk = loader.GetChunk(playerChunk);
+            loader.InitAsLoadedWorld();
+            coordinate.Init();
+        }
     }
 }

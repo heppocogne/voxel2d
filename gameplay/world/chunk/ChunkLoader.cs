@@ -11,13 +11,11 @@ public class ChunkLoader : Node
 
     [Export]
     public int VisibleChunkDistance = 3;
-    [Export]
-    public NodePath PlayerNodePath;
 
     Player player;
     public World worldRoot;
 
-    System.Collections.Generic.List<int> generatedChunks = new System.Collections.Generic.List<int>();
+    public Godot.Collections.Array<int> GeneratedChunks;
     System.Collections.Generic.Dictionary<int, Chunk> loadedChunks = new System.Collections.Generic.Dictionary<int, Chunk>();
     ChunkGenerator chunkGenerator;
     CaveGenerator caveGenerator;
@@ -32,8 +30,6 @@ public class ChunkLoader : Node
         caveGenerator.BaseSeed = GD.Randi();
         oreGenerator = GetNode<OreGenerator>("../OreGenerator");
         oreGenerator.BaseSeed = GD.Randi();
-        player = GetNode<Player>(PlayerNodePath);
-        player.Connect("ChunkChanged", this, nameof(OnPlayerChunkChanged));
 
         String dirPath = GetChunkFilePath(0).Replace("0.chunk", "");
         Directory dir = new Directory();
@@ -41,6 +37,19 @@ public class ChunkLoader : Node
         {
             dir.MakeDirRecursive(dirPath);
         }
+    }
+
+    public void InitAsNewWorld()
+    {
+        player = GetNode<Player>("../Player");
+        player.Connect("ChunkChanged", this, nameof(OnPlayerChunkChanged));
+        GeneratedChunks = new Godot.Collections.Array<int>();
+    }
+
+    public void InitAsLoadedWorld()
+    {
+        player = GetNode<Player>("../Player");
+        player.Connect("ChunkChanged", this, nameof(OnPlayerChunkChanged));
     }
 
     public void OnPlayerChunkChanged(int newChunk, int oldChyunk)
@@ -60,7 +69,7 @@ public class ChunkLoader : Node
 
     public void ShowChunk(int chunk)
     {
-        if (!generatedChunks.Contains(chunk))
+        if (!GeneratedChunks.Contains(chunk))
         {
             GenerateChunk(chunk);
         }
@@ -128,7 +137,7 @@ public class ChunkLoader : Node
 
     public Chunk GetChunk(int chunk)
     {
-        if (!generatedChunks.Contains(chunk))
+        if (!GeneratedChunks.Contains(chunk))
         {
             return GenerateChunk(chunk);
         }
@@ -142,7 +151,7 @@ public class ChunkLoader : Node
     {
         Chunk map = chunkGenerator.Generate(chunk, worldRoot.Tileset);
         map.ChunkNumber = chunk;
-        generatedChunks.Add(chunk);
+        GeneratedChunks.Add(chunk);
         loadedChunks.Add(chunk, map);
         // This function may call GenerateChunk() internally
         caveGenerator.Generate(chunk);

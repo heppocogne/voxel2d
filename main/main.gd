@@ -14,7 +14,11 @@ func _on_Main_resized():
 
 
 func _on_NewGame_pressed():
-	get_tree().change_scene_to(preload("res://gameplay/game_screen.tscn"))
+	var game_screen:Control=preload("res://gameplay/game_screen.tscn").instance()
+	get_tree().root.add_child(game_screen)
+	game_screen.get_node("ViewportContainer/Viewport/World").NewWorld()
+	game_screen.get_node("ViewportContainer/GUILayer/GUI").setup()
+	queue_free()
 
 
 func _on_LoadGame_pressed():
