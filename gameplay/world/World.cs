@@ -4,6 +4,8 @@ using System;
 
 public class World : Node2D
 {
+    const File.CompressionMode compressionMode = File.CompressionMode.Zstd;
+
     [Export]
     public int SpawnAreaSize = 10;
     [Export]
@@ -280,7 +282,7 @@ public class World : Node2D
         String filename = dirPath + "world";
 
         File f = new File();
-        if (f.OpenCompressed(filename, File.ModeFlags.Write) == Error.Ok)
+        if (f.OpenCompressed(filename, File.ModeFlags.Write, compressionMode) == Error.Ok)
         {
             f.StoreVar(Serialize());
             f.Close();
@@ -301,7 +303,7 @@ public class World : Node2D
         String filename = "user://worlds/" + WorldName + "/world";
 
         File f = new File();
-        if (f.OpenCompressed(filename, File.ModeFlags.Read) == Error.Ok)
+        if (f.OpenCompressed(filename, File.ModeFlags.Read, compressionMode) == Error.Ok)
         {
             Dictionary data = (Dictionary)f.GetVar();
             int playerChunk = (int)data["player_chunk"];
