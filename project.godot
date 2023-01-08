@@ -14,7 +14,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/animated_texture2/animated_texture2.gd"
 }, {
-"base": "NinePatchRect",
+"base": "PanelContainer",
 "class": "BaseInventory",
 "language": "GDScript",
 "path": "res://gui/inventory/base_inventory.gd"

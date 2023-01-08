@@ -1,6 +1,6 @@
 tool
 class_name BaseInventory
-extends NinePatchRect
+extends PanelContainer
 
 signal inventory_manipulated(items)
 
