@@ -27,15 +27,15 @@ public class Chunk : Node2D
 
     public Godot.Collections.Dictionary Serialize()
     {
-        Godot.Collections.Dictionary dic = new Godot.Collections.Dictionary();
+        Godot.Collections.Dictionary layersDic = new Godot.Collections.Dictionary();
         foreach (TileMap layer in Layers)
         {
             /*
-             * "Layer0":{
-             *      0:[...],
-             *      1:[...],
-             *      ...
-             *  },...
+             * "layers":{
+             *      "Layer1":{0:[],1:[],...},
+             *      "Layer2":{...}
+             * },
+             * "entities":[]
              */
             Godot.Collections.Dictionary<int, Vector2[]> idsDic = new Godot.Collections.Dictionary<int, Vector2[]>();
             foreach (int id in layer.TileSet.GetTilesIds())
@@ -47,25 +47,33 @@ public class Chunk : Node2D
 
                 idsDic[id] = vecs;
             }
-            dic[layer.Name] = idsDic;
+            layersDic[layer.Name] = idsDic;
         }
 
-        return dic;
+        Godot.Collections.Dictionary dic2 = new Godot.Collections.Dictionary();
+        dic2["layers"] = layersDic;
+        return dic2;
     }
 
-    public void Deserialize(Godot.Collections.Dictionary dic)
+    static public Chunk Deserialize(Godot.Collections.Dictionary dic, Node parent)
     {
-        foreach (String layerName in dic.Keys)
+        Chunk chunk = GD.Load<PackedScene>("res://gameplay/world/chunk/chunk.tscn").Instance<Chunk>();
+        parent.AddChild(chunk);
+
+        Dictionary layersDic = (Dictionary)dic["layers"];
+        foreach (String layerName in layersDic.Keys)
         {
-            Godot.Collections.Dictionary layerDic = (Godot.Collections.Dictionary)dic[layerName];
-            TileMap layer = GetNode<TileMap>(layerName);
-            foreach (int id in layerDic.Keys)
+            Godot.Collections.Dictionary layerDataDic = (Dictionary)layersDic[layerName];
+            TileMap layer = chunk.GetNode<TileMap>(layerName);
+            foreach (int id in layerDataDic.Keys)
             {
-                Vector2[] vecs = (Vector2[])layerDic[id];
+                Vector2[] vecs = (Vector2[])layerDataDic[id];
                 foreach (Vector2 vec in vecs)
                     layer.SetCellv(vec, id);
             }
         }
+
+        return chunk;
     }
 
     public void SetTileSet(TileSet tileset)

@@ -90,6 +90,14 @@ public class ChunkLoader : Node
             GD.PushError("Failed to save chunk " + GD.Str(chunk) + "; file=" + GetChunkFilePath(chunk) + "; error=" + (int)err);
     }
 
+    public void UnloadAll()
+    {
+        while (loadedChunks.Count > 0)
+        {
+            UnloadChunk(loadedChunks.Count - 1);
+        }
+    }
+
     public Chunk LoadChunk(int chunk)
     {
         File f = new File();
@@ -97,11 +105,9 @@ public class ChunkLoader : Node
         if (err == Error.Ok)
         {
             Dictionary data = (Dictionary)f.GetVar();
-            var map = GD.Load<PackedScene>("res://gameplay/world/chunk/chunk.tscn").Instance() as Chunk;
-            worldRoot.AddChild(map);
+            var map = Chunk.Deserialize(data, worldRoot);
             map.SetTileSet(worldRoot.Tileset);
             map.Position = new Vector2(chunk * Chunk.ChunkSize * 16, 0);
-            map.Deserialize(data);
             loadedChunks.Add(chunk, map);
 
             f.Close();
