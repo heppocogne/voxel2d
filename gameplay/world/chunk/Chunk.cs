@@ -12,7 +12,6 @@ public class Chunk : Node2D
     public List<TileMap> Layers = new List<TileMap>();
 
 
-
     public override void _Ready()
     {
         foreach (TileMap layer in GetChildren())

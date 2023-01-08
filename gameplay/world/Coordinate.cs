@@ -49,4 +49,12 @@ public class Coordinate : TileMap
     {
         Update();
     }
+
+    static public int MapToChunk(int x)
+    {
+        if (0 <= x || x % Chunk.ChunkSize == 0)
+            return x / Chunk.ChunkSize;
+        else
+            return x / Chunk.ChunkSize - 1;
+    }
 }

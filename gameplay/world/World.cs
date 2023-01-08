@@ -36,12 +36,19 @@ public class World : Node2D
         coordinate = GetNode<TileMap>("Coordinate");
 
         Chunk spawnChunk = loader.GetChunk(0);
+        Rect2 rect = spawnChunk.Layers[2].GetUsedRect();
+        int height = (int)rect.Position.y;
+        for (; spawnChunk.GetCell(2, 0, height) < 0; height++) ;
+        Vector2 spawnPoint = new Vector2(0, height - 1);
+
+        player.Position = coordinate.MapToWorld(spawnPoint) + Chunk.CellSize / 2;
+        /*
         int height = generator.WorldBottom;
         for (; 0 <= spawnChunk.GetCell(2, 0, height); height--) ;
         Vector2 spawnPoint = new Vector2(0, height);
 
         player.Position = coordinate.MapToWorld(spawnPoint) + Chunk.CellSize / 2;
-
+        */
         Tiledata = (Godot.Collections.Array)_tiledata.Get("records");
         Itemdata = (Godot.Collections.Array)_itemdata.Get("records");
 
@@ -59,17 +66,9 @@ public class World : Node2D
 
     }
 
-    static public int MapToChunk(int x)
-    {
-        if (0 <= x || x % Chunk.ChunkSize == 0)
-            return x / Chunk.ChunkSize;
-        else
-            return x / Chunk.ChunkSize - 1;
-    }
-
     public int GetCell(int x, int y)
     {
-        Chunk chunk = loader.GetChunk(MapToChunk(x));
+        Chunk chunk = loader.GetChunk(Coordinate.MapToChunk(x));
         if (0 <= x)
             return chunk.GetCell(x % Chunk.ChunkSize, y);
         else
@@ -78,7 +77,7 @@ public class World : Node2D
 
     public int GetUsedLayer(int x, int y)
     {
-        Chunk chunk = loader.GetChunk(MapToChunk(x));
+        Chunk chunk = loader.GetChunk(Coordinate.MapToChunk(x));
         for (int i = 0; i < Chunk.LayersCount; i++)
         {
             int id;
@@ -100,7 +99,7 @@ public class World : Node2D
 
     public void SetCell(int x, int y, int tile)
     {
-        Chunk chunk = loader.GetChunk(MapToChunk(x));
+        Chunk chunk = loader.GetChunk(Coordinate.MapToChunk(x));
         if (0 <= x)
         {
             chunk.SetCell(2, x % Chunk.ChunkSize, y, tile);

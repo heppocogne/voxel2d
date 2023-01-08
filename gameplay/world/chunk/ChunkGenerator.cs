@@ -58,7 +58,7 @@ public class ChunkGenerator : Node
         uint mountainNoseOffset = rng.Randi() % (uint)mountainNoise.Period;
 
         int baseHeight = 56;
-        int dirtTop = -96;
+        int dirtTop = -32;
         int dirtBottom = 10;
 
         var map = GD.Load<PackedScene>("res://gameplay/world/chunk/chunk.tscn").Instance() as Chunk;
@@ -195,6 +195,7 @@ public class ChunkGenerator : Node
                 }
             }
         }
+
         return map;
     }
 }
