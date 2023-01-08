@@ -31,6 +31,9 @@ func _process(_delta:float):
 			emit_signal("inventory_opened")
 			inventory=preload("res://gui/default_inventory/default_inventory.tscn").instance()
 			inventory_container.add_child(inventory)
+	elif Input.is_action_just_pressed("game_pause"):
+		add_child(preload("res://gui/pause_menu/pause_menu.tscn").instance())
+		get_tree().paused=true
 
 
 func _on_Window_size_changed():
