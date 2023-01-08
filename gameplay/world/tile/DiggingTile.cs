@@ -52,6 +52,7 @@ public class DiggingTile : Node2D
     {
         var prev = progress.Value;
         progress.Value = progress.Value - damage;
+        progress.TintProgress = Color.FromHsv((float)(progress.Value / (3 * progress.MaxValue)), 1, 1);
         if (progress.Value <= 0)
         {
             EmitSignal(nameof(TileDestroyed), TilePosition, ToolFitness);
