@@ -63,8 +63,6 @@ func _input(event:InputEvent):
 						if gui_root.grabbed_item.display_name==grabbed.display_name:
 							# merge
 							var max_stack:int=world_node.FindItemData(grabbed.display_name)["Stack"]
-							print_debug(gui_root.grabbed_item.quantity)
-							print_debug(quantity)
 							if gui_root.grabbed_item.quantity+quantity<=max_stack:
 								set_item_quantity(quantity+gui_root.grabbed_item.quantity)
 								emit_signal("item_released")

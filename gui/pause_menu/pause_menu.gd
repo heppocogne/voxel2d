@@ -21,5 +21,6 @@ func _on_BackToTitle_pressed():
 
 
 func _on_SaveAndQuit_pressed():
+	get_tree().paused=false
 	world_node.SaveWorld()
 	get_tree().quit(0)

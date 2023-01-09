@@ -260,8 +260,6 @@ public class Inventory : Node
         Inventory result = new Inventory();
 
         Array a = (Array)dic["items"];
-        GD.Print(dic["items"]);
-        GD.Print(a.Count);
         result.Size = (int)dic["size"];
         result.Items = new Item[result.Size];
         for (int i = 0; i < result.Size; i++)
