@@ -287,6 +287,8 @@ public class World : Node2D
             f.StoreVar(Serialize());
             f.Close();
         }
+
+        screenShot.SavePng(dirPath + "screenshot.png");
     }
 
     public Dictionary Serialize()
@@ -294,7 +296,6 @@ public class World : Node2D
         Dictionary data = new Dictionary();
         data["player_chunk"] = player.ChunkPosition;
         data["generated_chunks"] = loader.GeneratedChunks;
-        data["screen_shot"] = screenShot;
         //data["instance"] = Filename;
         return data;
     }

@@ -16,7 +16,7 @@ func _on_BackToTitle_pressed():
 	get_tree().paused=false
 	world_node.SaveWorld()
 	get_tree().root.get_node("GameScreen").queue_free()
-	get_tree().change_scene_to(load("res://main/main.tscn"))
+	get_tree().change_scene_to(load("res://gui/main/main.tscn"))
 	queue_free()
 
 

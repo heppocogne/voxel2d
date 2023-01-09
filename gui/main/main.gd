@@ -14,11 +14,7 @@ func _on_Main_resized():
 
 
 func _on_NewGame_pressed():
-	var game_screen:Control=preload("res://gameplay/game_screen.tscn").instance()
-	get_tree().root.add_child(game_screen)
-	game_screen.get_node("ViewportContainer/Viewport/World").NewWorld()
-	game_screen.get_node("ViewportContainer/GUILayer/GUI").setup()
-	queue_free()
+	$WorldSettings.popup_centered($WorldSettings/MarginContainer.rect_size)
 
 
 func _on_LoadGame_pressed():

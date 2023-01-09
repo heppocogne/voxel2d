@@ -30,13 +30,6 @@ public class ChunkLoader : Node
         caveGenerator.BaseSeed = GD.Randi();
         oreGenerator = GetNode<OreGenerator>("../OreGenerator");
         oreGenerator.BaseSeed = GD.Randi();
-
-        String dirPath = GetChunkFilePath(0).Replace("0.chunk", "");
-        Directory dir = new Directory();
-        if (!dir.DirExists(dirPath))
-        {
-            dir.MakeDirRecursive(dirPath);
-        }
     }
 
     public void InitAsNewWorld()
@@ -44,6 +37,13 @@ public class ChunkLoader : Node
         player = GetNode<Player>("../Player");
         player.Connect("ChunkChanged", this, nameof(OnPlayerChunkChanged));
         GeneratedChunks = new Godot.Collections.Array<int>();
+
+        String dirPath = GetChunkFilePath(0).Replace("0.chunk", "");
+        Directory dir = new Directory();
+        if (!dir.DirExists(dirPath))
+        {
+            dir.MakeDirRecursive(dirPath);
+        }
     }
 
     public void InitAsLoadedWorld()

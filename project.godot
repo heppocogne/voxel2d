@@ -63,7 +63,7 @@ _global_script_class_icons={
 [application]
 
 config/name="voxel2d"
-run/main_scene="res://main/main.tscn"
+run/main_scene="res://gui/main/main.tscn"
 config/icon="res://icon.png"
 
 [editor]
