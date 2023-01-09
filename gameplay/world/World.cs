@@ -113,13 +113,31 @@ public class World : Node2D
     public void SetCell(int x, int y, int tile)
     {
         Chunk chunk = loader.GetChunk(Coordinate.MapToChunk(x));
-        if (0 <= x)
+        if (tile == -1)
         {
-            chunk.SetCell(2, x % Chunk.ChunkSize, y, tile);
+            for (int i = 0; i < Chunk.LayersCount; i++)
+            {
+                if (0 <= x)
+                {
+                    chunk.SetCell(i, x % Chunk.ChunkSize, y, tile);
+                }
+                else
+                {
+                    chunk.SetCell(i, Mathf.PosMod(x, Chunk.ChunkSize), y, tile);
+                }
+            }
         }
         else
         {
-            chunk.SetCell(2, Mathf.PosMod(x, Chunk.ChunkSize), y, tile);
+            Dictionary tiledata = GetTileData(tile);
+            if (0 <= x)
+            {
+                chunk.SetCell((int)(float)tiledata["Layer"], x % Chunk.ChunkSize, y, tile);
+            }
+            else
+            {
+                chunk.SetCell((int)(float)tiledata["Layer"], Mathf.PosMod(x, Chunk.ChunkSize), y, tile);
+            }
         }
     }
 
