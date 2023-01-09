@@ -16,7 +16,6 @@ public class Utility : Entity
 
     public void OpenInventory()
     {
-        GD.Print(Inventory.Items);
         Control gui = InventoryScene.Instance<Control>();
         gui.Set("utility_node", this);
         GetTree().Root.GetNode("GameScreen/ViewportContainer/GUILayer/GUI").EmitSignal("inventory_opened");
@@ -44,7 +43,6 @@ public class Utility : Entity
         world.UtilityMapping.Add(mapPos, this);
         ChunkPosition = Coordinate.MapToChunk((int)mapPos.x);
         AddToGroup("Chunk:" + GD.Str(ChunkPosition));
-        GD.Print(world.UtilityMapping);
 
         return this;
     }

@@ -149,7 +149,6 @@ public class World : Node2D
                     UtilityMapping.Add(new Vector2(x, y), chest);
                     chest.ChunkPosition = Coordinate.MapToChunk(x);
                     chest.AddToGroup("Chunk:" + GD.Str(chest.ChunkPosition));
-                    GD.Print(UtilityMapping);
                     break;
                 case 26:    // furnace
                     break;
@@ -290,7 +289,20 @@ public class World : Node2D
         switch (id)
         {
             case 25:    // chest
+                Utility chest = UtilityMapping[cell];
+                foreach (Item i in chest.Inventory.Items)
+                {
+                    if (i != null)
+                    {
+                        Item item = CreateItemInstance(i.ItemName);
+                        item.Position = coordinate.MapToWorld(cell) + new Vector2((float)GD.RandRange(0, 12), (float)GD.RandRange(0, 12));
+                        item.Velocity = Mathf.Polar2Cartesian(32, (float)GD.RandRange(Math.PI, 2 * Math.PI));
+                        AddChild(item);
+                    }
+                }
+
                 UtilityMapping.Remove(cell);
+                chest.QueueFree();
                 break;
             case 26:    // furnace
                 break;

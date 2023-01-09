@@ -189,7 +189,6 @@ public class Player : Character
             else
             {
                 Dictionary tiledata = worldRoot.GetTileData(tileID);
-                GD.Print(tiledata);
                 if ((String)tiledata["Feature"] == "utility")
                 {
                     switch (tileID)
