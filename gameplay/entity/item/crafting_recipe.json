@@ -144,5 +144,22 @@
             "diamond": 1
         },
         "output": 1
+    },
+    "furnace": {
+        "input": {
+            "cobblestone": 8
+        },
+        "output": 1
+    },
+    "chest": {
+        "input": [
+            {
+                "oak_planks": 8
+            },
+            {
+                "spruce_planks": 8
+            }
+        ],
+        "output": 1
     }
 }

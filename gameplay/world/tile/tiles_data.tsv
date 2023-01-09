@@ -26,3 +26,5 @@ gold_ore	3	gold_ingot		1	2	iron_pickaxe
 gold_block	3			1	2	iron_pickaxe
 diamond_ore	3	diamond		1	2	iron_pickaxe
 diamond_block	5			1	2	iron_pickaxe
+furnace	3.5		utility	1	1	wooden_pickaxe
+chest	2.5		utility	0	1	wooden_axe
