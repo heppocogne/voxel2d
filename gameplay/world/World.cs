@@ -147,6 +147,9 @@ public class World : Node2D
                     AddChild(chest);
                     chest.Position = coordinate.MapToWorld(new Vector2(x, y));
                     UtilityMapping.Add(new Vector2(x, y), chest);
+                    chest.ChunkPosition = Coordinate.MapToChunk(x);
+                    chest.AddToGroup("Chunk:" + GD.Str(chest.ChunkPosition));
+                    GD.Print(UtilityMapping);
                     break;
                 case 26:    // furnace
                     break;
@@ -269,6 +272,7 @@ public class World : Node2D
     public void OnTileDestroyed(Vector2 cell, bool ToolFitness)
     {
         int id = GetCellv(cell);
+
         Dictionary tiledata = GetTileData(id);
         if (ToolFitness || (int)(float)tiledata["RequireTools"] == 0)
         {
@@ -282,6 +286,15 @@ public class World : Node2D
             }
         }
         SetCellv(cell, -1);
+
+        switch (id)
+        {
+            case 25:    // chest
+                UtilityMapping.Remove(cell);
+                break;
+            case 26:    // furnace
+                break;
+        }
     }
 
     public void OnInventoryOpened()

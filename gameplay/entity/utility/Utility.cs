@@ -40,6 +40,11 @@ public class Utility : Entity
         AddChild(Inventory);
         Inventory.Name = "Inventory";
         Inventory.CallDeferred("InformInventoryStateChanged");
+        var mapPos = GetTree().Root.GetNode<TileMap>("GameScreen/ViewportContainer/Viewport/World/Coordinate").WorldToMap(Position);
+        world.UtilityMapping.Add(mapPos, this);
+        ChunkPosition = Coordinate.MapToChunk((int)mapPos.x);
+        AddToGroup("Chunk:" + GD.Str(ChunkPosition));
+        GD.Print(world.UtilityMapping);
 
         return this;
     }
