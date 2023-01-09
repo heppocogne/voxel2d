@@ -17,7 +17,7 @@ func set_recipe(input_items:Array,output_item):
 	recipe=input_items
 	var hbox:HBoxContainer=$MarginContainer/HBoxContainer
 	for r in recipe:
-		var material:CraftItemView=preload("res://gui/default_inventory/craft_item_view.tscn").instance()
+		var material:CraftItemView=preload("res://gui/inventory/default_inventory/craft_item_view.tscn").instance()
 		hbox.add_child(material)
 		hbox.move_child(material,0)
 		material.set_item_info(r.ItemName,r.ItemTexture,r.Quantity)

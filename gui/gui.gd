@@ -31,7 +31,7 @@ func _process(_delta:float):
 			inventory=null
 		else:
 			emit_signal("inventory_opened")
-			inventory=preload("res://gui/default_inventory/default_inventory.tscn").instance()
+			inventory=preload("res://gui/inventory/default_inventory/default_inventory.tscn").instance()
 			inventory_container.add_child(inventory)
 	elif Input.is_action_just_pressed("game_pause"):
 		var screenshot:=get_viewport().get_texture().get_data()

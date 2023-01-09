@@ -11,7 +11,7 @@ func _ready():
 func _update_recipe_list():
 	var available:Dictionary=player_node.Inventory.GetAvailableRecipes()
 	for r in available:
-		var cb:CraftButton=preload("res://gui/default_inventory/craft_button.tscn").instance()
+		var cb:CraftButton=preload("res://gui/inventory/default_inventory/craft_button.tscn").instance()
 		cb.set_recipe(available[r],r)
 		craft_list.add_child(cb)
 		cb.connect("crafted",self,"_on_crafted")

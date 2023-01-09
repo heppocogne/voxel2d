@@ -22,12 +22,12 @@ _global_script_classes=[ {
 "base": "Button",
 "class": "CraftButton",
 "language": "GDScript",
-"path": "res://gui/default_inventory/craft_button.gd"
+"path": "res://gui/inventory/default_inventory/craft_button.gd"
 }, {
 "base": "CenterContainer",
 "class": "CraftItemView",
 "language": "GDScript",
-"path": "res://gui/default_inventory/craft_item_view.gd"
+"path": "res://gui/inventory/default_inventory/craft_item_view.gd"
 }, {
 "base": "Sprite",
 "class": "GrabbedItem",

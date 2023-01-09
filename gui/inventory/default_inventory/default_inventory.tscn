@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://gui/inventory/base_inventory.tscn" type="PackedScene" id=1]
-[ext_resource path="res://gui/default_inventory/default_inventory.gd" type="Script" id=2]
+[ext_resource path="res://gui/inventory/default_inventory/default_inventory.gd" type="Script" id=2]
 [ext_resource path="res://assets/WolfRpgEditor/CharaChip/[Special]Wolfarl.png" type="Texture" id=3]
 
 [sub_resource type="AtlasTexture" id=1]

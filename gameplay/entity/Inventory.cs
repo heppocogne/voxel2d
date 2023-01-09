@@ -251,6 +251,7 @@ public class Inventory : Node
                 items.Add(null);
         }
         data["items"] = items;
+        data["size"] = Size;
         return data;
     }
 
@@ -259,7 +260,9 @@ public class Inventory : Node
         Inventory result = new Inventory();
 
         Array a = (Array)dic["items"];
-        result.Size = a.Count;
+        GD.Print(dic["items"]);
+        GD.Print(a.Count);
+        result.Size = (int)dic["size"];
         result.Items = new Item[result.Size];
         for (int i = 0; i < result.Size; i++)
         {

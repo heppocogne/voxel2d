@@ -12,6 +12,7 @@ var gui_root:Control
 onready var item_texture:TextureRect=$CenterContainer/TextureRect
 onready var label:Label=$Label
 onready var popup:PopupPanel=$PopupPanel
+onready var world_node:=get_tree().root.get_node("GameScreen/ViewportContainer/Viewport/World")
 
 var _str_size:Vector2
 
@@ -59,10 +60,23 @@ func _input(event:InputEvent):
 					var grabbed:GrabbedItem=preload("res://gui/inventory/grabbed_item.tscn").instance()
 					grabbed.set_item_info(display_name,item_texture.texture,quantity)
 					if gui_root.grabbed_item:
-						# swap
-						set_item_info(gui_root.grabbed_item.display_name,gui_root.grabbed_item.texture,gui_root.grabbed_item.quantity)
-						emit_signal("item_released")
-						emit_signal("item_grabbed",grabbed)
+						if gui_root.grabbed_item.display_name==grabbed.display_name:
+							# merge
+							var max_stack:int=world_node.FindItemData(grabbed.display_name)["Stack"]
+							print_debug(gui_root.grabbed_item.quantity)
+							print_debug(quantity)
+							if gui_root.grabbed_item.quantity+quantity<=max_stack:
+								set_item_quantity(quantity+gui_root.grabbed_item.quantity)
+								emit_signal("item_released")
+							else:
+								var diff:=max_stack-quantity
+								set_item_quantity(quantity+diff)
+								gui_root.grabbed_item.set_item_quantity(gui_root.grabbed_item.quantity-diff)
+						else:
+							# swap
+							set_item_info(gui_root.grabbed_item.display_name,gui_root.grabbed_item.texture,gui_root.grabbed_item.quantity)
+							emit_signal("item_released")
+							emit_signal("item_grabbed",grabbed)
 						emit_signal("state_changed")
 					else:
 						# grab
