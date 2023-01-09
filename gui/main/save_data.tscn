@@ -1,0 +1,50 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://gui/fonts/PixelMplus12-Regular.tres" type="DynamicFont" id=1]
+[ext_resource path="res://gui/disabled_stylebox.tres" type="StyleBox" id=2]
+[ext_resource path="res://gui/default_stylebox.tres" type="StyleBox" id=3]
+[ext_resource path="res://gui/hovered_stylebox.tres" type="StyleBox" id=4]
+[ext_resource path="res://gui/pressed_stylebox.tres" type="StyleBox" id=5]
+
+[node name="Savedata" type="Button"]
+margin_right = 240.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 240, 64 )
+custom_colors/font_color_focus = Color( 0, 0, 0, 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color_pressed = Color( 0, 0, 0, 1 )
+custom_fonts/font = ExtResource( 1 )
+custom_styles/hover = ExtResource( 4 )
+custom_styles/pressed = ExtResource( 5 )
+custom_styles/disabled = ExtResource( 2 )
+custom_styles/normal = ExtResource( 3 )
+toggle_mode = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+margin_right = 240.0
+margin_bottom = 64.0
+
+[node name="Control" type="Control" parent="HBoxContainer"]
+margin_bottom = 64.0
+
+[node name="CenterContainer" type="CenterContainer" parent="HBoxContainer"]
+margin_left = 4.0
+margin_right = 68.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 64, 64 )
+
+[node name="Screenshot" type="TextureRect" parent="HBoxContainer/CenterContainer"]
+margin_top = 32.0
+margin_right = 64.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 64, 0 )
+
+[node name="WorldName" type="Label" parent="HBoxContainer"]
+margin_left = 72.0
+margin_top = 25.0
+margin_right = 240.0
+margin_bottom = 39.0
+size_flags_horizontal = 3
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = ExtResource( 1 )
+autowrap = true

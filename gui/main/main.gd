@@ -18,7 +18,7 @@ func _on_NewGame_pressed():
 
 
 func _on_LoadGame_pressed():
-	pass # Replace with function body.
+	$LoadWorld.popup_centered($LoadWorld/MarginContainer.rect_size)
 
 
 func _on_Exit_pressed():
