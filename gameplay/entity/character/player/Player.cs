@@ -286,6 +286,14 @@ public class Player : Character
     {
         base._DeserializeImpl(dic, world);
 
+        RemoveChild(Inventory);
+        Inventory.QueueFree();
+        Inventory = Inventory.Deserialize((Dictionary)dic["inventory"], world);
+        AddChild(Inventory);
+        Inventory.Name = "Inventory";
+        Inventory.CallDeferred("InformInventoryStateChanged");
+
+
         return this;
     }
 }

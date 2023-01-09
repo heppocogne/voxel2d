@@ -10,7 +10,7 @@ func _ready():
 
 func _on_WorldName_text_changed(new_text:String):
 	var dir:=Directory.new()
-	if new_text=="" or dir.dir_exists("user://worlds/"+new_text):
+	if new_text=="" or dir.file_exists("user://worlds/"+new_text+"/world"):
 		warning.visible=true
 		generate_button.disabled=true
 	else:

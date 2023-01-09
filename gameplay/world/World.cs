@@ -318,7 +318,10 @@ public class World : Node2D
             f.Close();
 
             Chunk spawnChunk = loader.GetChunk(playerChunk);
+            player = GetNode<Player>("Player");
             loader.InitAsLoadedWorld();
+            player.ChunkPosition = playerChunk;
+            player.EmitSignal("ChunkChanged", playerChunk, 0);
             coordinate.Init();
         }
     }

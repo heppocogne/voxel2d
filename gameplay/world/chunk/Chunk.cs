@@ -61,7 +61,6 @@ public class Chunk : Node2D
             entities.Add(e.Serialize());
         }
         dic2["entities"] = entities;
-        GD.Print(entities);
 
         return dic2;
     }

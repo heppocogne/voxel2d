@@ -15,9 +15,6 @@ func _ready():
 		var file_name:=dir.get_next()
 		while file_name!="":
 			var savedata_path:="user://worlds/"+file_name+"/"
-			print_debug(dir.file_exists(savedata_path+"world")
-					and dir.file_exists(savedata_path+"screenshot.png")
-					and dir.dir_exists(savedata_path+"chunks"))
 			if (
 					dir.file_exists(savedata_path+"world")
 					and dir.file_exists(savedata_path+"screenshot.png")
@@ -60,4 +57,10 @@ func _on_LoadWorld_savedata_selected(name:String):
 
 
 func _on_Load_pressed():
-	pass # Replace with function body.
+	var game_screen:Control=preload("res://gameplay/game_screen.tscn").instance()
+	get_tree().root.add_child(game_screen)
+	var world:=game_screen.get_node("ViewportContainer/Viewport/World")
+	world.WorldName=ref_current.get_node("HBoxContainer/WorldName").text
+	world.LoadWorld()
+	game_screen.get_node("ViewportContainer/GUILayer/GUI").setup()
+	get_tree().root.get_node("Main").queue_free()

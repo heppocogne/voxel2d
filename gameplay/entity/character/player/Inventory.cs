@@ -15,9 +15,13 @@ public class Inventory : Node
 
     World worldRoot;
 
-    public override void _Ready()
+    Inventory()
     {
         Items = new Item[Size];
+    }
+
+    public override void _Ready()
+    {
         worldRoot = GetTree().Root.GetNode<World>("GameScreen/ViewportContainer/Viewport/World");
     }
 
@@ -71,6 +75,7 @@ public class Inventory : Node
 
     public void InformInventoryStateChanged()
     {
+        //GD.Print(Items);
         EmitSignal(nameof(StateChanged), new Godot.Collections.Array(Items));
     }
 
@@ -254,14 +259,18 @@ public class Inventory : Node
     {
         Inventory result = new Inventory();
 
-        result.Size = ((Array)dic["items"]).Count;
+        Array a = (Array)dic["items"];
+        result.Size = a.Count;
         result.Items = new Item[result.Size];
         for (int i = 0; i < result.Size; i++)
         {
-            if (((Array)dic["items"])[i] == null)
+            if (a[i] == null)
                 result.Items[i] = null;
             else
-                result.Items[i] = Item.Deserialize(dic, world) as Item;
+            {
+                result.Items[i] = Item.Deserialize((Dictionary)a[i], world) as Item;
+                world.RemoveChild(result.Items[i]);
+            }
         }
 
         return result;

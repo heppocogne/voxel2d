@@ -84,7 +84,7 @@ public class ChunkLoader : Node
         return "user://worlds/" + worldRoot.WorldName + "/chunks/" + GD.Str(chunk) + ".chunk";
     }
 
-    public void UnloadChunk(int chunk)
+    void UnloadChunk(int chunk)
     {
         Dictionary data = loadedChunks[chunk].Serialize();
         foreach (Entity e in GetTree().GetNodesInGroup("Chunk:" + GD.Str(chunk)))
@@ -112,7 +112,7 @@ public class ChunkLoader : Node
         }
     }
 
-    public Chunk LoadChunk(int chunk)
+    Chunk LoadChunk(int chunk)
     {
         File f = new File();
         Error err = f.OpenCompressed(GetChunkFilePath(chunk), File.ModeFlags.Read, compressionMode);
