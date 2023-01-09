@@ -80,6 +80,10 @@ public class Inventory : Node
 
     public void OnInventoryManipulated(Array items)
     {
+        GD.Print(Items.Length);
+        GD.Print(items.Count);
+        GD.Print(Size);
+
         for (int i = 0; i < Size; i++)
         {
             Items[i] = items[i] as Item;

@@ -164,22 +164,42 @@ public class Player : Character
             digging = null;
         }
 
-        if (IsRightClick() && targetCellValid && worldRoot.GetCellv(targetCell) == -1 && blockPlaceCooldown.TimeLeft == 0.0)
+        if (IsRightClick() && targetCellValid && blockPlaceCooldown.TimeLeft == 0.0)
         {
-            if (Inventory.Items[hotbarSlot] != null)
+            int tileID = worldRoot.GetCellv(targetCell);
+            if (tileID == -1)
             {
-                Dictionary itemdata = worldRoot.FindItemData(Inventory.Items[hotbarSlot].ItemName);
-                if (itemdata.Contains("Kind") && (String)itemdata["Kind"] == "tile")
+                if (Inventory.Items[hotbarSlot] != null)
                 {
-                    worldRoot.SetCellv(targetCell, worldRoot.FindTileID(Inventory.Items[hotbarSlot].ItemName));
-                    Inventory.Items[hotbarSlot].Quantity -= 1;
-                    if (Inventory.Items[hotbarSlot].Quantity == 0)
+                    Dictionary itemdata = worldRoot.FindItemData(Inventory.Items[hotbarSlot].ItemName);
+                    if (itemdata.Contains("Kind") && (String)itemdata["Kind"] == "tile")
                     {
-                        Inventory.Items[hotbarSlot].QueueFree();
-                        Inventory.Items[hotbarSlot] = null;
+                        worldRoot.SetCellv(targetCell, worldRoot.FindTileID(Inventory.Items[hotbarSlot].ItemName));
+                        Inventory.Items[hotbarSlot].Quantity -= 1;
+                        if (Inventory.Items[hotbarSlot].Quantity == 0)
+                        {
+                            Inventory.Items[hotbarSlot].QueueFree();
+                            Inventory.Items[hotbarSlot] = null;
+                        }
+                        Inventory.InformInventoryStateChanged();
+                        blockPlaceCooldown.Start();
                     }
-                    Inventory.InformInventoryStateChanged();
-                    blockPlaceCooldown.Start();
+                }
+            }
+            else
+            {
+                Dictionary tiledata = worldRoot.GetTileData(tileID);
+                GD.Print(tiledata);
+                if ((String)tiledata["Feature"] == "utility")
+                {
+                    switch (tileID)
+                    {
+                        case 25:    // chest
+                            worldRoot.UtilityMapping[targetCell].OpenInventory();
+                            break;
+                        case 26:    // furnace
+                            break;
+                    }
                 }
             }
         }

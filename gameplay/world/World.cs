@@ -25,6 +25,7 @@ public class World : Node2D
     public Godot.Collections.Array Itemdata;
     public Dictionary Recipedata;
     public Godot.Collections.Array ToolMaterialData;
+    public Dictionary<Vector2, Utility> UtilityMapping = new Dictionary<Vector2, Utility>();
 
     Player player;
     ChunkLoader loader;
@@ -137,6 +138,18 @@ public class World : Node2D
             else
             {
                 chunk.SetCell((int)(float)tiledata["Layer"], Mathf.PosMod(x, Chunk.ChunkSize), y, tile);
+            }
+
+            switch (tile)
+            {
+                case 25:    // chest
+                    Utility chest = GD.Load<PackedScene>("res://gameplay/entity/utility/chest.tscn").Instance<Utility>();
+                    AddChild(chest);
+                    chest.Position = coordinate.MapToWorld(new Vector2(x, y));
+                    UtilityMapping.Add(new Vector2(x, y), chest);
+                    break;
+                case 26:    // furnace
+                    break;
             }
         }
     }
