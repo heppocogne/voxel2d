@@ -14,12 +14,13 @@ public class DiggingTile : Node2D
     TextureProgress progress;
     public Dictionary Tiledata;
     public bool ToolFitness;
+    public float DigTime;
 
     public override void _Ready()
     {
         progress = GetNode<TextureProgress>("TextureProgress");
-        progress.MaxValue = Hardness;
-        progress.Value = Hardness;
+        progress.MaxValue = DigTime;
+        progress.Value = DigTime;
     }
 
     public void CheckToolFitness()

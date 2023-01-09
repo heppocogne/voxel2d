@@ -17,8 +17,6 @@ public class Player : Character
     public float RunSpeed = 128;
     [Export]
     public float JumpHeight = 20;
-    [Export]
-    public float DigDamage = 0.2f;
 
     public bool BlockUserInput = false;
     public bool CursorVisible;
@@ -118,11 +116,27 @@ public class Player : Character
                             digging.ToolMaterial = toolName.Left(toolName.Find("_"));
                             digging.ToolKind = toolName.Right(toolName.Find("_") + 1);
                             digging.CheckToolFitness();
+                            if (digging.ToolFitness || (float)digging.Tiledata["RequireTools"] == 0)
+                            {
+                                digging.DigTime = 2f * hardness;
+                            }
+                            else
+                            {
+                                digging.DigTime = 5f * hardness;
+                            }
                         }
                         else
                         {
                             digging.ToolMaterial = "";
                             digging.ToolKind = "";
+                            if ((float)digging.Tiledata["RequireTools"] == 0)
+                            {
+                                digging.DigTime = 2f * hardness;
+                            }
+                            else
+                            {
+                                digging.DigTime = 5f * hardness;
+                            }
                         }
                         Connect(nameof(DigCanceled), digging, "OnCanceled");
                         digging.Connect("TileDestroyed", this, nameof(OnTileDestroyed));
@@ -134,11 +148,13 @@ public class Player : Character
             }
             else
             {
-                if (digging.ToolMaterial == "" || !digging.ToolFitness)
-                    digging.Damage(DigDamage * delta);
+                if ((digging.ToolMaterial == "" || !digging.ToolFitness))
+                {
+                    digging.Damage(delta);
+                }
                 else
                 {
-                    digging.Damage(DigDamage * delta * (float)worldRoot.FindToolMaterial(digging.ToolMaterial)["Power"]);
+                    digging.Damage(delta * (float)worldRoot.FindToolMaterial(digging.ToolMaterial)["Power"]);
                 }
             }
         }

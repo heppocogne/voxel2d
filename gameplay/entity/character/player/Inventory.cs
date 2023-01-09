@@ -75,7 +75,6 @@ public class Inventory : Node
 
     public void InformInventoryStateChanged()
     {
-        //GD.Print(Items);
         EmitSignal(nameof(StateChanged), new Godot.Collections.Array(Items));
     }
 

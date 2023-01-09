@@ -138,11 +138,6 @@ public class World : Node2D
             if (Tileset.TileGetName(id) == name)
                 return id;
         }
-        foreach (int id in Tileset.GetTilesIds())
-        {
-            if (Tileset.TileGetName(id).Contains(name))
-                return id;
-        }
         return -1;
     }
 
