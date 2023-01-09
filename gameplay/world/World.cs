@@ -327,7 +327,7 @@ public class World : Node2D
     {
         screenShot = taken;
         Vector2 s = screenShot.GetSize();
-        screenShot.Resize(64, (int)(64 * s.x / s.y));
+        screenShot.Resize(64, (int)(64 * s.y / s.x));
     }
 
 }
