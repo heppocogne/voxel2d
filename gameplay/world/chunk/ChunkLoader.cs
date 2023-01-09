@@ -108,7 +108,7 @@ public class ChunkLoader : Node
     {
         while (loadedChunks.Count > 0)
         {
-            UnloadChunk(loadedChunks.Count - 1);
+            UnloadChunk(loadedChunks.Keys.ToArray()[0]);
         }
     }
 

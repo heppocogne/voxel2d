@@ -71,3 +71,4 @@ margin_bottom = 0.0
 
 [connection signal="inventory_closed" from="ViewportContainer/GUILayer/GUI" to="ViewportContainer/Viewport/World" method="OnInventoryClosed"]
 [connection signal="inventory_opened" from="ViewportContainer/GUILayer/GUI" to="ViewportContainer/Viewport/World" method="OnInventoryOpened"]
+[connection signal="screenshot_taken" from="ViewportContainer/GUILayer/GUI" to="ViewportContainer/Viewport/World" method="OnScreenshotTaken"]

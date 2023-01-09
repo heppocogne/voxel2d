@@ -2,6 +2,7 @@ extends Control
 
 signal inventory_opened()
 signal inventory_closed()
+signal screenshot_taken()
 
 onready var margin_container:Container=$MarginContainer
 onready var vbox_container:Container=$MarginContainer/VBoxContainer
@@ -33,6 +34,8 @@ func _process(_delta:float):
 			inventory=preload("res://gui/default_inventory/default_inventory.tscn").instance()
 			inventory_container.add_child(inventory)
 	elif Input.is_action_just_pressed("game_pause"):
+		var screen_shot:=get_viewport().get_texture().get_data()
+		emit_signal("screenshot_taken",screen_shot)
 		add_child(preload("res://gui/pause_menu/pause_menu.tscn").instance())
 		get_tree().paused=true
 

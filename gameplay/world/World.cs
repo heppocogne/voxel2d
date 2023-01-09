@@ -30,6 +30,7 @@ public class World : Node2D
     ChunkLoader loader;
     ChunkGenerator generator;
     Coordinate coordinate;
+    Image screenShot;
     public override void _Ready()
     {
         //player = GetNode<Player>("Player");
@@ -63,15 +64,14 @@ public class World : Node2D
         Chunk spawnChunk = loader.GetChunk(0);
         Rect2 rect = spawnChunk.Layers[2].GetUsedRect();
         rect.Expand(rect.Position);
-        Vector2 spawnPoint = new Vector2(0, 64);
+        Vector2 spawnPoint = new Vector2(0, rect.Position.y - 1);
         for (int x = 0; x < SpawnAreaSize; x++)
         {
             for (int y = (int)rect.Position.y - 1; spawnChunk.GetCell(2, x, y) < 0; y++)
             {
-                if (y - 1 < spawnPoint.y)
+                if (spawnPoint.y < y - 1)
                 {
                     spawnPoint = new Vector2(x, y - 1);
-                    GD.Print(spawnPoint);
                 }
             }
         }
@@ -270,7 +270,7 @@ public class World : Node2D
         player.BlockUserInput = false;
     }
 
-    public void Save()
+    public void SaveWorld()
     {
         loader.UnloadAll();
         String dirPath = "user://worlds/" + WorldName + "/";
@@ -294,6 +294,7 @@ public class World : Node2D
         Dictionary data = new Dictionary();
         data["player_chunk"] = player.ChunkPosition;
         data["generated_chunks"] = loader.GeneratedChunks;
+        data["screen_shot"] = screenShot;
         //data["instance"] = Filename;
         return data;
     }
@@ -320,4 +321,12 @@ public class World : Node2D
             coordinate.Init();
         }
     }
+
+    public void OnScreenshotTaken(Image taken)
+    {
+        screenShot = taken;
+        Vector2 s = screenShot.GetSize();
+        screenShot.Resize(64, (int)(64 * s.x / s.y));
+    }
+
 }
