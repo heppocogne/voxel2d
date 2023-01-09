@@ -202,6 +202,7 @@ group = ExtResource( 9 )
 text = "Normal"
 
 [node name="Flat" type="CheckBox" parent="WorldSettings/MarginContainer/VBoxContainer/HBoxContainer3"]
+visible = false
 margin_left = 132.0
 margin_right = 184.0
 margin_bottom = 24.0
