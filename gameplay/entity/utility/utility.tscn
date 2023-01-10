@@ -6,6 +6,7 @@
 
 [node name="Utility" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
+MaxFallSpeed = 0.0
 InventoryScene = null
 
 [node name="Inventory" type="Node" parent="." index="1"]
