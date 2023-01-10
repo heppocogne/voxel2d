@@ -1,0 +1,13 @@
+[remap]
+
+importer="heppocogne.godot-json-importer"
+type="Resource"
+path="res://.import/crafting_recipe.json-6f731bab4d5f6b82d2fea3d4e9184c23.res"
+
+[deps]
+
+source_file="res://gameplay/entity/item/crafting_recipe.json"
+dest_files=[ "res://.import/crafting_recipe.json-6f731bab4d5f6b82d2fea3d4e9184c23.res" ]
+
+[params]
+

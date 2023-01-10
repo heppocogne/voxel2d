@@ -16,14 +16,14 @@ public class World : Node2D
     Resource _tiledata;
     [Export]
     Resource _itemdata;
-    [Export(PropertyHint.File, "*.json")]
-    String _recipedata;
+    [Export]
+    Resource _recipedata;
     [Export]
     Resource _tooldata;
 
-    public Godot.Collections.Array Tiledata;
-    public Godot.Collections.Array Itemdata;
-    public Dictionary Recipedata;
+    public Godot.Collections.Array TileData;
+    public Godot.Collections.Array ItemData;
+    public Dictionary RecipeData;
     public Godot.Collections.Array ToolMaterialData;
     public Dictionary<Vector2, Utility> UtilityMapping = new Dictionary<Vector2, Utility>();
 
@@ -39,19 +39,9 @@ public class World : Node2D
         generator = GetNode<ChunkGenerator>("ChunkGenerator");
         coordinate = GetNode<Coordinate>("Coordinate");
 
-        Tiledata = (Godot.Collections.Array)_tiledata.Get("records");
-        Itemdata = (Godot.Collections.Array)_itemdata.Get("records");
-
-        File f = new File();
-        if (f.Open(_recipedata, File.ModeFlags.Read) == Error.Ok)
-        {
-            var result = JSON.Parse(f.GetAsText());
-            if (result.Error == Error.Ok)
-            {
-                Recipedata = (Dictionary)result.Result;
-            }
-        }
-
+        TileData = (Godot.Collections.Array)_tiledata.Get("records");
+        ItemData = (Godot.Collections.Array)_itemdata.Get("records");
+        RecipeData = (Dictionary)_recipedata.Get("data");
         ToolMaterialData = (Godot.Collections.Array)_tooldata.Get("records");
     }
 
@@ -182,7 +172,7 @@ public class World : Node2D
 
     public Dictionary FindTileData(String tilename)
     {
-        foreach (Dictionary d in Tiledata)
+        foreach (Dictionary d in TileData)
         {
             if ((String)d["Name"] == tilename)
                 return d;
@@ -198,7 +188,7 @@ public class World : Node2D
 
     public Dictionary FindItemData(String itemname)
     {
-        foreach (Dictionary d in Itemdata)
+        foreach (Dictionary d in ItemData)
         {
             if ((String)d["Name"] == itemname)
             {
@@ -224,7 +214,7 @@ public class World : Node2D
             else
                 item["Texture"] = Tileset.TileGetTexture(FindTileID(itemname)).ResourcePath;
 
-            Itemdata.Add(item);
+            ItemData.Add(item);
             return item;
         }
         GD.PushError("Item name '" + itemname + "' is not found");

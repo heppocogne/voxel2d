@@ -72,7 +72,7 @@ convert_text_resources_to_binary_on_export=true
 
 [editor_plugins]
 
-enabled=PoolStringArray( "res://addons/animated_texture2/plugin.cfg", "res://addons/csv-data-importer/plugin.cfg", "res://addons/tilemap_data_exporter/plugin.cfg" )
+enabled=PoolStringArray( "res://addons/animated_texture2/plugin.cfg", "res://addons/csv-data-importer/plugin.cfg", "res://addons/json_data_importer/plugin.cfg", "res://addons/tilemap_data_exporter/plugin.cfg" )
 
 [gui]
 
