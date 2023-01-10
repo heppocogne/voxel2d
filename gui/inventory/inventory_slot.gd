@@ -99,7 +99,12 @@ func _input(event:InputEvent):
 					else:
 						# split
 						var half:=quantity/2
-						
+						if 0<half:
+							var grabbed:GrabbedItem=preload("res://gui/inventory/grabbed_item.tscn").instance()
+							grabbed.set_item_info(display_name,item_texture.texture,quantity-half)
+							emit_signal("item_grabbed",grabbed)
+							set_item_quantity(half)
+							emit_signal("state_changed")
 
 
 func set_item_quantity(n:int):
