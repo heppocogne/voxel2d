@@ -26,7 +26,7 @@ func _on_Generate_pressed():
 	var world:=game_screen.get_node("ViewportContainer/Viewport/World")
 	world.WorldName=$MarginContainer/VBoxContainer/HBoxContainer/WorldName.text
 	world.NewWorld()
-	game_screen.get_node("ViewportContainer/GUILayer/GUI").setup()
+	game_screen.get_node("GUILayer/GUI").setup()
 	get_tree().root.get_node("Main").queue_free()
 
 

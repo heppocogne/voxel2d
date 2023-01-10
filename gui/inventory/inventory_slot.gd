@@ -19,7 +19,7 @@ var _str_size:Vector2
 
 func _ready():
 	$PopupPanel/Label.text=display_name
-	gui_root=get_tree().root.get_node("GameScreen/ViewportContainer/GUILayer/GUI")
+	gui_root=get_tree().root.get_node("GameScreen/GUILayer/GUI")
 	connect("item_grabbed",gui_root,"_on_item_grabbed")
 	connect("item_released",gui_root,"_on_item_released")
 

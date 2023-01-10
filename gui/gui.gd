@@ -18,7 +18,7 @@ func _ready():
 
 
 func setup():
-	var player_node:KinematicBody2D=$"../../Viewport/World/Player"
+	var player_node:KinematicBody2D=get_tree().root.get_node("GameScreen/ViewportContainer/Viewport/World/Player")
 	player_node.get_node("Inventory").connect("StateChanged",hotbar,"_on_PlayerInvetory_state_changed")
 	hotbar.connect("selected_slot_changed",player_node,"OnHotbarStateChanged")
 

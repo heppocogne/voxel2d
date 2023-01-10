@@ -62,5 +62,5 @@ func _on_Load_pressed():
 	var world:=game_screen.get_node("ViewportContainer/Viewport/World")
 	world.WorldName=ref_current.get_node("HBoxContainer/WorldName").text
 	world.LoadWorld()
-	game_screen.get_node("ViewportContainer/GUILayer/GUI").setup()
+	game_screen.get_node("GUILayer/GUI").setup()
 	get_tree().root.get_node("Main").queue_free()
