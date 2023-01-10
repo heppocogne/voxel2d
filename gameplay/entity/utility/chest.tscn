@@ -4,7 +4,6 @@
 [ext_resource path="res://gui/inventory/chest_inventory/chest_inventory.tscn" type="PackedScene" id=2]
 
 [node name="Chest" instance=ExtResource( 1 )]
-MaxFallSpeed = 0.0
 InventoryScene = ExtResource( 2 )
 
 [node name="Inventory" parent="." index="1"]

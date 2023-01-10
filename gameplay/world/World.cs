@@ -151,6 +151,12 @@ public class World : Node2D
                     chest.AddToGroup("Chunk:" + GD.Str(chest.ChunkPosition));
                     break;
                 case 26:    // furnace
+                    Utility furnace = GD.Load<PackedScene>("res://gameplay/entity/utility/furnace.tscn").Instance<Utility>();
+                    AddChild(furnace);
+                    furnace.Position = coordinate.MapToWorld(new Vector2(x, y));
+                    UtilityMapping.Add(new Vector2(x, y), furnace);
+                    furnace.ChunkPosition = Coordinate.MapToChunk(x);
+                    furnace.AddToGroup("Chunk:" + GD.Str(furnace.ChunkPosition));
                     break;
             }
         }
@@ -323,6 +329,7 @@ public class World : Node2D
 
     public void SaveWorld()
     {
+        UtilityMapping.Clear();
         loader.UnloadAll();
         String dirPath = "user://worlds/" + WorldName + "/";
         Directory dir = new Directory();

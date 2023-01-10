@@ -5,3 +5,6 @@
 
 [node name="Furnace" instance=ExtResource( 1 )]
 InventoryScene = ExtResource( 2 )
+
+[node name="Inventory" parent="." index="1"]
+Size = 3

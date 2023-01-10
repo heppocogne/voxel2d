@@ -45,7 +45,7 @@ func _process(_delta:float):
 		popup.hide()
 
 
-func _input(event:InputEvent):
+func _input_impl(event:InputEvent):
 	if event is InputEventMouseButton:
 		var mb:=event as InputEventMouseButton
 		if mb.pressed:
@@ -105,6 +105,10 @@ func _input(event:InputEvent):
 							emit_signal("item_grabbed",grabbed)
 							set_item_quantity(half)
 							emit_signal("state_changed")
+
+
+func _input(event:InputEvent):
+	_input_impl(event)
 
 
 func set_item_quantity(n:int):

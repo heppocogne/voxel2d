@@ -194,9 +194,8 @@ public class Player : Character
                     switch (tileID)
                     {
                         case 25:    // chest
-                            worldRoot.UtilityMapping[targetCell].OpenInventory();
-                            break;
                         case 26:    // furnace
+                            worldRoot.UtilityMapping[targetCell].OpenInventory();
                             break;
                     }
                 }
