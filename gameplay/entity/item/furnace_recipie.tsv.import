@@ -1,0 +1,17 @@
+[remap]
+
+importer="com.timothyqiu.godot-csv-importer"
+type="Resource"
+path="res://.import/furnace_recipie.tsv-3335c5935ceed329a77a62916d726ee9.res"
+
+[deps]
+
+source_file="res://gameplay/entity/item/furnace_recipie.tsv"
+dest_files=[ "res://.import/furnace_recipie.tsv-3335c5935ceed329a77a62916d726ee9.res" ]
+
+[params]
+
+delimiter=0
+headers=false
+detect_numbers=false
+force_float=true

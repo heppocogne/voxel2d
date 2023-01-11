@@ -22,13 +22,17 @@ public class World : Node2D
     Resource _toolData;
     [Export]
     Resource _fuelData;
+    [Export]
+    Resource _furnaceRecipeData;
+
 
     public Godot.Collections.Array TileData;
     public Godot.Collections.Array ItemData;
-    public Dictionary CraftingRecipeData;
+    public Dictionary CraftingRecipes;
     public Godot.Collections.Array ToolMaterialData;
     public Dictionary<Vector2, Utility> UtilityMapping = new Dictionary<Vector2, Utility>();
     public Godot.Collections.Array FuelData;
+    public Godot.Collections.Array FurnaceRecipes;
 
     Player player;
     ChunkLoader loader;
@@ -44,9 +48,10 @@ public class World : Node2D
 
         TileData = (Godot.Collections.Array)_tileData.Get("records");
         ItemData = (Godot.Collections.Array)_itemData.Get("records");
-        CraftingRecipeData = (Dictionary)_craftingRecipeData.Get("data");
+        CraftingRecipes = (Dictionary)_craftingRecipeData.Get("data");
         ToolMaterialData = (Godot.Collections.Array)_toolData.Get("records");
         FuelData = (Godot.Collections.Array)_fuelData.Get("records");
+        FurnaceRecipes = (Godot.Collections.Array)_furnaceRecipeData.Get("records");
     }
 
     public void NewWorld()
@@ -238,9 +243,19 @@ public class World : Node2D
 
     public Dictionary FindFuelData(String itemname)
     {
-        foreach (Dictionary d in TileData)
+        foreach (Dictionary d in FuelData)
         {
             if ((String)d["Name"] == itemname)
+                return d;
+        }
+        return new Dictionary();
+    }
+
+    public Dictionary FindFurnaceRecipe(String input)
+    {
+        foreach (Dictionary d in FurnaceRecipes)
+        {
+            if ((String)d["Input"] == input)
                 return d;
         }
         return new Dictionary();

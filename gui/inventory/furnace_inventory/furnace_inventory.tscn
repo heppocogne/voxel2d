@@ -45,6 +45,9 @@ texture_progress = ExtResource( 5 )
 fill_mode = 3
 nine_patch_stretch = true
 
+[node name="FuelTimer" type="Timer" parent="MarginContainer/VBoxContainer/CenterContainer/FurnaceInventory/Inputs/TextureProgress" index="0"]
+one_shot = true
+
 [node name="InventorySlot2" parent="MarginContainer/VBoxContainer/CenterContainer/FurnaceInventory/Inputs" index="2" instance=ExtResource( 2 )]
 margin_top = 72.0
 margin_bottom = 104.0
@@ -55,15 +58,20 @@ margin_right = 52.0
 margin_bottom = 104.0
 rect_min_size = Vector2( 16, 0 )
 
-[node name="TextureRect" type="TextureProgress" parent="MarginContainer/VBoxContainer/CenterContainer/FurnaceInventory" index="2"]
+[node name="TextureProgress" type="TextureProgress" parent="MarginContainer/VBoxContainer/CenterContainer/FurnaceInventory" index="2"]
 margin_left = 56.0
 margin_top = 44.0
 margin_right = 88.0
 margin_bottom = 60.0
 size_flags_horizontal = 0
 size_flags_vertical = 4
+max_value = 10.0
 texture_under = ExtResource( 4 )
 texture_progress = ExtResource( 3 )
+
+[node name="BurnTimer" type="Timer" parent="MarginContainer/VBoxContainer/CenterContainer/FurnaceInventory/TextureProgress" index="0"]
+wait_time = 10.0
+one_shot = true
 
 [node name="Control3" type="Control" parent="MarginContainer/VBoxContainer/CenterContainer/FurnaceInventory" index="3"]
 margin_left = 92.0
@@ -87,3 +95,6 @@ margin_bottom = 112.0
 [node name="PlayerInventory" parent="MarginContainer/VBoxContainer" index="2"]
 margin_top = 120.0
 margin_bottom = 264.0
+
+[connection signal="timeout" from="MarginContainer/VBoxContainer/CenterContainer/FurnaceInventory/Inputs/TextureProgress/FuelTimer" to="." method="_on_FuelTimer_timeout"]
+[connection signal="timeout" from="MarginContainer/VBoxContainer/CenterContainer/FurnaceInventory/TextureProgress/BurnTimer" to="." method="_on_BurnTimer_timeout"]

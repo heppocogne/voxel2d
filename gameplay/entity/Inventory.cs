@@ -130,7 +130,7 @@ public class Inventory : Node
     public Dictionary<Item, Array<Item>> GetAvailableCraftingRecipes()
     {
         Dictionary<Item, Array<Item>> result = new Dictionary<Item, Array<Item>>();
-        Dictionary recipes = (Dictionary)worldRoot.CraftingRecipeData;
+        Dictionary recipes = (Dictionary)worldRoot.CraftingRecipes;
         foreach (String outputName in recipes.Keys)
         {
             Dictionary recipe = (Dictionary)recipes[outputName];
