@@ -11,21 +11,24 @@ public class World : Node2D
     [Export]
     public String WorldName = "";
     [Export]
-    public TileSet Tileset;
+    public TileSet TileSet;
     [Export]
-    Resource _tiledata;
+    Resource _tileData;
     [Export]
-    Resource _itemdata;
+    Resource _itemData;
     [Export]
-    Resource _recipedata;
+    Resource _craftingRecipeData;
     [Export]
-    Resource _tooldata;
+    Resource _toolData;
+    [Export]
+    Resource _fuelData;
 
     public Godot.Collections.Array TileData;
     public Godot.Collections.Array ItemData;
-    public Dictionary RecipeData;
+    public Dictionary CraftingRecipeData;
     public Godot.Collections.Array ToolMaterialData;
     public Dictionary<Vector2, Utility> UtilityMapping = new Dictionary<Vector2, Utility>();
+    public Godot.Collections.Array FuelData;
 
     Player player;
     ChunkLoader loader;
@@ -39,10 +42,11 @@ public class World : Node2D
         generator = GetNode<ChunkGenerator>("ChunkGenerator");
         coordinate = GetNode<Coordinate>("Coordinate");
 
-        TileData = (Godot.Collections.Array)_tiledata.Get("records");
-        ItemData = (Godot.Collections.Array)_itemdata.Get("records");
-        RecipeData = (Dictionary)_recipedata.Get("data");
-        ToolMaterialData = (Godot.Collections.Array)_tooldata.Get("records");
+        TileData = (Godot.Collections.Array)_tileData.Get("records");
+        ItemData = (Godot.Collections.Array)_itemData.Get("records");
+        CraftingRecipeData = (Dictionary)_craftingRecipeData.Get("data");
+        ToolMaterialData = (Godot.Collections.Array)_toolData.Get("records");
+        FuelData = (Godot.Collections.Array)_fuelData.Get("records");
     }
 
     public void NewWorld()
@@ -159,12 +163,12 @@ public class World : Node2D
 
     public int FindTileID(String name)
     {
-        if (Tileset == null)
+        if (TileSet == null)
             return -1;
 
-        foreach (int id in Tileset.GetTilesIds())
+        foreach (int id in TileSet.GetTilesIds())
         {
-            if (Tileset.TileGetName(id) == name)
+            if (TileSet.TileGetName(id) == name)
                 return id;
         }
         return -1;
@@ -183,7 +187,7 @@ public class World : Node2D
 
     public Dictionary GetTileData(int id)
     {
-        return FindTileData(Tileset.TileGetName(id));
+        return FindTileData(TileSet.TileGetName(id));
     }
 
     public Dictionary FindItemData(String itemname)
@@ -194,7 +198,7 @@ public class World : Node2D
             {
                 int tileID = FindTileID(itemname);
                 if (0 <= tileID)
-                    d["Texture"] = Tileset.TileGetTexture(tileID).ResourcePath;
+                    d["Texture"] = TileSet.TileGetTexture(tileID).ResourcePath;
                 else if (itemname != "__tile_template")
                     d["Texture"] = "res://assets/GoodVibes/items/" + itemname + ".png";
                 return d;
@@ -212,7 +216,7 @@ public class World : Node2D
             if ((String)d["Texture"] != "")
                 item["Texture"] = d["Texture"];
             else
-                item["Texture"] = Tileset.TileGetTexture(FindTileID(itemname)).ResourcePath;
+                item["Texture"] = TileSet.TileGetTexture(FindTileID(itemname)).ResourcePath;
 
             ItemData.Add(item);
             return item;
@@ -232,6 +236,16 @@ public class World : Node2D
         return new Dictionary();
     }
 
+    public Dictionary FindFuelData(String itemname)
+    {
+        foreach (Dictionary d in TileData)
+        {
+            if ((String)d["Name"] == itemname)
+                return d;
+        }
+        return new Dictionary();
+    }
+
     public Item CreateItemInstance(String itemname, int count = 1)
     {
         Item item;
@@ -239,8 +253,8 @@ public class World : Node2D
         {
             item = GD.Load<PackedScene>("res://gameplay/entity/item/item.tscn").Instance() as Item;
             int id = FindTileID(itemname);
-            item.ItemTexture = Tileset.TileGetTexture(id);
-            item.ItemName = Tileset.TileGetName(id);
+            item.ItemTexture = TileSet.TileGetTexture(id);
+            item.ItemName = TileSet.TileGetName(id);
         }
         else
         {

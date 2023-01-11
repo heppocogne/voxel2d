@@ -1,0 +1,17 @@
+[remap]
+
+importer="com.timothyqiu.godot-csv-importer"
+type="Resource"
+path="res://.import/fuel_data.tsv-93b904ed5c6fce54f17f00df16bdf847.res"
+
+[deps]
+
+source_file="res://gameplay/entity/item/fuel_data.tsv"
+dest_files=[ "res://.import/fuel_data.tsv-93b904ed5c6fce54f17f00df16bdf847.res" ]
+
+[params]
+
+delimiter=0
+headers=false
+detect_numbers=false
+force_float=true

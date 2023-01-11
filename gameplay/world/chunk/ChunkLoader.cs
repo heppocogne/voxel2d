@@ -120,7 +120,7 @@ public class ChunkLoader : Node
         {
             Dictionary data = (Dictionary)f.GetVar();
             var map = Chunk.Deserialize(data, worldRoot);
-            map.SetTileSet(worldRoot.Tileset);
+            map.SetTileSet(worldRoot.TileSet);
             map.Position = new Vector2(chunk * Chunk.ChunkSize * 16, 0);
             loadedChunks.Add(chunk, map);
 
@@ -149,7 +149,7 @@ public class ChunkLoader : Node
 
     Chunk GenerateChunk(int chunk)
     {
-        Chunk map = chunkGenerator.Generate(chunk, worldRoot.Tileset);
+        Chunk map = chunkGenerator.Generate(chunk, worldRoot.TileSet);
         map.ChunkNumber = chunk;
         GeneratedChunks.Add(chunk);
         loadedChunks.Add(chunk, map);

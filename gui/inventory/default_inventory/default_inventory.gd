@@ -9,7 +9,7 @@ func _ready():
 
 
 func _update_recipe_list():
-	var available:Dictionary=player_node.Inventory.GetAvailableRecipes()
+	var available:Dictionary=player_node.Inventory.GetAvailableCraftingRecipes()
 	for r in available:
 		var cb:CraftButton=preload("res://gui/inventory/default_inventory/craft_button.tscn").instance()
 		cb.set_recipe(available[r],r)
