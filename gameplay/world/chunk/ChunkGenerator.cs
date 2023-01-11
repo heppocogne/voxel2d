@@ -34,7 +34,6 @@ public class ChunkGenerator : Node
         heightNoise.Period = 64;
 
         var dirtNoise = new OpenSimplexNoise();
-
         dirtNoise.Seed = s + 10;
         dirtNoise.Period = 16;
 
@@ -47,15 +46,13 @@ public class ChunkGenerator : Node
         biomeNoise.Persistence = 0.1f;
         biomeNoise.Period = 640;
 
-        var mountainNoise = new OpenSimplexNoise();
-        mountainNoise.Seed = s + 40;
-        mountainNoise.Persistence = 0.1f;
-        mountainNoise.Period = 96;
+        var sandstoneNoise = new OpenSimplexNoise();
+        sandstoneNoise.Seed = s + 40;
+        sandstoneNoise.Period = 16;
 
         rng.Seed = (ulong)(BaseSeed + chunk + 1 << 31);
 
         uint biomeNoseOffset = rng.Randi() % (uint)biomeNoise.Period;
-        uint mountainNoseOffset = rng.Randi() % (uint)mountainNoise.Period;
 
         int baseHeight = 56;
         int dirtTop = -32;
@@ -107,6 +104,7 @@ public class ChunkGenerator : Node
             int tallGrass = worldRoot.FindTileID("tall_grass");
             int cactus = worldRoot.FindTileID("cactus");
             int deadBush = worldRoot.FindTileID("dead_bush");
+            int sandstone = worldRoot.FindTileID("sandstone");
 
             Resource[] oakTrees = {
                 GD.Load("res://gameplay/world/templates/oak_tree1.tres"),
@@ -153,8 +151,11 @@ public class ChunkGenerator : Node
                     {
                         layer3Tiles.Add(deadBush);
                     }
-                    for (int i = 0; i < dirtHeight; i++)
+                    for (int i = 0; i < dirtHeight - 1; i++)
                         layer2Tiles.Add(sand);
+                    int sandstoneHeight = (int)Math.Round((dirtNoise.GetNoise1d(chunk * Chunk.ChunkSize + x)) * 1.5 + 2.5);
+                    for (int i = 0; i < sandstoneHeight; i++)
+                        layer2Tiles.Add(sandstone);
                     break;
             }
 

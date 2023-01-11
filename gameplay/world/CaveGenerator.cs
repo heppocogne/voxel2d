@@ -59,7 +59,7 @@ public class CaveGenerator : Node
                 {
                     Vector2 p = new Vector2(x, y) + currentPosition;
                     int currentCell = worldRoot.GetCellv(p);
-                    if (currentCell != 3 && currentCell <= 5)
+                    if (currentCell != 3 && (currentCell <= 5 || currentCell == 26))
                         worldRoot.SetCellv(p, -1);
                 }
             }

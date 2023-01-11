@@ -11,6 +11,17 @@
         },
         "output": 4
     },
+    "charcoal": {
+        "input": [
+            {
+                "oak_log": 1
+            },
+            {
+                "spruce_log": 1
+            }
+        ],
+        "output": 1
+    },
     "stick": {
         "input": [
             {
@@ -103,6 +114,12 @@
         },
         "output": 1
     },
+    "iron_block": {
+        "input": {
+            "iron_ingot": 9
+        },
+        "output": 1
+    },
     "golden_pickaxe": {
         "input": {
             "stick": 2,
@@ -121,6 +138,12 @@
         "input": {
             "stick": 2,
             "gold_ingot": 1
+        },
+        "output": 1
+    },
+    "gold_block": {
+        "input": {
+            "gold_ingot": 9
         },
         "output": 1
     },
@@ -145,6 +168,12 @@
         },
         "output": 1
     },
+    "diamond_block": {
+        "input": {
+            "diamond": 9
+        },
+        "output": 1
+    },
     "chest": {
         "input": [
             {
@@ -155,5 +184,29 @@
             }
         ],
         "output": 1
+    },
+    "stone": {
+        "input": {
+            "cobblestone": 4
+        },
+        "output": 4
+    },
+    "sandstone": {
+        "input": {
+            "sand": 4
+        },
+        "output": 1
+    },
+    "cut_sandstone": {
+        "input": {
+            "sandstone": 4
+        },
+        "output": 4
+    },
+    "stone_brick": {
+        "input": {
+            "stone": 4
+        },
+        "output": 4
     }
 }

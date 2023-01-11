@@ -27,3 +27,4 @@ gold_block	3			1	2	iron_pickaxe
 diamond_ore	3	diamond		1	2	iron_pickaxe
 diamond_block	5			1	2	iron_pickaxe
 chest	2.5	chest	utility	0	1	wooden_axe
+sandstone	0.8	sandstone		1	2	wooden_pickaxe
