@@ -20,10 +20,6 @@ public class World : Node2D
     Resource _craftingRecipeData;
     [Export]
     Resource _toolData;
-    [Export]
-    Resource _fuelData;
-    [Export]
-    Resource _furnaceRecipeData;
 
 
     public Godot.Collections.Array TileData;
@@ -31,8 +27,6 @@ public class World : Node2D
     public Dictionary CraftingRecipes;
     public Godot.Collections.Array ToolMaterialData;
     public Dictionary<Vector2, Utility> UtilityMapping = new Dictionary<Vector2, Utility>();
-    public Godot.Collections.Array FuelData;
-    public Godot.Collections.Array FurnaceRecipes;
 
     Player player;
     ChunkLoader loader;
@@ -50,8 +44,6 @@ public class World : Node2D
         ItemData = (Godot.Collections.Array)_itemData.Get("records");
         CraftingRecipes = (Dictionary)_craftingRecipeData.Get("data");
         ToolMaterialData = (Godot.Collections.Array)_toolData.Get("records");
-        FuelData = (Godot.Collections.Array)_fuelData.Get("records");
-        FurnaceRecipes = (Godot.Collections.Array)_furnaceRecipeData.Get("records");
     }
 
     public void NewWorld()
@@ -149,14 +141,6 @@ public class World : Node2D
                     chest.ChunkPosition = Coordinate.MapToChunk(x);
                     chest.AddToGroup("Chunk:" + GD.Str(chest.ChunkPosition));
                     break;
-                case 26:    // furnace
-                    Utility furnace = GD.Load<PackedScene>("res://gameplay/entity/utility/furnace.tscn").Instance<Utility>();
-                    AddChild(furnace);
-                    furnace.Position = coordinate.MapToWorld(new Vector2(x, y));
-                    UtilityMapping.Add(new Vector2(x, y), furnace);
-                    furnace.ChunkPosition = Coordinate.MapToChunk(x);
-                    furnace.AddToGroup("Chunk:" + GD.Str(furnace.ChunkPosition));
-                    break;
             }
         }
     }
@@ -238,26 +222,6 @@ public class World : Node2D
                 return d;
         }
         GD.PushError("Tool material '" + material + "' is not found");
-        return new Dictionary();
-    }
-
-    public Dictionary FindFuelData(String itemname)
-    {
-        foreach (Dictionary d in FuelData)
-        {
-            if ((String)d["Name"] == itemname)
-                return d;
-        }
-        return new Dictionary();
-    }
-
-    public Dictionary FindFurnaceRecipe(String input)
-    {
-        foreach (Dictionary d in FurnaceRecipes)
-        {
-            if ((String)d["Input"] == input)
-                return d;
-        }
         return new Dictionary();
     }
 

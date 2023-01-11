@@ -145,12 +145,6 @@
         },
         "output": 1
     },
-    "furnace": {
-        "input": {
-            "cobblestone": 8
-        },
-        "output": 1
-    },
     "chest": {
         "input": [
             {
