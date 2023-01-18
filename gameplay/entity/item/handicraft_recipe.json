@@ -1,0 +1,54 @@
+{
+    "oak_planks": {
+        "input": {
+            "oak_log": 1
+        },
+        "output": 4
+    },
+    "spruce_planks": {
+        "input": {
+            "spruce_log": 1
+        },
+        "output": 4
+    },
+    "stick": {
+        "input": [
+            {
+                "oak_planks": 2
+            },
+            {
+                "spruce_planks": 2
+            }
+        ],
+        "output": 4
+    },
+    "crafting_table": {
+        "input": [
+            {
+                "oak_planks": 4
+            },
+            {
+                "spruce_planks": 4
+            }
+        ],
+        "output": 1
+    },
+    "sandstone": {
+        "input": {
+            "sand": 4
+        },
+        "output": 1
+    },
+    "cut_sandstone": {
+        "input": {
+            "sandstone": 4
+        },
+        "output": 4
+    },
+    "stone_brick": {
+        "input": {
+            "stone": 4
+        },
+        "output": 4
+    }
+}

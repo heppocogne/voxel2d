@@ -1,0 +1,13 @@
+[remap]
+
+importer="heppocogne.godot-json-importer"
+type="Resource"
+path="res://.import/handicraft_recipe.json-b5a8077b8839623628f45b53bce9cef4.res"
+
+[deps]
+
+source_file="res://gameplay/entity/item/handicraft_recipe.json"
+dest_files=[ "res://.import/handicraft_recipe.json-b5a8077b8839623628f45b53bce9cef4.res" ]
+
+[params]
+

@@ -194,6 +194,7 @@ public class Player : Character
                     switch (tileID)
                     {
                         case 25:    // chest
+                        case 29:    // crafting table
                             worldRoot.UtilityMapping[targetCell].OpenInventory();
                             break;
                     }

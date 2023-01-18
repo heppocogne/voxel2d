@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://gameplay/world/chunk/ChunkGenerator.cs" type="Script" id=1]
 [ext_resource path="res://gameplay/entity/item/crafting_recipe.json" type="Resource" id=2]
@@ -13,6 +13,7 @@
 [ext_resource path="res://gameplay/entity/item/tool_material_data.tsv" type="Resource" id=11]
 [ext_resource path="res://gameplay/world/CaveGenerator.cs" type="Script" id=12]
 [ext_resource path="res://gameplay/world/OreGenerator.cs" type="Script" id=13]
+[ext_resource path="res://gameplay/entity/item/handicraft_recipe.json" type="Resource" id=14]
 
 [node name="GameScreen" type="Control"]
 anchor_right = 1.0
@@ -37,6 +38,7 @@ WorldName = "__test"
 TileSet = ExtResource( 4 )
 _tileData = ExtResource( 8 )
 _itemData = ExtResource( 10 )
+_handicraftRecipeData = ExtResource( 14 )
 _craftingRecipeData = ExtResource( 2 )
 _toolData = ExtResource( 11 )
 
