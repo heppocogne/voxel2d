@@ -18,9 +18,9 @@ public class Utility : Entity
     {
         Control gui = InventoryScene.Instance<Control>();
         gui.Set("utility_node", this);
-        GetTree().Root.GetNode("GameScreen/ViewportContainer/GUILayer/GUI").EmitSignal("inventory_opened");
-        GetTree().Root.GetNode("GameScreen/ViewportContainer/GUILayer/GUI").Set("inventory", gui);
-        GetTree().Root.GetNode("GameScreen/ViewportContainer/GUILayer/GUI/InventoryContainer").AddChild(gui);
+        GetTree().Root.GetNode("GameScreen/GUILayer/GUI").EmitSignal("inventory_opened");
+        GetTree().Root.GetNode("GameScreen/GUILayer/GUI").Set("inventory", gui);
+        GetTree().Root.GetNode("GameScreen/GUILayer/GUI/InventoryContainer").AddChild(gui);
     }
 
     public override Dictionary Serialize()

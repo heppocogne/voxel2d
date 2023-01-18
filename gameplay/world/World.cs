@@ -17,6 +17,8 @@ public class World : Node2D
     [Export]
     Resource _itemData;
     [Export]
+    Resource _handicraftRecipeData;
+    [Export]
     Resource _craftingRecipeData;
     [Export]
     Resource _toolData;
@@ -24,6 +26,7 @@ public class World : Node2D
 
     public Godot.Collections.Array TileData;
     public Godot.Collections.Array ItemData;
+    public Dictionary HandicraftRecipes;
     public Dictionary CraftingRecipes;
     public Godot.Collections.Array ToolMaterialData;
     public Dictionary<Vector2, Utility> UtilityMapping = new Dictionary<Vector2, Utility>();
@@ -42,6 +45,7 @@ public class World : Node2D
 
         TileData = (Godot.Collections.Array)_tileData.Get("records");
         ItemData = (Godot.Collections.Array)_itemData.Get("records");
+        HandicraftRecipes = (Dictionary)_handicraftRecipeData.Get("data");
         CraftingRecipes = (Dictionary)_craftingRecipeData.Get("data");
         ToolMaterialData = (Godot.Collections.Array)_toolData.Get("records");
     }
@@ -102,6 +106,16 @@ public class World : Node2D
         return GetCell((int)cell.x, (int)cell.y);
     }
 
+    void AddUtility(int x, int y, String scenePath)
+    {
+        Utility u = GD.Load<PackedScene>(scenePath).Instance<Utility>();
+        AddChild(u);
+        u.Position = coordinate.MapToWorld(new Vector2(x, y));
+        UtilityMapping.Add(new Vector2(x, y), u);
+        u.ChunkPosition = Coordinate.MapToChunk(x);
+        u.AddToGroup("Chunk:" + GD.Str(u.ChunkPosition));
+    }
+
     public void SetCell(int x, int y, int tile)
     {
         Chunk chunk = loader.GetChunk(Coordinate.MapToChunk(x));
@@ -134,13 +148,12 @@ public class World : Node2D
             switch (tile)
             {
                 case 25:    // chest
-                    Utility chest = GD.Load<PackedScene>("res://gameplay/entity/utility/chest.tscn").Instance<Utility>();
-                    AddChild(chest);
-                    chest.Position = coordinate.MapToWorld(new Vector2(x, y));
-                    UtilityMapping.Add(new Vector2(x, y), chest);
-                    chest.ChunkPosition = Coordinate.MapToChunk(x);
-                    chest.AddToGroup("Chunk:" + GD.Str(chest.ChunkPosition));
+                    AddUtility(x, y, "res://gameplay/entity/utility/chest.tscn");
                     break;
+                case 29:    // crafting_table
+                    AddUtility(x, y, "res://gameplay/entity/utility/crafting_table.tscn");
+                    break;
+
             }
         }
     }
@@ -293,7 +306,10 @@ public class World : Node2D
                 UtilityMapping.Remove(cell);
                 chest.QueueFree();
                 break;
-            case 26:    // furnace
+            case 29:    // crafting_table
+                Utility craftingTable = UtilityMapping[cell];
+                UtilityMapping.Remove(cell);
+                craftingTable.QueueFree();
                 break;
         }
     }

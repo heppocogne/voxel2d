@@ -127,9 +127,56 @@ public class Inventory : Node
         return true;
     }
 
-    public Dictionary<Item, Array<Item>> GetAvailableCraftingRecipes()
+    public Dictionary<Item, Array<Item>> GetAvailableHandicraftingRecipes()
     {
         Dictionary<Item, Array<Item>> result = new Dictionary<Item, Array<Item>>();
+        Dictionary recipes = (Dictionary)worldRoot.HandicraftRecipes;
+        foreach (String outputName in recipes.Keys)
+        {
+            Dictionary recipe = (Dictionary)recipes[outputName];
+            if (recipe["input"] is Array)
+            {
+                Array inputRecipeVariation = (Array)recipe["input"];
+                foreach (Dictionary irv in inputRecipeVariation)
+                {
+                    if (IsCraftableInternal(irv))
+                    {
+                        Item output = worldRoot.CreateItemInstance(outputName, (int)(float)recipe["output"]);
+                        Array<Item> inputs = new Array<Item>();
+                        foreach (String requiredItem in irv.Keys)
+                        {
+                            Item input = worldRoot.CreateItemInstance(requiredItem, (int)(float)irv[requiredItem]);
+                            inputs.Add(input);
+                        }
+                        result.Add(output, inputs);
+                    }
+                }
+            }
+            else if (recipe["input"] is Dictionary)
+            {
+                if (IsCraftableInternal((Dictionary)recipe["input"]))
+                {
+                    Item output = worldRoot.CreateItemInstance(outputName, (int)(float)recipe["output"]);
+                    Array<Item> inputs = new Array<Item>();
+                    var inputItemNames = ((Dictionary)recipe["input"]).Keys;
+                    foreach (String requiredItem in inputItemNames)
+                    {
+                        Item input = worldRoot.CreateItemInstance(requiredItem, (int)(float)((Dictionary)recipe["input"])[requiredItem]);
+                        inputs.Add(input);
+                    }
+                    result.Add(output, inputs);
+                }
+            }
+            else
+                GD.PushError("Unexpected recipie format");
+        }
+
+        return result;
+    }
+
+    public Dictionary<Item, Array<Item>> GetAvailableCraftingRecipes()
+    {
+        Dictionary<Item, Array<Item>> result = GetAvailableHandicraftingRecipes();
         Dictionary recipes = (Dictionary)worldRoot.CraftingRecipes;
         foreach (String outputName in recipes.Keys)
         {
